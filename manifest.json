@@ -1,0 +1,24 @@
+{
+  "name": "时间都去哪儿啦",
+  "short_name": "时间都去哪儿啦",
+  "description": "记录每天各时间段在做什么，日/周/月复盘工具",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "width": 510,
+  "height": 720,
+  "background_color": "#fef8f3",
+  "theme_color": "#b8dde0",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Ccircle cx='96' cy='96' r='96' fill='%23FFD0A8'/%3E%3Ctext x='96' y='120' font-size='80' text-anchor='middle' fill='%23F5EAD6' font-family='sans-serif' font-weight='bold'%E6%97%B6%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Ccircle cx='256' cy='256' r='256' fill='%23FFD0A8'/%3E%3Ctext x='256' y='320' font-size='213' text-anchor='middle' fill='%23F5EAD6' font-family='sans-serif' font-weight='bold'%E6%97%B6%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
