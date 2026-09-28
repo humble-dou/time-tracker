@@ -1017,6 +1017,13 @@
       <div class="card">
         <div class="card-title">数据管理</div>
         <div class="settings-item">
+          <div><div class="settings-label">云端同步</div><div class="settings-desc">电脑与手机数据同步</div></div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="syncStatus" style="font-size:12px;color:#999;">未同步</span>
+            <button class="settings-btn" id="syncBtn">同步</button>
+          </div>
+        </div>
+        <div class="settings-item">
           <div><div class="settings-label">导出数据</div><div class="settings-desc">备份所有记录到文件</div></div>
           <button class="settings-btn" id="exportBtn">导出</button>
         </div>
@@ -1113,6 +1120,7 @@
   <div class="toast" id="toast"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     // ============ Data Layer ============
     const DB = {
@@ -1139,12 +1147,15 @@
         localStorage.setItem('tt_activities', JSON.stringify(this.activities));
         localStorage.setItem('tt_reviews', JSON.stringify(this.reviews));
         localStorage.setItem('tt_plans', JSON.stringify(this.plans));
+        Sync.debouncedPush();
       },
       saveCustomCats() {
         localStorage.setItem('tt_customCats', JSON.stringify(this.customCats));
+        Sync.debouncedPush();
       },
       saveCustomCatColorMap() {
         localStorage.setItem('tt_customCatColorMap', JSON.stringify(this.customCatColorMap));
+        Sync.debouncedPush();
       },
       assignCatColor(cat) {
         if (this.customCatColorMap[cat] === undefined) {
@@ -1157,6 +1168,7 @@
       },
       saveDeletedDefaultCats() {
         localStorage.setItem('tt_deletedDefaultCats', JSON.stringify(this.deletedDefaultCats));
+        Sync.debouncedPush();
       },
       getAllCats() {
         return [...this.defaultCats.filter(c => !this.deletedDefaultCats.includes(c)), ...this.customCats];
@@ -1259,6 +1271,134 @@
         const h = String(d.getHours()).padStart(2,'0');
         const m = String(d.getMinutes()).padStart(2,'0');
         return `${h}:${m}`;
+      }
+    };
+
+    // ============ Sync Layer (Supabase) ============
+    const Sync = {
+      URL: 'https://hhyqgywcswcjzqokytqq.supabase.co',
+      KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhoeXFneXdjc3djanpxb2t5dHFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1NjIxNzAsImV4cCI6MjEwNjEzODE3MH0.dd735tln7Om1ErOBs_Iw1bxi1e1Wed3vUB1coC5U8U0',
+      client: null,
+      deviceId: null,
+      debounceTimer: null,
+      syncing: false,
+      ready: false,
+
+      init() {
+        try {
+          if (typeof supabase === 'undefined') { console.warn('Supabase SDK not loaded'); return; }
+          this.client = supabase.createClient(this.URL, this.KEY);
+          this.deviceId = localStorage.getItem('tt_device_id');
+          if (!this.deviceId) {
+            this.deviceId = 'dev_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+            localStorage.setItem('tt_device_id', this.deviceId);
+          }
+          this.ready = true;
+        } catch(e) { console.warn('Sync init failed:', e); }
+      },
+
+      async push() {
+        if (!this.ready || this.syncing) return;
+        this.syncing = true;
+        try {
+          const snap = JSON.parse(localStorage.getItem('tt_sync_snap') || '{}');
+          const currentIds = [...DB.activities.map(a => a.id), ...DB.plans.map(p => p.id)];
+          const lastIds = snap.ids || [];
+          const newlyDeleted = lastIds.filter(id => !currentIds.includes(id));
+          const allDeleted = [...new Set([...newlyDeleted, ...(snap.deletedIds || [])])].filter(id => !currentIds.includes(id));
+
+          const payload = {
+            activities: DB.activities,
+            reviews: DB.reviews,
+            plans: DB.plans,
+            customCats: DB.customCats,
+            deletedDefaultCats: DB.deletedDefaultCats,
+            customCatColorMap: DB.customCatColorMap,
+            deletedIds: allDeleted
+          };
+
+          await this.client.from('time_tracker_data').delete().eq('device_id', this.deviceId).eq('data_type', 'snapshot');
+          const { error } = await this.client.from('time_tracker_data').insert({
+            device_id: this.deviceId, data_type: 'snapshot', data_key: 'all', data_value: payload
+          });
+          if (error) throw error;
+
+          localStorage.setItem('tt_sync_snap', JSON.stringify({ ids: currentIds, deletedIds: allDeleted }));
+          this.updateStatus('synced');
+        } catch(e) {
+          console.warn('Sync push failed:', e);
+          this.updateStatus('error');
+        }
+        this.syncing = false;
+      },
+
+      async pull() {
+        if (!this.ready) return false;
+        this.syncing = true;
+        this.updateStatus('syncing');
+        try {
+          const { data, error } = await this.client.from('time_tracker_data')
+            .select('data_value').eq('data_type', 'snapshot');
+          if (error) throw error;
+          if (!data || data.length === 0) { this.syncing = false; this.updateStatus('synced'); return false; }
+
+          const mergedAct = new Map();
+          const mergedRev = new Map();
+          const mergedPlans = new Map();
+          const mergedCats = new Set(DB.customCats);
+          const mergedDelCats = new Set(DB.deletedDefaultCats);
+          const mergedColorMap = { ...DB.customCatColorMap };
+          const allDeleted = new Set();
+
+          for (const row of data) {
+            const v = row.data_value;
+            if (!v) continue;
+            if (v.deletedIds) v.deletedIds.forEach(id => allDeleted.add(id));
+            if (v.activities) v.activities.forEach(a => { if (!allDeleted.has(a.id)) mergedAct.set(a.id, a); });
+            if (v.reviews) v.reviews.forEach(r => mergedRev.set(r.date + '|' + r.type, r));
+            if (v.plans) v.plans.forEach(p => { if (!allDeleted.has(p.id)) mergedPlans.set(p.id, p); });
+            if (v.customCats) v.customCats.forEach(c => mergedCats.add(c));
+            if (v.deletedDefaultCats) v.deletedDefaultCats.forEach(c => mergedDelCats.add(c));
+            if (v.customCatColorMap) Object.assign(mergedColorMap, v.customCatColorMap);
+          }
+
+          DB.activities = Array.from(mergedAct.values()).sort((a, b) => a.startTime.localeCompare(b.startTime));
+          DB.reviews = Array.from(mergedRev.values());
+          DB.plans = Array.from(mergedPlans.values());
+          DB.customCats = Array.from(mergedCats);
+          DB.deletedDefaultCats = Array.from(mergedDelCats);
+          DB.customCatColorMap = mergedColorMap;
+
+          DB.save(); DB.saveCustomCats(); DB.saveCustomCatColorMap(); DB.saveDeletedDefaultCats();
+          updateCustomCatStyles();
+
+          const currentIds = [...DB.activities.map(a => a.id), ...DB.plans.map(p => p.id)];
+          localStorage.setItem('tt_sync_snap', JSON.stringify({
+            ids: currentIds,
+            deletedIds: Array.from(allDeleted).filter(id => !currentIds.includes(id))
+          }));
+          this.updateStatus('synced');
+          return true;
+        } catch(e) {
+          console.warn('Sync pull failed:', e);
+          this.updateStatus('error');
+          this.syncing = false;
+          return false;
+        }
+      },
+
+      debouncedPush() {
+        if (!this.ready) return;
+        clearTimeout(this.debounceTimer);
+        this.debounceTimer = setTimeout(() => this.push(), 2000);
+      },
+
+      updateStatus(status) {
+        const el = document.getElementById('syncStatus');
+        if (!el) return;
+        if (status === 'syncing') { el.textContent = '同步中…'; el.style.color = '#89bceb'; }
+        else if (status === 'synced') { el.textContent = '已同步'; el.style.color = '#7fb069'; }
+        else if (status === 'error') { el.textContent = '同步失败'; el.style.color = 'var(--danger)'; }
       }
     };
 
@@ -2806,6 +2946,15 @@
         }
       });
 
+      document.getElementById('syncBtn').addEventListener('click', async () => {
+        if (!Sync.ready) { toast('同步服务未就绪'); return; }
+        toast('正在同步…');
+        const changed = await Sync.pull();
+        await Sync.push();
+        if (changed) renderAll();
+        toast('同步完成');
+      });
+
       document.getElementById('actTitle').addEventListener('keydown', e => {
         if (e.key === 'Enter') { e.preventDefault(); saveActivity(); }
       });
@@ -2992,6 +3141,7 @@
 
     // ============ Boot ============
     DB.load();
+    Sync.init();
 
     // 单窗口控制：已有窗口收到新窗口通知后，主动请求SW聚焦自己（可恢复最小化）
     (function() {
@@ -3055,6 +3205,7 @@
 
     initEvents();
     renderAll();
+    Sync.pull().then(changed => { if (changed) renderAll(); });
   </script>
 
 </body></html>
