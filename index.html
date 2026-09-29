@@ -1342,9 +1342,10 @@
           if (error) throw error;
           if (!data || data.length === 0) { this.syncing = false; this.updateStatus('synced'); return false; }
 
-          const mergedAct = new Map();
-          const mergedRev = new Map();
-          const mergedPlans = new Map();
+          // 先把本地数据放入合并结果
+          const mergedAct = new Map(DB.activities.map(a => [a.id, a]));
+          const mergedRev = new Map(DB.reviews.map(r => [r.date + '|' + r.type, r]));
+          const mergedPlans = new Map(DB.plans.map(p => [p.id, p]));
           const mergedCats = new Set(DB.customCats);
           const mergedDelCats = new Set(DB.deletedDefaultCats);
           const mergedColorMap = { ...DB.customCatColorMap };
@@ -1354,13 +1355,23 @@
             const v = row.data_value;
             if (!v) continue;
             if (v.deletedIds) v.deletedIds.forEach(id => allDeleted.add(id));
+          }
+          // 先收集所有删除标记，再合并数据（已删除的不合并）
+          for (const row of data) {
+            const v = row.data_value;
+            if (!v) continue;
             if (v.activities) v.activities.forEach(a => { if (!allDeleted.has(a.id)) mergedAct.set(a.id, a); });
-            if (v.reviews) v.reviews.forEach(r => mergedRev.set(r.date + '|' + r.type, r));
+            if (v.reviews) v.reviews.forEach(r => { if (!allDeleted.has(r.date + '|' + r.type)) mergedRev.set(r.date + '|' + r.type, r); });
             if (v.plans) v.plans.forEach(p => { if (!allDeleted.has(p.id)) mergedPlans.set(p.id, p); });
             if (v.customCats) v.customCats.forEach(c => mergedCats.add(c));
             if (v.deletedDefaultCats) v.deletedDefaultCats.forEach(c => mergedDelCats.add(c));
             if (v.customCatColorMap) Object.assign(mergedColorMap, v.customCatColorMap);
           }
+          // 最后应用删除标记
+          allDeleted.forEach(id => {
+            mergedAct.delete(id);
+            mergedPlans.delete(id);
+          });
 
           DB.activities = Array.from(mergedAct.values()).sort((a, b) => a.startTime.localeCompare(b.startTime));
           DB.reviews = Array.from(mergedRev.values());
