@@ -1388,6 +1388,7 @@
             ids: currentIds,
             deletedIds: Array.from(allDeleted).filter(id => !currentIds.includes(id))
           }));
+          this.syncing = false;
           this.updateStatus('synced');
           return true;
         } catch(e) {
