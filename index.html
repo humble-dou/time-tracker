@@ -1187,6 +1187,7 @@
       },
       addActivity(act) {
         act.id = Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+        act.updatedAt = Date.now();
         this.activities.push(act);
         this.activities.sort((a,b) => a.startTime.localeCompare(b.startTime));
         this.save();
@@ -1199,9 +1200,11 @@
         return this.plans.filter(p => p.date === date).sort((a,b) => (a.order||0) - (b.order||0));
       },
       addPlan(date, text) {
+        const now = Date.now();
         const plan = {
-          id: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
-          date, text, done: false, order: this.plans.filter(p => p.date === date).length
+          id: now.toString(36) + Math.random().toString(36).slice(2,6),
+          date, text, done: false, order: this.plans.filter(p => p.date === date).length,
+          updatedAt: now
         };
         this.plans.push(plan);
         this.save();
@@ -1209,7 +1212,7 @@
       },
       togglePlan(id) {
         const p = this.plans.find(x => x.id === id);
-        if (p) { p.done = !p.done; this.save(); }
+        if (p) { p.done = !p.done; p.updatedAt = Date.now(); this.save(); }
       },
       deletePlan(id) {
         this.plans = this.plans.filter(p => p.id !== id);
@@ -1217,12 +1220,13 @@
       },
       updatePlan(id, newText) {
         const p = this.plans.find(x => x.id === id);
-        if (p) { p.text = newText; this.save(); }
+        if (p) { p.text = newText; p.updatedAt = Date.now(); this.save(); }
       },
       reorderPlans(date, newOrderIds) {
+        const now = Date.now();
         newOrderIds.forEach((id, i) => {
           const p = this.plans.find(x => x.id === id);
-          if (p) p.order = i;
+          if (p) { p.order = i; p.updatedAt = now; }
         });
         this.save();
       },
@@ -1360,9 +1364,21 @@
           for (const row of data) {
             const v = row.data_value;
             if (!v) continue;
-            if (v.activities) v.activities.forEach(a => { if (!allDeleted.has(a.id)) mergedAct.set(a.id, a); });
+            if (v.activities) v.activities.forEach(a => {
+              if (allDeleted.has(a.id)) return;
+              const existing = mergedAct.get(a.id);
+              if (!existing || (a.updatedAt || 0) > (existing.updatedAt || 0)) {
+                mergedAct.set(a.id, a);
+              }
+            });
             if (v.reviews) v.reviews.forEach(r => { if (!allDeleted.has(r.date + '|' + r.type)) mergedRev.set(r.date + '|' + r.type, r); });
-            if (v.plans) v.plans.forEach(p => { if (!allDeleted.has(p.id)) mergedPlans.set(p.id, p); });
+            if (v.plans) v.plans.forEach(p => {
+              if (allDeleted.has(p.id)) return;
+              const existing = mergedPlans.get(p.id);
+              if (!existing || (p.updatedAt || 0) > (existing.updatedAt || 0)) {
+                mergedPlans.set(p.id, p);
+              }
+            });
             if (v.customCats) v.customCats.forEach(c => mergedCats.add(c));
             if (v.deletedDefaultCats) v.deletedDefaultCats.forEach(c => mergedDelCats.add(c));
             if (v.customCatColorMap) Object.assign(mergedColorMap, v.customCatColorMap);
@@ -1725,7 +1741,7 @@
               const val = input.value.trim();
               if (val) {
                 const act = DB.activities.find(a => a.id === id);
-                if (act) { act.title = val; DB.save(); }
+                if (act) { act.title = val; act.updatedAt = Date.now(); DB.save(); }
               }
               renderDay();
             };
