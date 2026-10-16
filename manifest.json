@@ -1,24 +1,26 @@
 {
-  "name": "时间都去哪儿啦",
-  "short_name": "时间都去哪儿啦",
-  "description": "记录每天各时间段在做什么，日/周/月复盘工具",
+  "name": "玲珑万物生",
+  "short_name": "玲珑",
+  "description": "记录每一段时光，复盘每一次成长",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
   "width": 510,
   "height": 720,
   "background_color": "#fef8f3",
-  "theme_color": "#b8dde0",
+  "theme_color": "#ff6b35",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Ccircle cx='96' cy='96' r='96' fill='%23FFD0A8'/%3E%3Ctext x='96' y='120' font-size='80' text-anchor='middle' fill='%23F5EAD6' font-family='sans-serif' font-weight='bold'%E6%97%B6%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23fff5ee'/%3E%3Cpath d='M96 16 C96 16 156 72 156 124 C156 156 128 180 96 180 C64 180 36 156 36 124 C36 94 52 72 58 56 C58 88 72 100 84 92 C80 68 90 44 96 16Z' fill='%23ff6b35'/%3E%3Cpath d='M96 48 C96 48 128 80 128 120 C128 142 114 160 96 160 C78 160 64 142 64 120 C64 104 72 90 80 80 C80 96 88 108 96 100 C96 84 96 68 96 48Z' fill='%23ffaa33'/%3E%3Cpath d='M96 78 C96 78 110 96 110 116 C110 130 104 140 96 140 C88 140 82 130 82 116 C82 106 86 98 92 94 C92 102 94 108 96 104 C96 96 96 88 96 78Z' fill='%23ffe066'/%3E%3Ccircle cx='96' cy='120' r='30' fill='%23fff' opacity='0.95'/%3E%3Ccircle cx='96' cy='120' r='25' fill='none' stroke='%23ff6b35' stroke-width='2.5'/%3E%3Cline x1='96' y1='120' x2='96' y2='98' stroke='%23ff6b35' stroke-width='3.5' stroke-linecap='round'/%3E%3Cline x1='96' y1='120' x2='116' y2='129' stroke='%23ff6b35' stroke-width='3.5' stroke-linecap='round'/%3E%3Ccircle cx='96' cy='120' r='4' fill='%23ff6b35'/%3E%3C/svg%3E",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Ccircle cx='256' cy='256' r='256' fill='%23FFD0A8'/%3E%3Ctext x='256' y='320' font-size='213' text-anchor='middle' fill='%23F5EAD6' font-family='sans-serif' font-weight='bold'%E6%97%B6%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23fff5ee'/%3E%3Cpath d='M256 42 C256 42 416 192 416 332 C416 416 344 480 256 480 C168 480 96 416 96 332 C96 252 140 192 156 148 C156 236 194 268 228 246 C218 182 242 118 256 42Z' fill='%23ff6b35'/%3E%3Cpath d='M256 128 C256 128 342 214 342 320 C342 380 304 428 256 428 C208 428 170 380 170 320 C170 278 190 242 212 216 C212 258 234 290 256 268 C256 224 256 180 256 128Z' fill='%23ffaa33'/%3E%3Cpath d='M256 208 C256 208 294 252 294 306 C294 342 278 368 256 368 C234 368 218 342 218 306 C218 282 228 262 242 248 C242 268 248 284 256 274 C256 252 256 232 256 208Z' fill='%23ffe066'/%3E%3Ccircle cx='256' cy='320' r='80' fill='%23fff' opacity='0.95'/%3E%3Ccircle cx='256' cy='320' r='66' fill='none' stroke='%23ff6b35' stroke-width='6'/%3E%3Cline x1='256' y1='320' x2='256' y2='262' stroke='%23ff6b35' stroke-width='8' stroke-linecap='round'/%3E%3Cline x1='256' y1='320' x2='310' y2='346' stroke='%23ff6b35' stroke-width='8' stroke-linecap='round'/%3E%3Ccircle cx='256' cy='320' r='10' fill='%23ff6b35'/%3E%3C/svg%3E",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ]
 }

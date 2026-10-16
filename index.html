@@ -5,15 +5,17 @@
   <meta name="theme-color" content="#b8dde0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="时间都去哪儿啦">
-  <title>时间都去哪儿啦</title>
+  <meta name="apple-mobile-web-app-title" content="玲珑万物生">
+  <title>玲珑万物生</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3C!-- 外层火焰 - 橙红 --%3E%3Cpath d='M64 8 C64 8 104 44 104 80 C104 100 86 118 64 118 C42 118 24 100 24 80 C24 62 34 48 38 38 C38 56 46 64 54 60 C52 44 60 28 64 8Z' fill='%23ff6b35'/%3E%3C!-- 中层火焰 - 橙黄 --%3E%3Cpath d='M64 30 C64 30 86 52 86 78 C86 92 76 104 64 104 C52 104 42 92 42 78 C42 68 46 60 50 54 C50 64 56 70 64 66 C64 56 64 44 64 30Z' fill='%23ffaa33'/%3E%3C!-- 内层火焰 - 亮黄 --%3E%3Cpath d='M64 50 C64 50 74 62 74 76 C74 84 70 90 64 90 C58 90 54 84 54 76 C54 70 58 66 60 64 C60 68 62 70 64 68 C64 62 64 56 64 50Z' fill='%23ffe066'/%3E%3C!-- 时钟表盘 --%3E%3Ccircle cx='64' cy='78' r='20' fill='%23fff' opacity='0.95'/%3E%3Ccircle cx='64' cy='78' r='16' fill='none' stroke='%23ff6b35' stroke-width='1.5'/%3E%3Cline x1='64' y1='78' x2='64' y2='64' stroke='%23ff6b35' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='64' y1='78' x2='76' y2='84' stroke='%23ff6b35' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='64' cy='78' r='2.5' fill='%23ff6b35'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23fff5ee'/%3E%3C!-- 外层火焰 - 橙红 --%3E%3Cpath d='M90 14 C90 14 146 64 146 112 C146 140 120 164 90 164 C60 164 34 140 34 112 C34 86 48 66 54 52 C54 78 66 90 76 84 C72 62 84 40 90 14Z' fill='%23ff6b35'/%3E%3C!-- 中层火焰 - 橙黄 --%3E%3Cpath d='M90 44 C90 44 120 74 120 108 C120 128 106 144 90 144 C74 144 60 128 60 108 C60 94 66 82 72 74 C72 88 80 98 90 92 C90 78 90 62 90 44Z' fill='%23ffaa33'/%3E%3C!-- 内层火焰 - 亮黄 --%3E%3Cpath d='M90 72 C90 72 104 88 104 106 C104 118 98 126 90 126 C82 126 76 118 76 106 C76 98 80 92 84 88 C84 94 86 98 90 96 C90 88 90 80 90 72Z' fill='%23ffe066'/%3E%3C!-- 时钟表盘 --%3E%3Ccircle cx='90' cy='110' r='28' fill='%23fff' opacity='0.95'/%3E%3Ccircle cx='90' cy='110' r='23' fill='none' stroke='%23ff6b35' stroke-width='2'/%3E%3Cline x1='90' y1='110' x2='90' y2='90' stroke='%23ff6b35' stroke-width='3' stroke-linecap='round'/%3E%3Cline x1='90' y1='110' x2='108' y2='118' stroke='%23ff6b35' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='90' cy='110' r='3.5' fill='%23ff6b35'/%3E%3C/svg%3E">
   <link rel="manifest" href="manifest.json">
   <style>
     :root {
       --bg: #f7f5f0;
       --bg2: #ffffff;
-      --ink: #2a1f15;
-      --muted: #6d6050;
+      --ink: #1a120b;
+      --muted: #4a3f32;
       --rule: #ece5db;
       --accent: #e8895b;
       --accent-light: rgba(232, 137, 91, 0.12);
@@ -54,10 +56,14 @@
       z-index: -1;
       pointer-events: none;
     }
-    body.week-page::before { opacity: 0; }
-    body.month-page::before { opacity: 0; }
-    body.stats-page::before { opacity: 0; }
-    body.settings-page::before { opacity: 0; }
+    body.week-page::before { opacity: 0.58; }
+    body.month-page::before { opacity: 0.58; }
+    body.stats-page::before { opacity: 0.58; }
+    body.settings-page::before { opacity: 0.58; }
+    /* 侧边栏打开时，背景图中心对齐右侧内容区 */
+    body.warehouse-open::before {
+      background-position: calc(50% + var(--bg-offset, 170px)) center;
+    }
     body::after {
       content: '';
       position: fixed;
@@ -106,7 +112,6 @@
     .mwr-date-range { font-size: 13px; font-weight: 700; color: #b07d20; }
     .mwr-summary { font-size: 10px; color: var(--muted); text-align: center; }
     .mwr-body { padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
-    .mwr-day-stars { font-size: 11px; color: #e8a838; margin-bottom: 2px; }
     .mwr-day-content { font-size: 13px; line-height: 1.5; color: var(--ink); white-space: pre-wrap; }
     .mwr-day-empty { font-size: 12px; color: var(--muted); }
     .page-deco .deco-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); opacity: 0.25; }
@@ -198,65 +203,9 @@
       pointer-events: none;
     }
 
-    /* Week page: custom background image */
-    #pageWeek::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: url('bg-week.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0.68;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    /* Month page: custom background image */
-    #pageMonth::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: url('bg-month.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0.68;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    /* Stats page: custom background image */
-    #pageStats::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: url('bg-stats.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0.68;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    /* Settings page: custom background image */
-    #pageSettings::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: url('bg-settings.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0.68;
-      z-index: -1;
-      pointer-events: none;
-    }
-
     /* ---- Cards ---- */
-    .card { background: radial-gradient(ellipse at center, rgba(255,255,255,0.22) 55%, rgba(255,255,255,0.46) 100%); border: 1.5px solid rgba(255,255,255,0.46); backdrop-filter: blur(2px); border-radius: var(--radius); box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.4); padding: 16px; margin-bottom: 12px; }
-    .card-title { font-size: 15px; font-weight: 700; color: var(--muted); margin: 0 0 10px; letter-spacing: 0.02em; }
+    .card { background: rgba(255,255,255,0.14); border: 1.5px solid rgba(255,255,255,0.28); backdrop-filter: blur(2px); border-radius: var(--radius); box-shadow: 0 4px 16px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.22); padding: 16px; margin-bottom: 12px; color: #1a120b; text-shadow: 0 1px 2px rgba(255,255,255,0.6); }
+    .card-title { font-size: 15px; font-weight: 800; color: #3d2e1f; margin: 0 0 10px; letter-spacing: 0.02em; text-shadow: 0 1px 3px rgba(255,255,255,0.7); }
     .card-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
     .card-title-row .card-title { margin: 0; }
     .tl-add-btn {
@@ -270,17 +219,13 @@
 
     /* ---- Timer Widget (3 states) ---- */
     .timer-widget {
-      border-radius: 50%;
-      padding: 24px 20px;
+      padding: 16px 20px;
       color: #fff;
       margin: 0 auto 12px;
       margin-top: -4px;
-      width: 240px;
-      max-width: 240px;
-      aspect-ratio: 1;
-      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 320px;
       position: relative;
-      overflow: hidden;
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -288,50 +233,144 @@
       align-items: center;
     }
     .timer-widget.idle {
-      background: radial-gradient(ellipse at center, rgba(245,184,134,0.25) 30%, rgba(232,137,91,0.65) 100%);
+      background: transparent;
     }
     .timer-widget.running {
-      background: linear-gradient(to top, rgba(217,102,90,0.58) 0%, rgba(232,168,56,0.38) 30%, rgba(245,184,134,0.18) 70%, rgba(245,184,134,0.12) 100%);
-    }
-    .timer-widget::after {
-      content: ""; position: absolute; width: 80px; height: 80px;
-      right: -20px; top: -30px; background: rgba(255,255,255,0.1); border-radius: 50%;
+      background: transparent;
     }
 
-    .timer-clock-label { font-size: 13px; opacity: 1; margin-bottom: 4px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+    .timer-clock-label { font-size: 14px; opacity: 1; margin-bottom: 4px; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.3); }
+    .timer-clock-label.recording {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    /* 水波泡泡动画 - 小丑鱼形状 */
+    .wave-bubble {
+      position: relative;
+      width: 84px; height: 38px;
+      display: inline-block;
+      vertical-align: middle;
+      animation: fish-float 3s ease-in-out infinite;
+    }
+    .wave-bubble svg {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: visible;
+      transform: scaleX(-1); /* 翻转，头朝左 */
+    }
+    @keyframes fish-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+    .wave-bubble .fish-body {
+      fill: rgba(255, 127, 63, 0.25);
+    }
+    .wave-bubble .fish-stripe {
+      fill: rgba(255, 255, 255, 0.5);
+    }
+    .wave-bubble .wave-group {
+      animation: wave-move 2.5s linear infinite;
+    }
+    .wave-bubble .wave-group-2 {
+      animation: wave-move 3.5s linear infinite reverse;
+      opacity: 0.6;
+    }
+    .wave-bubble .bubble-1 {
+      animation: fish-bubble-1 2s ease-in infinite;
+    }
+    .wave-bubble .bubble-2 {
+      animation: fish-bubble-2 2.3s ease-in infinite;
+    }
+    .wave-bubble .bubble-3 {
+      animation: fish-bubble-3 2.7s ease-in infinite;
+    }
+    @keyframes wave-move {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes fish-bubble-1 {
+      0% { cy: 18; opacity: 0; r: 1; }
+      20% { opacity: 0.9; r: 1.5; }
+      100% { cy: 4; opacity: 0; r: 0.5; }
+    }
+    @keyframes fish-bubble-2 {
+      0% { cy: 18; opacity: 0; r: 0.8; }
+      20% { opacity: 0.8; r: 1.2; }
+      100% { cy: 6; opacity: 0; r: 0.4; }
+    }
+    @keyframes fish-bubble-3 {
+      0% { cy: 18; opacity: 0; r: 1.2; }
+      25% { opacity: 0.9; r: 2; }
+      100% { cy: 3; opacity: 0; r: 0.6; }
+    }
+    @keyframes wave-move {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes bubble-rise {
+      0% {
+        bottom: 2px;
+        opacity: 0;
+        transform: translateX(0) scale(0.5);
+      }
+      20% {
+        opacity: 0.8;
+        transform: translateX(1px) scale(1);
+      }
+      80% {
+        opacity: 0.6;
+        transform: translateX(-1px) scale(1.1);
+      }
+      100% {
+        bottom: 12px;
+        opacity: 0;
+        transform: translateX(0) scale(0.3);
+      }
+    }
     .timer-clock {
-      font-size: 42px; font-weight: 800; font-variant-numeric: tabular-nums;
-      letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 2px; text-shadow: 0 1px 4px rgba(0,0,0,0.35);
+      font-size: 56px; font-weight: 900; font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 4px; text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 30px rgba(0,0,0,0.4);
     }
-    .timer-clock-seconds { font-size: 28px; opacity: 1; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-    .timer-sub { font-size: 13px; opacity: 1; margin-top: 4px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+    .timer-clock-seconds { font-size: 36px; opacity: 0.95; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.3); }
+    .timer-sub { font-size: 14px; opacity: 0.95; margin-top: 6px; font-weight: 500; text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.3); }
 
-    .timer-elapsed-label { font-size: 13px; opacity: 0.85; margin-bottom: 4px; }
     .timer-elapsed {
-      font-size: 40px; font-weight: 800; font-variant-numeric: tabular-nums;
-      letter-spacing: -0.03em; line-height: 1.1;
+      font-size: 56px; font-weight: 900; font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 4px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 30px rgba(0,0,0,0.4);
     }
-    .timer-start-time { font-size: 13px; opacity: 0.8; margin-top: 6px; }
 
     .timer-big-btn {
-      border: none; border-radius: 999px;
-      padding: 10px 28px; font-size: 17px; font-weight: 800;
-      cursor: pointer; transition: transform 0.1s;
-      margin-top: 10px;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      border-radius: 999px;
+      padding: 12px 36px; font-size: 18px; font-weight: 800;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+      margin-top: 14px;
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3);
     }
     .timer-big-btn:active { transform: scale(0.95); }
-    .timer-big-btn.start { background: radial-gradient(ellipse at center, rgba(255,255,255,0.28) 30%, rgba(255,255,255,0.83) 100%); color: var(--accent); }
-    .timer-big-btn.stop { background: radial-gradient(ellipse at center, rgba(255,255,255,0.28) 30%, rgba(255,255,255,0.83) 100%); color: var(--danger); }
-    .timer-rst-btn {
-      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-      width: 32px; height: 32px; border-radius: 50%;
-      background: radial-gradient(ellipse at center, rgba(255,255,255,0.28) 30%, rgba(255,255,255,0.83) 100%);
-      color: var(--danger); border: none; font-size: 9px; font-weight: 700;
-      cursor: pointer; transition: transform 0.1s, opacity 0.15s;
-      padding: 0; display: flex; align-items: center; justify-content: center;
-      opacity: 0.7; z-index: 10;
+    .timer-big-btn.start { color: #ff7f3f; font-weight: 900; }
+    .timer-big-btn.start:hover { background: rgba(255,255,255,0.32); box-shadow: 0 6px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4); }
+    .timer-big-btn.stop { color: #5a9fe0; font-weight: 900; text-shadow: 0 1px 2px rgba(255,255,255,0.3); }
+    .timer-big-btn.stop:hover { background: rgba(255,255,255,0.32); box-shadow: 0 6px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4); }
+    .timer-btn-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; margin-top: 14px;
     }
-    .timer-rst-btn:active { transform: translateX(-50%) scale(0.95); }
+    .timer-rst-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(2px);
+      color: #4a90d9; border: 1.5px solid rgba(255,255,255,0.4);
+      font-size: 10px; font-weight: 700;
+      cursor: pointer; transition: transform 0.1s, opacity 0.15s, background 0.15s;
+      padding: 0; display: flex; align-items: center; justify-content: center;
+      opacity: 0.85;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+    .timer-rst-btn:hover { background: rgba(255,255,255,0.32); }
+    .timer-rst-btn:active { transform: scale(0.95); }
 
     /* ---- Activity Timeline ---- */
     .timeline { position: relative; }
@@ -362,19 +401,36 @@
       100% { background: transparent; box-shadow: none; }
     }
 
-    .timeline-time { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; margin-bottom: 2px; }
+    .timeline-time { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; margin-bottom: 2px; font-weight: 700; }
     .timeline-title { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
     .timeline-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
-    .tag[data-cat="工作"] { background: rgba(232,137,91,0.14); color: #e8895b; }
-    .tag[data-cat="学习"] { background: rgba(127,176,105,0.14); color: #5d8f4e; }
-    .tag[data-cat="运动"] { background: rgba(107,158,78,0.14); color: #6b9e4e; }
-    .tag[data-cat="休息"] { background: rgba(232,168,56,0.14); color: #c99524; }
-    .tag[data-cat="生活"] { background: rgba(217,102,90,0.14); color: #d9665a; }
-    .tag[data-cat="其他"] { background: rgba(168,152,136,0.14); color: #a89888; }
+    .tag.tag-primary { box-shadow: 0 0 0 1.5px currentColor; }
+    .tag[data-cat="工作"] { background: rgba(232,137,91,0.28); color: #c96a3a; }
+    .tag[data-cat="学习"] { background: rgba(127,176,105,0.28); color: #4a7a3a; }
+    .tag[data-cat="运动"] { background: rgba(107,158,78,0.28); color: #4a7a35; }
+    .tag[data-cat="休息"] { background: rgba(232,168,56,0.28); color: #a87818; }
+    .tag[data-cat="生活"] { background: rgba(217,102,90,0.28); color: #b04a3f; }
+    .tag[data-cat="其他"] { background: rgba(168,152,136,0.28); color: #7a6d5e; }
 
     .timeline-duration { font-size: 13px; color: var(--muted); }
-    .timeline-note { font-size: 14px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+    .timeline-note { font-size: 14px; color: var(--muted); margin-top: 4px; line-height: 1.4; cursor: pointer; }
+    .timeline-note-edit {
+      font-size: 14px;
+      color: var(--ink);
+      margin-top: 4px;
+      line-height: 1.4;
+      width: calc(100% - 36px);
+      min-height: 60px;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 6px 10px;
+      background: var(--bg);
+      outline: none;
+      font-family: inherit;
+      resize: vertical;
+      box-sizing: border-box;
+    }
 
     .timeline-item .del-btn {
       position: absolute; right: 0; top: 4px; width: 28px; height: 28px;
@@ -456,9 +512,12 @@
       position: relative; border: 1.5px solid var(--rule); border-radius: var(--radius-sm);
       padding: 10px; background: var(--bg); font-size: 13px; font-weight: 600;
       cursor: pointer; transition: all 0.12s; text-align: center;
+      user-select: none;
     }
+    .cat-btn:active { cursor: grabbing; }
+    .cat-btn.dragging { opacity: 0.4; transform: scale(0.95); }
     .cat-btn.selected { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
-    .cat-add-btn { border-style: dashed !important; color: var(--muted); }
+    .cat-btn.cat-add-btn { border-style: dashed !important; color: var(--muted); }
     .cat-del {
       position: absolute; top: -6px; right: -6px; width: 18px; height: 18px;
       border: none; border-radius: 50%; background: rgba(239,68,68,0.85); color: #fff;
@@ -466,6 +525,59 @@
       opacity: 0; transition: opacity 0.15s; z-index: 2; padding: 0; font-weight: 700;
     }
     .cat-btn:hover .cat-del { opacity: 1; }
+
+    /* 已选标签条 */
+    .form-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .form-label-row .form-label { margin-bottom: 0; }
+    .selected-cats-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      max-width: 70%;
+      min-height: 24px;
+    }
+    .selected-cat-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: grab;
+      user-select: none;
+      transition: transform 0.15s;
+    }
+    .selected-cat-chip:active { cursor: grabbing; }
+    .selected-cat-chip.dragging { opacity: 0.4; }
+    .selected-cat-chip.is-primary {
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .selected-cat-chip .chip-remove {
+      width: 16px; height: 16px;
+      border: none;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 11px;
+      line-height: 1;
+      display: grid; place-items: center;
+      color: inherit;
+    }
+    .selected-cat-chip .chip-remove:hover { background: rgba(255,255,255,0.7); }
+    .cat-hint {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
 
     .btn-primary {
       width: 100%; border: none; border-radius: var(--radius-sm);
@@ -504,6 +616,7 @@
     }
     .event-pill .ep-time { font-size: 12px; opacity: 0.7; font-weight: 500; }
     .event-pill .ep-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .event-pill .ep-tags { display: flex; gap: 3px; flex-wrap: wrap; justify-content: flex-end; max-width: 40%; }
 
     .week-detail { margin-top: 4px; }
 
@@ -615,11 +728,8 @@
     }
     .review-textarea:focus { border-color: var(--accent); }
 
-    .rating-row { display: flex; gap: 6px; align-items: center; }
     .review-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
     .review-title-row .card-title { margin: 0; }
-    .rating-star { font-size: 22px; cursor: pointer; color: #fff; transition: color 0.1s; user-select: none; }
-    .rating-star.active { color: var(--warn); }
     .review-pin-btn {
       margin-left: auto; width: 18px; height: 18px; border-radius: 5px; border: none;
       background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.1));
@@ -668,12 +778,12 @@
     #pageMonth .review-textarea:focus { border-color: #d9a03c; }
     #pageMonth .review-section .card-title { color: #b07d20; }
     #pageMonth .card-title { color: #b07d20; }
-    #pageMonth .card { background: radial-gradient(ellipse at center, rgba(255,255,255,0.52) 55%, rgba(255,255,255,0.76) 100%); border: 1.5px solid rgba(255,255,255,0.76); }
-    #pageStats .btn-primary { background: rgba(201,120,144,0.55); }
+    #pageMonth .card { background: rgba(255,255,255,0.14); border: 1.5px solid rgba(255,255,255,0.28); }
+    #pageStats .btn-primary { background: rgba(201,120,144,0.75); }
     #pageStats .stats-total-num { color: #c97890; }
-    #pageStats .card-title { color: #c97890; }
-    #pageStats .card { background: radial-gradient(ellipse at center, rgba(255,255,255,0.35) 55%, rgba(255,255,255,0.58) 100%); border: 1.5px solid rgba(255,255,255,0.58); }
-    #pageSettings .card { background: radial-gradient(ellipse at center, rgba(255,255,255,0.26) 55%, rgba(255,255,255,0.50) 100%); border: 1.5px solid rgba(255,255,255,0.50); }
+    #pageStats .card-title { color: #a85a72; }
+    #pageStats .card { background: rgba(255,255,255,0.14); border: 1.5px solid rgba(255,255,255,0.28); }
+    #pageSettings .card { background: rgba(255,255,255,0.14); border: 1.5px solid rgba(255,255,255,0.28); }
 
     /* ---- Stats ---- */
     .stats-card { margin-bottom: 12px; }
@@ -781,12 +891,17 @@
 
     /* ---- Timer running indicator ---- */
     .timer-badge {
+      display: none !important;
+    }
+    /* 已废弃：右上角计时中徽章
+    .timer-badge {
       position: fixed; top: 8px; right: 20px; background: var(--danger);
       color: #fff; font-size: 11px; font-weight: 700; padding: 3px 8px;
       border-radius: 999px; z-index: 60; display: none; animation: pulse 2s infinite;
     }
     .timer-badge.show { display: block; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+    */
 
     /* ---- Pomodoro Timer ---- */
     .pomo-icon {
@@ -833,6 +948,733 @@
       .page { padding: 10px 12px; }
       .header { padding: 10px 12px 6px; }
     }
+
+    /* ===== Warehouse / Drawer ===== */
+    /* ===== Warehouse Side Panel ===== */
+    .warehouse-panel {
+      position: fixed; top: 0; left: 0; bottom: 0;
+      width: var(--warehouse-width, 340px);
+      background: linear-gradient(180deg, rgba(247,245,240,0.92) 0%, rgba(247,245,240,0.88) 100%);
+      z-index: 150;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
+      border-right: 1px solid var(--rule);
+      box-shadow: 2px 0 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .warehouse-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('bg-sidebar.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.32;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .warehouse-panel > * {
+      position: relative;
+      z-index: 1;
+    }
+    .warehouse-panel.open { transform: translateX(0); }
+
+    /* 侧边栏拖拽调整手柄 */
+    .panel-resizer {
+      position: absolute; top: 0; right: -3px; bottom: 0;
+      width: 6px;
+      cursor: col-resize;
+      z-index: 200;
+      transition: background 0.2s;
+    }
+    .panel-resizer:hover,
+    .panel-resizer.dragging {
+      background: rgba(232, 137, 91, 0.3);
+    }
+    .panel-resizer::before {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 2px; height: 40px;
+      border-radius: 2px;
+      background: rgba(0,0,0,0.15);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .panel-resizer:hover::before,
+    .panel-resizer.dragging::before {
+      opacity: 1;
+    }
+    body.resizing { cursor: col-resize !important; user-select: none; }
+    body.resizing * { cursor: col-resize !important; }
+
+    /* 主内容区域右移，在右侧空间内保持居中 */
+    .app {
+      transition: padding 0.3s cubic-bezier(.4,0,.2,1), max-width 0.3s cubic-bezier(.4,0,.2,1), margin 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    .tabbar {
+      transition: left 0.3s cubic-bezier(.4,0,.2,1), width 0.3s cubic-bezier(.4,0,.2,1), max-width 0.3s cubic-bezier(.4,0,.2,1), transform 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    body.warehouse-open .app {
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: calc(var(--warehouse-width, 340px) + max(0px, (100% - var(--warehouse-width, 340px) - 500px) / 2));
+      padding-right: max(0px, (100% - var(--warehouse-width, 340px) - 500px) / 2);
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    body.warehouse-open .tabbar {
+      left: calc(var(--warehouse-width, 340px) + (100% - var(--warehouse-width, 340px)) / 2);
+      transform: translateX(-50%);
+      width: calc(100% - var(--warehouse-width, 340px));
+      max-width: 500px;
+    }
+
+    .warehouse-panel-header {
+      padding: 21px 18px 14px;
+      border-bottom: 1px solid var(--rule);
+      display: flex; align-items: flex-start; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .warehouse-panel-title {
+      font-size: 17px; font-weight: 700; color: var(--ink);
+      display: none;
+    }
+    .warehouse-back-btn {
+      width: 28px; height: 28px;
+      border: none; background: none;
+      display: none; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--muted);
+      border-radius: 6px; font-size: 22px;
+      font-weight: 300; line-height: 1;
+    }
+    .warehouse-back-btn:hover { background: var(--accent-light); color: var(--accent); }
+    .warehouse-toggle-right {
+      width: 36px; height: 36px;
+      border: none; background: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--ink);
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+      margin-left: auto;
+    }
+    .warehouse-toggle-right svg { width: 22px; height: 22px; }
+    .warehouse-toggle-right:hover { background: rgba(0,0,0,0.05); color: var(--accent); }
+    .warehouse-toggle-right:active { background: rgba(0,0,0,0.08); }
+
+    /* 右侧内容收起状态 */
+    body.right-collapsed .app {
+      transform: translateX(100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    body.right-collapsed .tabbar {
+      transform: translateX(200%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    /* 右侧收起、侧边栏全屏时的背景图：contain 完整显示 */
+    body.right-collapsed::before {
+      background-size: contain;
+      background-position: center;
+      opacity: 0.32;
+    }
+
+    body.right-collapsed .warehouse-panel {
+      width: 100% !important;
+    }
+    .app, .tabbar {
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.3s ease;
+    }
+    .warehouse-panel {
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1), width 0.3s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* 面板主体（可滚动） */
+    .panel-body {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 12px 14px 16px;
+      gap: 16px;
+    }
+    .panel-section {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .panel-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2px;
+    }
+    .panel-section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .panel-section-title-icon {
+      font-size: 26px;
+      display: inline-block;
+      width: 30px;
+      text-align: center;
+    }
+    .panel-section-title-icon.warehouse-icon {
+      /* 静态钥匙，无动效 */
+    }
+    .panel-collapse-btn {
+      width: 24px; height: 24px;
+      border: none; background: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      display: grid; place-items: center;
+      border-radius: 4px;
+      transition: all 0.2s;
+      line-height: 1;
+    }
+    .panel-collapse-btn:hover { background: var(--accent-light); color: var(--accent); }
+    .panel-section.collapsed .panel-collapse-btn { transform: rotate(-90deg); }
+    .panel-section.collapsed .panel-section-content {
+      display: none;
+    }
+    .panel-section-content {
+      animation: slideDown 0.25s ease;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 视图切换 */
+    .warehouse-view {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .warehouse-view.active { display: flex; }
+
+    /* 三个分类编辑区 — 竖向排列 */
+    .warehouse-edit-block {
+      background: rgba(255,255,255,0.32);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.45);
+      backdrop-filter: blur(2px);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .warehouse-edit-title {
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+      background: rgba(232, 137, 91, 0.18);
+      border-radius: var(--radius) var(--radius) 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .warehouse-edit-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .warehouse-copy-btn {
+      width: 22px; height: 22px;
+      border: none; background: rgba(255,255,255,0.6);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      display: grid; place-items: center;
+      transition: all 0.15s;
+    }
+    .warehouse-copy-btn:hover { background: #fff; transform: scale(1.1); }
+    .warehouse-copy-btn.copied { background: #4CAF50; color: #fff; }
+    .warehouse-edit-textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      background: transparent;
+      color: var(--ink);
+      resize: vertical;
+      font-family: inherit;
+      min-height: 80px;
+      max-height: 200px;
+      border-radius: 0 0 var(--radius) var(--radius);
+      box-sizing: border-box;
+    }
+
+    /* 查看全部按钮 */
+    .warehouse-view-all-btn {
+      flex-shrink: 0;
+      padding: 12px 8px;
+      border: 1px dashed var(--rule);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      width: fit-content;
+      min-width: 80px;
+      align-self: center;
+    }
+    .warehouse-view-all-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+    .view-all-icon {
+      display: inline-block;
+      font-size: 28px;
+      animation: bounce 2s ease-in-out infinite;
+      line-height: 1;
+    }
+    .view-all-text {
+      font-size: 12px;
+      font-weight: 500;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* 全部视图 */
+    .warehouse-all-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+      flex-shrink: 0;
+    }
+    .warehouse-all-back-btn {
+      width: 28px; height: 28px;
+      border: none; background: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--muted);
+      border-radius: 6px; font-size: 22px;
+      font-weight: 300; line-height: 1;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .warehouse-all-back-btn:hover { background: var(--accent-light); color: var(--accent); }
+    .warehouse-all-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .warehouse-all-title-icon {
+      font-size: 17px;
+      display: inline-block;
+    }
+    .warehouse-all-content { display: flex; flex-direction: column; gap: 12px; }
+    /* 全部记录 — 按类型分区 */
+    .warehouse-all-type-section {
+      background: rgba(255,255,255,0.32);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.45);
+      backdrop-filter: blur(2px);
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-bottom: 12px;
+    }
+    .warehouse-all-type-section:last-child { margin-bottom: 0; }
+    .warehouse-all-type-header {
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+      background: rgba(232, 137, 91, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .warehouse-all-type-title { display: flex; align-items: center; gap: 6px; }
+    .warehouse-all-type-count {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .warehouse-all-type-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .warehouse-all-item {
+      padding: 12px 16px;
+      border-top: 1px solid var(--rule);
+      position: relative;
+    }
+    .warehouse-all-item-actions {
+      display: flex; gap: 6px;
+      justify-content: flex-end;
+      margin-bottom: 6px;
+    }
+    .warehouse-all-edit-btn,
+    .warehouse-all-save-btn {
+      width: 24px; height: 24px;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: var(--bg2);
+      color: var(--muted);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      display: grid; place-items: center;
+      transition: all 0.15s;
+      padding: 0;
+    }
+    .warehouse-all-edit-btn:hover,
+    .warehouse-all-save-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .warehouse-all-copy-btn {
+      width: 24px; height: 24px;
+      border: 1px solid var(--rule);
+      background: var(--bg2);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      display: grid; place-items: center;
+      transition: all 0.15s;
+      padding: 0;
+    }
+    .warehouse-all-copy-btn:hover { background: var(--accent-light); }
+    .warehouse-all-copy-btn.copied { background: #4CAF50; color: #fff; border-color: #4CAF50; }
+    .warehouse-all-copy-all-btn {
+      border: 1px solid var(--rule);
+      background: var(--bg2);
+      color: var(--muted);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .warehouse-all-copy-all-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+    .warehouse-all-copy-all-btn.copied {
+      background: #4CAF50;
+      color: #fff;
+      border-color: #4CAF50;
+    }
+    .warehouse-all-item-content {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      padding-right: 8px;
+    }
+    .warehouse-all-item-textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.5);
+      outline: none;
+      padding: 8px 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      background: rgba(255,255,255,0.4);
+      color: var(--ink);
+      resize: vertical;
+      font-family: inherit;
+      min-height: 60px;
+      border-radius: 6px;
+      box-sizing: border-box;
+      backdrop-filter: blur(2px);
+    }
+    .warehouse-all-item-time {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
+      margin-top: 6px;
+      opacity: 0.7;
+    }
+    .warehouse-all-item-empty {
+      padding: 16px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .warehouse-all-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+    .warehouse-all-empty-icon { font-size: 36px; margin-bottom: 8px; opacity: 0.5; }
+    .warehouse-all-empty-text { font-size: 13px; }
+
+    /* 我的锚点 */
+    .anchor-block {
+      background: rgba(255,255,255,0.32);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.45);
+      backdrop-filter: blur(2px);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .anchor-header {
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      border-radius: 8px;
+      background: rgba(205, 150, 70, 0.15);
+    }
+    .anchor-date-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .anchor-date-btn {
+      width: 22px; height: 22px;
+      border: none; background: rgba(255,255,255,0.6);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      display: grid; place-items: center;
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+    .anchor-date-btn:hover { background: #fff; color: var(--accent); }
+    .anchor-date-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .anchor-date-label {
+      font-size: 11px;
+      color: var(--muted);
+      min-width: 40px;
+      text-align: center;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: all 0.15s;
+    }
+    .anchor-date-label:hover { background: rgba(255,255,255,0.7); color: var(--accent); }
+    .anchor-list {
+      padding: 4px 12px;
+      max-height: 140px;
+      overflow-y: auto;
+      min-height: 0;
+    }
+    .anchor-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: grab;
+    }
+    .anchor-item:hover { background: rgba(255,255,255,0.35); }
+    .anchor-item.dragging { opacity: 0.4; }
+    .anchor-item.drag-over { border-top: 2px solid var(--accent); }
+    .anchor-check {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(232, 137, 91, 0.5);
+      border-radius: 50%;
+      flex-shrink: 0;
+      cursor: pointer;
+      display: grid; place-items: center;
+      font-size: 11px;
+      color: transparent;
+      margin-top: 1px;
+      transition: all 0.15s;
+      background: rgba(255,255,255,0.3);
+    }
+    .anchor-check.done {
+      background: #e8895b;
+      border-color: #e8895b;
+      color: #fff;
+    }
+    .anchor-text {
+      flex: 1;
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+      word-break: break-word;
+      font-weight: 600;
+      cursor: text;
+    }
+    .anchor-item.done .anchor-text {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+    .anchor-del {
+      width: 20px; height: 20px;
+      border: none; background: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 16px;
+      opacity: 0;
+      transition: opacity 0.15s;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .anchor-item:hover .anchor-del { opacity: 1; }
+    .anchor-del:hover { color: var(--danger); }
+    .anchor-empty {
+      text-align: center;
+      padding: 8px 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .anchor-add-row {
+      padding: 10px 14px 14px;
+      border-top: 1px solid var(--rule);
+    }
+    .anchor-add-input {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 13px;
+      background: rgba(255,255,255,0.4);
+      color: var(--ink);
+      outline: none;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition: border-color 0.15s;
+      backdrop-filter: blur(2px);
+    }
+    .anchor-add-input:focus { border-color: var(--accent); }
+    .anchor-add-input::placeholder { color: var(--muted); }
+
+    /* 锚点日历选择器 */
+    .anchor-calendar-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .anchor-calendar-overlay.show { display: flex; }
+    .anchor-calendar-popup {
+      background: var(--bg2);
+      border-radius: 12px;
+      padding: 14px;
+      width: 280px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      border: 1px solid var(--rule);
+    }
+    .anchor-cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .anchor-cal-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .anchor-cal-nav {
+      width: 28px; height: 28px;
+      border: none; background: var(--bg);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      display: grid; place-items: center;
+      transition: all 0.15s;
+    }
+    .anchor-cal-nav:hover { background: var(--accent-light); color: var(--accent); }
+    .anchor-cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      margin-bottom: 4px;
+    }
+    .anchor-cal-weekdays span {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      padding: 4px 0;
+      font-weight: 500;
+    }
+    .anchor-cal-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+    .anchor-cal-day {
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      color: var(--ink);
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.12s;
+      background: var(--bg);
+    }
+    .anchor-cal-day:hover { background: var(--accent-light); color: var(--accent); }
+    .anchor-cal-day.other-month { color: var(--muted); opacity: 0.4; }
+    .anchor-cal-day.today { font-weight: 700; color: var(--accent); }
+    .anchor-cal-day.selected {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+    }
+    .anchor-cal-day.selected:hover { background: var(--accent); color: #fff; }
+    .anchor-cal-footer {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: center;
+    }
+    .anchor-cal-today {
+      border: none;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .anchor-cal-today:hover { background: var(--accent); color: #fff; }
+
+    .drawer-menu-btn {
+      width: 36px; height: 36px;
+      border: none; background: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--ink);
+      border-radius: 8px;
+    }
+    .drawer-menu-btn:active { background: rgba(0,0,0,0.05); }
+    .drawer-menu-btn svg { width: 22px; height: 22px; }
   </style>
   <style id="customCatStyles"></style>
 </head>
@@ -857,46 +1699,32 @@
     </div>
   </div>
   <div class="overlay" id="pomoOverlay" style="z-index:240"></div>
-  <div class="review-pin-overlay" id="reviewPinOverlay">
-    <div class="overlay-side" id="overlayLeft"></div>
-    <div class="overlay-center"></div>
-    <div class="overlay-side" id="overlayRight"></div>
-  </div>
 
   <div class="app">
     <!-- Header -->
     <div class="header">
       <div class="header-row">
         <div style="display:flex;align-items:center;gap:6px;">
+          <button class="drawer-menu-btn" id="drawerMenuBtn" title="解锁领域">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
           <button class="nav-btn" id="prevBtn">‹</button>
           <div class="pomo-icon" id="pomoIcon" title="双击归零复位">
-            <svg viewBox="0 0 60 54" xmlns="http://www.w3.org/2000/svg">
-              <!-- 几何番茄主体 -->
-              <polygon points="30,7 42,10 48,13 54,18 56,26 55,34 54,42 48,47 42,50 36,51 30,52 24,51 18,50 12,47 6,42 5,34 4,26 6,18 12,13 18,10 24,8" fill="#e8533f"/>
-              <!-- 高光切面 -->
-              <polygon points="30,7 42,10 38,16 33,14" fill="#f27059"/>
-              <polygon points="42,10 48,13 44,20 38,16" fill="#f58068"/>
-              <polygon points="48,13 54,18 50,24 44,20" fill="#f27059"/>
-              <!-- 右侧暗面 -->
-              <polygon points="54,18 56,26 55,34 50,28" fill="#d14936"/>
-              <polygon points="55,34 54,42 50,38 50,28" fill="#c44029"/>
-              <polygon points="54,42 48,47 44,42 50,38" fill="#b83a25"/>
-              <!-- 左侧阴影面 -->
-              <polygon points="4,26 6,18 12,13 10,20" fill="#d14936"/>
-              <polygon points="4,26 5,34 6,42 10,36" fill="#c44029"/>
-              <polygon points="6,42 12,47 18,50 14,43" fill="#b83a25"/>
-              <polygon points="6,18 12,13 18,10 14,16" fill="#e0584a"/>
-              <!-- 底部切面 -->
-              <polygon points="18,50 24,51 22,46 14,43" fill="#d14936"/>
-              <polygon points="24,51 30,52 30,47 22,46" fill="#c44029"/>
-              <polygon points="30,52 36,51 38,46 30,47" fill="#d14936"/>
-              <polygon points="36,51 42,50 44,42 38,46" fill="#b83a25"/>
-              <!-- 几何叶子 -->
-              <polygon points="30,7 20,12 14,7 23,1" fill="#6aab3e"/>
-              <polygon points="30,7 37,1 46,7 37,12" fill="#7bc04e"/>
-              <polygon points="30,7 27,1 33,1" fill="#5a9a30" opacity="0.8"/>
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+              <!-- 外层火焰 - 橙红 -->
+              <path d="M30 4 C30 4 48 20 48 36 C48 46 40 54 30 54 C20 54 12 46 12 36 C12 28 16 22 18 18 C18 26 22 30 26 28 C26 20 30 12 30 4Z" fill="#ff6b35"/>
+              <!-- 中层火焰 - 橙黄 -->
+              <path d="M30 16 C30 16 40 26 40 36 C40 43 35 48 30 48 C25 48 20 43 20 36 C20 31 22 27 24 24 C24 29 27 32 30 30 C30 24 30 20 30 16Z" fill="#ffaa33"/>
+              <!-- 内层火焰 - 亮黄 -->
+              <path d="M30 26 C30 26 35 32 35 38 C35 42 32 44 30 44 C28 44 25 42 25 38 C25 35 27 33 28 32 C28 34 29 35 30 34 C30 31 30 28 30 26Z" fill="#ffe066"/>
+              <!-- 时钟表盘 -->
+              <circle cx="30" cy="38" r="9" fill="#fff" opacity="0.95"/>
+              <circle cx="30" cy="38" r="7" fill="none" stroke="#ff6b35" stroke-width="1"/>
+              <line x1="30" y1="38" x2="30" y2="31" stroke="#ff6b35" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="30" y1="38" x2="36.5" y2="41" stroke="#ff6b35" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="30" cy="38" r="1.5" fill="#ff6b35"/>
               <!-- 时间文本 -->
-              <text x="30" y="34" class="pomo-time-text" id="pomoTimeText" style="display:none">25:00</text>
+              <text x="30" y="37" class="pomo-time-text" id="pomoTimeText" style="display:none">25:00</text>
             </svg>
           </div>
         </div>
@@ -913,22 +1741,12 @@
       <div id="timerWidget"></div>
       <div id="dayPlan"></div>
       <div id="dayTimeline"></div>
-      <div id="dayReview"></div>
     </div>
 
     <!-- Page: Weekly -->
     <div class="page" id="pageWeek">
       <div class="page-deco" id="weekDeco"></div>
       <div class="week-list" id="weekList"></div>
-      <div class="card review-section" id="weekReviewCard">
-        <div class="review-title-row">
-          <div class="card-title">本周复盘</div>
-          <div class="rating-row" id="weekRating"></div>
-          <button class="review-pin-btn theme-week" id="weekPinBtn"></button>
-        </div>
-        <textarea class="review-textarea" id="weekReviewText" placeholder="这周完成了什么？哪里做得好？下周要改进什么？"></textarea>
-        <div style="margin-top:6px"><button class="btn-primary" id="saveWeekReview">保存复盘</button></div>
-      </div>
     </div>
 
     <!-- Page: Monthly -->
@@ -937,18 +1755,8 @@
       <div class="card">
         <div class="card-title" id="monthTitle">月历</div>
         <div class="month-grid" id="monthGrid"></div>
-        <div class="month-week-reviews" id="monthWeekReviews" style="display:none"></div>
       </div>
       <div id="monthStats"></div>
-      <div class="card review-section" id="monthReviewCard">
-        <div class="review-title-row">
-          <div class="card-title">本月复盘</div>
-          <div class="rating-row" id="monthRating"></div>
-          <button class="review-pin-btn theme-month" id="monthPinBtn"></button>
-        </div>
-        <textarea class="review-textarea" id="monthReviewText" placeholder="这个月最大的收获是什么？哪些习惯值得保持？下个月的目标是什么？"></textarea>
-        <div style="margin-top:6px"><button class="btn-primary" id="saveMonthReview">保存复盘</button></div>
-      </div>
     </div>
 
     <!-- Page: Stats -->
@@ -1040,13 +1848,119 @@
       <div class="card">
         <div class="card-title">关于</div>
         <div class="settings-item">
-          <div class="settings-label">时间都去哪儿啦</div>
+          <div class="settings-label">玲珑万物生</div>
           <div class="settings-desc">记录每一段时光，复盘每一次成长</div>
         </div>
         <div class="settings-item">
           <div class="settings-label">版本</div>
           <div style="font-size:13px;color:var(--muted)">2.5.0</div>
         </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Warehouse Side Panel -->
+  <div class="warehouse-panel" id="warehousePanel">
+    <div class="panel-resizer" id="panelResizer"></div>
+    <div class="warehouse-panel-header">
+      <button class="warehouse-back-btn" id="warehouseBackBtn" title="返回">‹</button>
+      <div class="warehouse-panel-title" id="warehousePanelTitle">侧边栏</div>
+      <button class="warehouse-toggle-right" id="warehouseToggleRight" title="收起/展开右侧">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="panel-body">
+      <!-- 我的锚点 -->
+      <div class="panel-section">
+        <div class="panel-section-header">
+          <div class="panel-section-title"><span class="panel-section-title-icon">⚓</span>我的锚点</div>
+          <button class="panel-collapse-btn" data-collapse="anchor" title="折叠">▾</button>
+        </div>
+        <div class="anchor-block panel-section-content" id="anchorSectionContent">
+          <div class="anchor-header">
+            <div class="anchor-date-nav">
+              <button class="anchor-date-btn" id="anchorPrevDay" title="前一天">‹</button>
+              <span class="anchor-date-label" id="anchorDateLabel" title="点击选择日期">今天</span>
+              <button class="anchor-date-btn" id="anchorNextDay" title="后一天">›</button>
+            </div>
+          </div>
+          <div class="anchor-list" id="anchorList"></div>
+          <div class="anchor-add-row">
+            <input type="text" class="anchor-add-input" id="anchorAddInput" placeholder="添加一个锚点...">
+          </div>
+        </div>
+      </div>
+
+      <!-- 编辑视图：三个分类直接编辑 -->
+      <div class="panel-section">
+        <div class="panel-section-header">
+          <div class="panel-section-title"><span class="panel-section-title-icon warehouse-icon">🗝️</span>我的仓库</div>
+          <button class="panel-collapse-btn" data-collapse="warehouse" title="折叠">▾</button>
+        </div>
+        <div class="panel-section-content warehouse-content-wrap">
+          <div class="warehouse-view warehouse-edit-view active" id="warehouseEditView">
+          <div class="warehouse-edit-block" data-type="reflection">
+          <div class="warehouse-edit-title">
+            <span>📝 吾日三省吾身</span>
+            <div class="warehouse-edit-actions">
+              <button class="warehouse-copy-btn" data-copy-type="edit" data-type="reflection" title="复制">📋</button>
+            </div>
+          </div>
+          <textarea class="warehouse-edit-textarea" data-type="reflection" placeholder="今天有什么感悟？反思一下自己..."></textarea>
+        </div>
+        <div class="warehouse-edit-block" data-type="miao">
+          <div class="warehouse-edit-title">
+            <span>✨ 妙妙屋</span>
+            <div class="warehouse-edit-actions">
+              <button class="warehouse-copy-btn" data-copy-type="edit" data-type="miao" title="复制">📋</button>
+            </div>
+          </div>
+          <textarea class="warehouse-edit-textarea" data-type="miao" placeholder="记录那些让你眼前一亮的好点子..."></textarea>
+        </div>
+        <div class="warehouse-edit-block" data-type="thought">
+          <div class="warehouse-edit-title">
+            <span>💡 小念头</span>
+            <div class="warehouse-edit-actions">
+              <button class="warehouse-copy-btn" data-copy-type="edit" data-type="thought" title="复制">📋</button>
+            </div>
+          </div>
+          <textarea class="warehouse-edit-textarea" data-type="thought" placeholder="突然冒出来的想法，记下来吧..."></textarea>
+        </div>
+        <button class="warehouse-view-all-btn" id="warehouseViewAllBtn">
+          <span class="view-all-icon">📦</span>
+          <span class="view-all-text">查看所有宝贝</span>
+        </button>
+      </div>
+
+      <!-- 全部视图：按类型汇总展示 -->
+        <div class="warehouse-view warehouse-all-view" id="warehouseAllView">
+          <div class="warehouse-all-header">
+            <button class="warehouse-all-back-btn" id="warehouseAllBackBtn" title="返回">‹</button>
+            <div class="warehouse-all-title"><span class="warehouse-all-title-icon">📦</span> 所有宝贝</div>
+          </div>
+          <div class="warehouse-all-content" id="warehouseAllContent"></div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Anchor Date Picker Calendar -->
+  <div class="anchor-calendar-overlay" id="anchorCalendarOverlay">
+    <div class="anchor-calendar-popup" id="anchorCalendarPopup">
+      <div class="anchor-cal-header">
+        <button class="anchor-cal-nav" id="anchorCalPrevMonth">‹</button>
+        <div class="anchor-cal-title" id="anchorCalTitle">2026年10月</div>
+        <button class="anchor-cal-nav" id="anchorCalNextMonth">›</button>
+      </div>
+      <div class="anchor-cal-weekdays">
+        <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+      </div>
+      <div class="anchor-cal-days" id="anchorCalDays"></div>
+      <div class="anchor-cal-footer">
+        <button class="anchor-cal-today" id="anchorCalTodayBtn">回到今天</button>
       </div>
     </div>
   </div>
@@ -1085,17 +1999,12 @@
       <div id="sheetDurationBanner"></div>
 
       <div class="form-group">
-        <label class="form-label">做了什么</label>
-        <input type="text" class="form-input" id="actTitle" placeholder="如：写周报、跑步3公里、读《认知觉醒》">
-        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
-          <button type="button" id="quickFillBtn" style="border:1px solid rgba(228,135,74,0.4); background:rgba(228,135,74,0.12); color:#c9744a; border-radius:999px; padding:5px 14px; font-size:13px; cursor:pointer; transition:all 0.15s;">⚡ 稍后填写</button>
-          <button type="button" id="quickFillBtn2" style="border:1px solid rgba(228,135,74,0.4); background:rgba(228,135,74,0.12); color:#c9744a; border-radius:999px; padding:5px 14px; font-size:13px; cursor:pointer; transition:all 0.15s;">💤 虚度光阴，该当何罪</button>
+        <div class="form-label-row">
+          <label class="form-label">分类</label>
+          <div class="selected-cats-bar" id="selectedCatsBar"></div>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">分类</label>
         <div class="cat-grid" id="catGrid"></div>
+        <div class="cat-hint">💡 可多选，第一个为主标签（参与统计），其他为辅标签</div>
       </div>
 
       <div class="form-group">
@@ -1127,27 +2036,125 @@
       activities: [],
       reviews: [],
       plans: [],
+      warehouse: {}, // key: "date|type", value: { content, updatedAt }
       timer: null, // { startTime: timestamp }
       customCats: [],
       deletedDefaultCats: [],
       customCatColorMap: {},
       defaultCats: ['工作','学习','运动','休息','生活','其他'],
+      warehouseTypes: {
+        reflection: { name: '吾日三省吾身', icon: '📝', placeholder: '今天有什么感悟？反思一下自己...' },
+        miao: { name: '妙妙屋', icon: '✨', placeholder: '记录那些让你眼前一亮的好点子...' },
+        thought: { name: '小念头', icon: '💡', placeholder: '突然冒出来的想法，记下来吧...' }
+      },
       load() {
         try {
           this.activities = JSON.parse(localStorage.getItem('tt_activities') || '[]');
           this.reviews = JSON.parse(localStorage.getItem('tt_reviews') || '[]');
           this.plans = JSON.parse(localStorage.getItem('tt_plans') || '[]');
+          this.warehouse = JSON.parse(localStorage.getItem('tt_warehouse') || '{}');
+          this.anchors = JSON.parse(localStorage.getItem('tt_anchors') || '[]');
           this.timer = JSON.parse(localStorage.getItem('tt_timer') || 'null');
           this.customCats = JSON.parse(localStorage.getItem('tt_customCats') || '[]');
           this.deletedDefaultCats = JSON.parse(localStorage.getItem('tt_deletedDefaultCats') || '[]');
           this.customCatColorMap = JSON.parse(localStorage.getItem('tt_customCatColorMap') || '{}');
-        } catch(e) { this.activities = []; this.reviews = []; this.plans = []; this.timer = null; this.customCats = []; this.deletedDefaultCats = []; this.customCatColorMap = {}; }
+          this.catOrder = JSON.parse(localStorage.getItem('tt_catOrder') || '[]');
+        } catch(e) { this.activities = []; this.reviews = []; this.plans = []; this.warehouse = {}; this.anchors = []; this.timer = null; this.customCats = []; this.deletedDefaultCats = []; this.customCatColorMap = {}; this.catOrder = []; }
       },
       save() {
         localStorage.setItem('tt_activities', JSON.stringify(this.activities));
         localStorage.setItem('tt_reviews', JSON.stringify(this.reviews));
         localStorage.setItem('tt_plans', JSON.stringify(this.plans));
         Sync.debouncedPush();
+      },
+      saveWarehouse() {
+        localStorage.setItem('tt_warehouse', JSON.stringify(this.warehouse));
+        Sync.debouncedPush();
+      },
+      getWarehouseKey(date, type) { return date + '|' + type; },
+      getWarehouseContent(date, type) {
+        const key = this.getWarehouseKey(date, type);
+        return this.warehouse[key] ? this.warehouse[key].content : '';
+      },
+      setWarehouseContent(date, type, content) {
+        const key = this.getWarehouseKey(date, type);
+        const trimmed = content.trim();
+        if (!trimmed) {
+          delete this.warehouse[key];
+        } else {
+          this.warehouse[key] = { content: trimmed, updatedAt: Date.now() };
+        }
+        this.saveWarehouse();
+      },
+      getWarehouseDates() {
+        const dateSet = new Set();
+        Object.keys(this.warehouse).forEach(k => {
+          const [date] = k.split('|');
+          dateSet.add(date);
+        });
+        return Array.from(dateSet).sort((a, b) => b.localeCompare(a));
+      },
+      getWarehouseByDate(date) {
+        const result = {};
+        ['reflection', 'miao', 'thought'].forEach(type => {
+          const key = this.getWarehouseKey(date, type);
+          result[type] = this.warehouse[key] ? this.warehouse[key].content : '';
+        });
+        return result;
+      },
+      // 按类型获取所有记录，按更新时间倒序
+      getWarehouseByType(type) {
+        const result = [];
+        Object.keys(this.warehouse).forEach(k => {
+          const [date, t] = k.split('|');
+          if (t === type && this.warehouse[k]) {
+            result.push({
+              date,
+              content: this.warehouse[k].content,
+              updatedAt: this.warehouse[k].updatedAt || 0
+            });
+          }
+        });
+        return result.sort((a, b) => b.updatedAt - a.updatedAt);
+      },
+      // Anchors (我的锚点)
+      saveAnchors() {
+        localStorage.setItem('tt_anchors', JSON.stringify(this.anchors));
+        Sync.debouncedPush();
+      },
+      getAnchorsByDate(date) {
+        return this.anchors.filter(a => a.date === date).sort((a,b) => (a.order||0) - (b.order||0));
+      },
+      addAnchor(date, text) {
+        const now = Date.now();
+        const anchor = {
+          id: now.toString(36) + Math.random().toString(36).slice(2,6),
+          date, text, done: false, order: this.anchors.filter(a => a.date === date).length,
+          updatedAt: now
+        };
+        this.anchors.push(anchor);
+        this.saveAnchors();
+        return anchor;
+      },
+      toggleAnchor(id) {
+        const a = this.anchors.find(x => x.id === id);
+        if (a) { a.done = !a.done; a.updatedAt = Date.now(); this.saveAnchors(); }
+      },
+      deleteAnchor(id) {
+        this.anchors = this.anchors.filter(a => a.id !== id);
+        this.saveAnchors();
+      },
+      updateAnchor(id, newText) {
+        const a = this.anchors.find(x => x.id === id);
+        if (a) { a.text = newText; a.updatedAt = Date.now(); this.saveAnchors(); }
+      },
+      reorderAnchors(date, newOrderIds) {
+        const now = Date.now();
+        newOrderIds.forEach((id, i) => {
+          const a = this.anchors.find(x => x.id === id);
+          if (a) { a.order = i; a.updatedAt = now; }
+        });
+        this.saveAnchors();
       },
       saveCustomCats() {
         localStorage.setItem('tt_customCats', JSON.stringify(this.customCats));
@@ -1171,7 +2178,23 @@
         Sync.debouncedPush();
       },
       getAllCats() {
-        return [...this.defaultCats.filter(c => !this.deletedDefaultCats.includes(c)), ...this.customCats];
+        const all = [...this.defaultCats.filter(c => !this.deletedDefaultCats.includes(c)), ...this.customCats];
+        // 按自定义顺序排序
+        if (this.catOrder && this.catOrder.length > 0) {
+          all.sort((a, b) => {
+            const ia = this.catOrder.indexOf(a);
+            const ib = this.catOrder.indexOf(b);
+            if (ia === -1 && ib === -1) return 0;
+            if (ia === -1) return 1;
+            if (ib === -1) return -1;
+            return ia - ib;
+          });
+        }
+        return all;
+      },
+      saveCatOrder() {
+        localStorage.setItem('tt_catOrder', JSON.stringify(this.catOrder));
+        Sync.debouncedPush();
       },
       deleteCat(cat) {
         if (this.defaultCats.includes(cat)) {
@@ -1180,6 +2203,11 @@
         } else if (this.customCats.includes(cat)) {
           this.customCats = this.customCats.filter(c => c !== cat);
           this.saveCustomCats();
+        }
+        // 从排序中移除
+        if (this.catOrder) {
+          this.catOrder = this.catOrder.filter(c => c !== cat);
+          this.saveCatOrder();
         }
       },
       saveTimer() {
@@ -1306,7 +2334,7 @@
         this.syncing = true;
         try {
           const snap = JSON.parse(localStorage.getItem('tt_sync_snap') || '{}');
-          const currentIds = [...DB.activities.map(a => a.id), ...DB.plans.map(p => p.id)];
+          const currentIds = [...DB.activities.map(a => a.id), ...DB.plans.map(p => p.id), ...DB.anchors.map(a => a.id), ...Object.keys(DB.warehouse)];
           const lastIds = snap.ids || [];
           const newlyDeleted = lastIds.filter(id => !currentIds.includes(id));
           const allDeleted = [...new Set([...newlyDeleted, ...(snap.deletedIds || [])])].filter(id => !currentIds.includes(id));
@@ -1315,9 +2343,12 @@
             activities: DB.activities,
             reviews: DB.reviews,
             plans: DB.plans,
+            warehouse: DB.warehouse,
+            anchors: DB.anchors,
             customCats: DB.customCats,
             deletedDefaultCats: DB.deletedDefaultCats,
             customCatColorMap: DB.customCatColorMap,
+            catOrder: DB.catOrder || [],
             deletedIds: allDeleted
           };
 
@@ -1350,9 +2381,12 @@
           const mergedAct = new Map(DB.activities.map(a => [a.id, a]));
           const mergedRev = new Map(DB.reviews.map(r => [r.date + '|' + r.type, r]));
           const mergedPlans = new Map(DB.plans.map(p => [p.id, p]));
+          const mergedAnchors = new Map(DB.anchors.map(a => [a.id, a]));
+          const mergedWarehouse = { ...DB.warehouse };
           const mergedCats = new Set(DB.customCats);
           const mergedDelCats = new Set(DB.deletedDefaultCats);
           const mergedColorMap = { ...DB.customCatColorMap };
+          let mergedCatOrder = DB.catOrder || [];
           const allDeleted = new Set();
 
           for (const row of data) {
@@ -1379,27 +2413,51 @@
                 mergedPlans.set(p.id, p);
               }
             });
+            if (v.anchors) v.anchors.forEach(a => {
+              if (allDeleted.has(a.id)) return;
+              const existing = mergedAnchors.get(a.id);
+              if (!existing || (a.updatedAt || 0) > (existing.updatedAt || 0)) {
+                mergedAnchors.set(a.id, a);
+              }
+            });
+            if (v.warehouse) Object.keys(v.warehouse).forEach(key => {
+              if (allDeleted.has(key)) return;
+              const existing = mergedWarehouse[key];
+              const incoming = v.warehouse[key];
+              if (!existing || (incoming.updatedAt || 0) > (existing.updatedAt || 0)) {
+                mergedWarehouse[key] = incoming;
+              }
+            });
             if (v.customCats) v.customCats.forEach(c => mergedCats.add(c));
             if (v.deletedDefaultCats) v.deletedDefaultCats.forEach(c => mergedDelCats.add(c));
             if (v.customCatColorMap) Object.assign(mergedColorMap, v.customCatColorMap);
+            // catOrder: 使用最新的（长度更长的优先）
+            if (v.catOrder && v.catOrder.length > mergedCatOrder.length) {
+              mergedCatOrder = v.catOrder;
+            }
           }
           // 最后应用删除标记
           allDeleted.forEach(id => {
             mergedAct.delete(id);
             mergedPlans.delete(id);
+            mergedAnchors.delete(id);
+            delete mergedWarehouse[id];
           });
 
           DB.activities = Array.from(mergedAct.values()).sort((a, b) => a.startTime.localeCompare(b.startTime));
           DB.reviews = Array.from(mergedRev.values());
           DB.plans = Array.from(mergedPlans.values());
+          DB.anchors = Array.from(mergedAnchors.values());
+          DB.warehouse = mergedWarehouse;
           DB.customCats = Array.from(mergedCats);
           DB.deletedDefaultCats = Array.from(mergedDelCats);
           DB.customCatColorMap = mergedColorMap;
+          DB.catOrder = mergedCatOrder;
 
-          DB.save(); DB.saveCustomCats(); DB.saveCustomCatColorMap(); DB.saveDeletedDefaultCats();
+          DB.save(); DB.saveWarehouse(); DB.saveAnchors(); DB.saveCustomCats(); DB.saveCustomCatColorMap(); DB.saveDeletedDefaultCats(); DB.saveCatOrder();
           updateCustomCatStyles();
 
-          const currentIds = [...DB.activities.map(a => a.id), ...DB.plans.map(p => p.id)];
+          const currentIds = [...DB.activities.map(a => a.id), ...DB.plans.map(p => p.id), ...DB.anchors.map(a => a.id), ...Object.keys(DB.warehouse)];
           localStorage.setItem('tt_sync_snap', JSON.stringify({
             ids: currentIds,
             deletedIds: Array.from(allDeleted).filter(id => !currentIds.includes(id))
@@ -1433,18 +2491,15 @@
     // ============ State ============
     let currentDate = new Date();
     let currentPage = 'Day';
-    let selectedCategory = '工作';
+    let selectedCategories = ['工作']; // 数组，第一个为主标签
     let planCollapsed = false;
-    let weekReviewOnly = false;
-    let monthReviewOnly = false;
-    const pinnedReviews = { day: false, week: false, month: false };
     let highlightEventId = null;
     let clockInterval = null;
     let timerInterval = null;
 
     const CAT_COLORS = {
-      '工作': '#e8895b', '学习': '#7fb069', '运动': '#6b9e4e',
-      '休息': '#e8a838', '生活': '#d9665a', '其他': '#a89888'
+      '工作': '#c96a3a', '学习': '#4a7a3a', '运动': '#4a7a35',
+      '休息': '#a87818', '生活': '#b04a3f', '其他': '#7a6d5e'
     };
     const CAT_RGB = {
       '工作': '232,137,91', '学习': '127,176,105', '运动': '107,158,78',
@@ -1452,6 +2507,17 @@
     };
     const EXTRA_COLORS = ['#6b8fa3','#9b6bb0','#5e9eab','#c97890','#7a9e5e','#b07d20','#5d7a8c','#a8755e'];
     const EXTRA_RGB = ['107,143,163','155,107,176','94,158,171','201,120,144','122,158,94','176,125,32','93,122,140','168,117,94'];
+    // 获取活动的主标签（第一个标签），兼容旧数据
+    function getPrimaryCat(act) {
+      if (act.categories && act.categories.length > 0) return act.categories[0];
+      return act.category || '其他';
+    }
+    // 获取活动的所有标签
+    function getActCats(act) {
+      if (act.categories && act.categories.length > 0) return act.categories;
+      if (act.category) return [act.category];
+      return ['其他'];
+    }
     function getCatColor(cat) {
       if (CAT_COLORS[cat]) return CAT_COLORS[cat];
       const idx = DB.customCatColorMap[cat];
@@ -1483,7 +2549,7 @@
         const color = getCatColor(cat);
         const rgb = getCatRGB(cat);
         css += `.timeline-item[data-cat="${cat}"]::before { background: ${color}; box-shadow: 0 0 0 1px ${color}; }\n`;
-        css += `.tag[data-cat="${cat}"] { background: rgba(${rgb},0.14); color: ${color}; }\n`;
+        css += `.tag[data-cat="${cat}"] { background: rgba(${rgb},0.28); color: ${color}; }\n`;
       });
       el.textContent = css;
     }
@@ -1570,11 +2636,11 @@
     // ============ Render: Timer Widget (3 states) ============
     function renderTimer() {
       const el = document.getElementById('timerWidget');
-      const badge = document.getElementById('timerBadge');
+      // const badge = document.getElementById('timerBadge');
 
       if (!DB.timer) {
         // State 1: Idle - show clock + start button
-        badge.classList.remove('show');
+        // badge.classList.remove('show');
         el.innerHTML = `
           <div class="timer-widget idle">
             <div class="timer-clock-label">现在时间</div>
@@ -1603,29 +2669,78 @@
         }, 1000);
 
       } else {
-        // State 2: Running - show elapsed timer + stop button
-        badge.classList.add('show');
-        if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
-
-        const start = new Date(DB.timer.startTime);
-        const startStr = DB.formatTime(start);
-        const elapsed = Math.floor((Date.now() - DB.timer.startTime) / 1000);
-        const h = Math.floor(elapsed / 3600);
-        const m = Math.floor((elapsed % 3600) / 60);
-        const s = elapsed % 60;
-        const display = h > 0
-          ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
-          : `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        // State 2: Running - show current time + stop button (no elapsed time to avoid pressure)
+        // badge.classList.add('show');
 
         el.innerHTML = `
           <div class="timer-widget running">
-            <div class="timer-elapsed-label">已计时</div>
-            <div class="timer-elapsed" id="timerElapsed">${display}</div>
-            <div class="timer-start-time">从 ${startStr} 开始</div>
-            <button class="timer-big-btn stop" id="timerStopBtn">结 束 记 录</button>
-            <button class="timer-rst-btn" id="timerRstBtn">RST</button>
+            <div class="timer-clock-label recording">
+              <span>现在时间</span>
+              <span class="wave-bubble" title="记录中">
+                <svg viewBox="0 0 52 22" xmlns="http://www.w3.org/2000/svg">
+                  <!-- 小丑鱼身体（尾巴在左，头在右） -->
+                  <g clip-path="url(#fishClip)">
+                    <!-- 鱼身体底色 -->
+                    <ellipse class="fish-body" cx="24" cy="11" rx="20" ry="8"/>
+                    <!-- 尾鳍 -->
+                    <path class="fish-body" d="M2 11L10 4L10 18Z"/>
+                    <!-- 背鳍 -->
+                    <path class="fish-body" d="M28 3Q32 1 36 3L36 6Q32 5 28 6Z"/>
+                    <!-- 腹鳍 -->
+                    <path class="fish-body" d="M28 19Q32 21 36 19L36 16Q32 17 28 16Z"/>
+                    <!-- 白色条纹 -->
+                    <rect class="fish-stripe" x="14" y="3" width="2.5" height="16" rx="1.25"/>
+                    <rect class="fish-stripe" x="26" y="3" width="2.5" height="16" rx="1.25"/>
+                    <!-- 水波流动 -->
+                    <g class="wave-group" transform="translate(0, 2)">
+                      <path d="M0 18 Q13 12 26 18 T52 18 V22 H0 Z" fill="rgba(255, 180, 120, 0.35)"/>
+                      <path d="M52 18 Q65 12 78 18 T104 18 V22 H52 Z" fill="rgba(255, 180, 120, 0.35)"/>
+                    </g>
+                    <g class="wave-group-2" transform="translate(0, 5)">
+                      <path d="M0 18 Q13 14 26 18 T52 18 V22 H0 Z" fill="rgba(255, 140, 80, 0.3)"/>
+                      <path d="M52 18 Q65 14 78 18 T104 18 V22 H52 Z" fill="rgba(255, 140, 80, 0.3)"/>
+                    </g>
+                    <!-- 气泡 -->
+                    <circle class="bubble-1" cx="18" cy="18" r="1.5" fill="rgba(255, 245, 230, 0.85)"/>
+                    <circle class="bubble-2" cx="26" cy="18" r="1.2" fill="rgba(255, 245, 230, 0.8)"/>
+                    <circle class="bubble-3" cx="34" cy="18" r="2" fill="rgba(255, 245, 230, 0.9)"/>
+                    <!-- 眼睛 -->
+                    <circle cx="40" cy="9" r="1.8" fill="rgba(255,255,255,0.9)"/>
+                    <circle cx="40.5" cy="9" r="1" fill="#333"/>
+                  </g>
+                  <defs>
+                    <clipPath id="fishClip">
+                      <!-- 鱼身轮廓 -->
+                      <ellipse cx="24" cy="11" rx="20" ry="8"/>
+                      <path d="M2 11L10 4L10 18Z"/>
+                      <path d="M28 3Q32 1 36 3L36 6Q32 5 28 6Z"/>
+                      <path d="M28 19Q32 21 36 19L36 16Q32 17 28 16Z"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+            </div>
+            <div class="timer-clock">
+              <span id="clockTime">${getNowTime()}</span><span class="timer-clock-seconds">:${getNowSeconds()}</span>
+            </div>
+            <div class="timer-btn-row">
+              <button class="timer-big-btn stop" id="timerStopBtn" style="margin-top:0">我 完 成 啦</button>
+              <button class="timer-rst-btn" id="timerRstBtn" title="双击复位">RST</button>
+            </div>
           </div>
         `;
+
+        // Start clock ticking for running state too
+        if (clockInterval) clearInterval(clockInterval);
+        clockInterval = setInterval(() => {
+          if (currentPage !== 'Day' || !DB.timer) return;
+          const ct = document.getElementById('clockTime');
+          if (ct) {
+            ct.textContent = getNowTime();
+            const secEl = ct.parentElement.querySelector('.timer-clock-seconds');
+            if (secEl) secEl.textContent = ':' + getNowSeconds();
+          }
+        }, 1000);
 
         document.getElementById('timerStopBtn').addEventListener('click', () => {
           // Stop timer and open sheet to fill in details
@@ -1665,36 +2780,6 @@
       }
     }
 
-    // Overlay side click to close pinned reviews
-    function closePinnedReviews() {
-      ['day','week','month'].forEach(k => {
-        if (pinnedReviews[k]) {
-          pinnedReviews[k] = false;
-          const card = document.getElementById(k + 'ReviewCard');
-          const btn = document.getElementById(k + 'PinBtn');
-          if (card) card.classList.remove('pinned');
-          if (btn) btn.classList.remove('active');
-        }
-      });
-      document.getElementById('reviewPinOverlay').classList.remove('show');
-      document.querySelector('.app').classList.remove('pin-active');
-    }
-    document.getElementById('overlayLeft').addEventListener('click', closePinnedReviews);
-    document.getElementById('overlayRight').addEventListener('click', closePinnedReviews);
-
-    // Ctrl+S to save review
-    document.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        const map = { Day: 'saveDayReview', Week: 'saveWeekReview', Month: 'saveMonthReview' };
-        const btnId = map[currentPage];
-        if (btnId) {
-          const btn = document.getElementById(btnId);
-          if (btn) btn.click();
-        }
-      }
-    });
-
     // ============ Render: Day Page ============
     function renderDay() {
       const dateStr = fmtDate(currentDate);
@@ -1706,15 +2791,17 @@
       if (acts.length === 0) {
         tl.innerHTML = `<div class="card"><div class="card-title-row"><div class="card-title">0条记录</div><button class="tl-add-btn" id="tlAddBtn" title="手动添加">+</button></div><div class="empty"><div class="empty-icon">📝</div><div class="empty-text">还没有记录<br>点击「开始记录」或 + 手动添加</div></div></div>`;
       } else {
-        tl.innerHTML = `<div class="card"><div class="card-title-row"><div class="card-title">${acts.length}条记录 · 共${fmtDuration(acts.reduce((s,a)=>s+a.duration,0))}</div><button class="tl-add-btn" id="tlAddBtn" title="手动添加">+</button></div><div class="timeline">${acts.map(a => `
-          <div class="timeline-item" data-cat="${a.category}" data-id="${a.id}">
+        tl.innerHTML = `<div class="card"><div class="card-title-row"><div class="card-title">${acts.length}条记录 · 共${fmtDuration(acts.reduce((s,a)=>s+a.duration,0))}</div><button class="tl-add-btn" id="tlAddBtn" title="手动添加">+</button></div><div class="timeline">${acts.map(a => {
+          const cats = getActCats(a);
+          const primaryCat = getPrimaryCat(a);
+          return `
+          <div class="timeline-item" data-cat="${primaryCat}" data-id="${a.id}">
             <button class="del-btn" data-id="${a.id}">×</button>
-            <div class="timeline-time">${a.startTime} - ${a.endTime} · ${fmtDuration(a.duration)}</div>
-            <div class="timeline-title" data-id="${a.id}" title="双击编辑">${a.title}</div>
-            <div class="timeline-meta"><span class="tag" data-cat="${a.category}" style="background:${catRgba(a.category,0.14)};color:${getCatColor(a.category)};">${a.category}</span></div>
-            ${a.note ? `<div class="timeline-note">${a.note}</div>` : ''}
+            <div class="timeline-time" data-id="${a.id}" title="双击编辑">${a.startTime} - ${a.endTime} · ${fmtDuration(a.duration)}</div>
+            <div class="timeline-meta" data-id="${a.id}" title="双击编辑">${cats.map((c, i) => `<span class="tag${i === 0 ? ' tag-primary' : ''}" data-cat="${c}" style="background:${catRgba(c,0.28)};color:${getCatColor(c)};">${i === 0 ? '★ ' : ''}${c}</span>`).join('')}</div>
+            ${a.note ? `<div class="timeline-note" data-id="${a.id}" title="双击编辑">${a.note}</div>` : ''}
           </div>
-        `).join('')}</div></div>`;
+        `;}).join('')}</div></div>`;
 
         tl.querySelectorAll('.del-btn').forEach(btn => {
           btn.addEventListener('click', e => {
@@ -1725,31 +2812,38 @@
           });
         });
 
-        tl.querySelectorAll('.timeline-title').forEach(titleEl => {
-          titleEl.addEventListener('dblclick', e => {
+        // 双击时间段或标签区域：弹出编辑界面
+        tl.querySelectorAll('.timeline-time, .timeline-meta').forEach(el => {
+          el.addEventListener('dblclick', e => {
             e.stopPropagation();
-            const id = titleEl.dataset.id;
-            const originalText = titleEl.textContent;
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'timeline-title-edit';
-            input.value = originalText;
-            titleEl.replaceWith(input);
-            input.focus();
-            input.select();
+            const id = el.dataset.id;
+            openSheetForEdit(id);
+          });
+          el.style.cursor = 'pointer';
+        });
+
+        // 双击备注：直接编辑
+        tl.querySelectorAll('.timeline-note').forEach(noteEl => {
+          noteEl.addEventListener('dblclick', e => {
+            e.stopPropagation();
+            const id = noteEl.dataset.id;
+            const originalText = noteEl.textContent;
+            const textarea = document.createElement('textarea');
+            textarea.className = 'timeline-note-edit';
+            textarea.value = originalText;
+            noteEl.replaceWith(textarea);
+            textarea.focus();
+            textarea.select();
             const save = () => {
-              const val = input.value.trim();
-              if (val) {
-                const act = DB.activities.find(a => a.id === id);
-                if (act) { act.title = val; act.updatedAt = Date.now(); DB.save(); }
-              }
+              const val = textarea.value.trim();
+              const act = DB.activities.find(a => a.id === id);
+              if (act) { act.note = val; act.updatedAt = Date.now(); DB.save(); }
               renderDay();
             };
-            input.addEventListener('keydown', ev => {
-              if (ev.key === 'Enter') { ev.preventDefault(); save(); }
-              if (ev.key === 'Escape') { renderDay(); }
+            textarea.addEventListener('keydown', ev => {
+              if (ev.key === 'Escape') { ev.preventDefault(); renderDay(); }
             });
-            input.addEventListener('blur', save);
+            textarea.addEventListener('blur', save);
           });
         });
 
@@ -1769,56 +2863,6 @@
           openSheet();
         });
       }
-
-      // Daily review
-      const reviewEl = document.getElementById('dayReview');
-      const review = DB.getReview(dateStr, 'daily');
-      reviewEl.innerHTML = `
-        <div class="card review-section" id="dayReviewCard">
-          <div class="review-title-row">
-            <div class="card-title">今日复盘</div>
-            <div class="rating-row" id="dayRating"></div>
-            <button class="review-pin-btn theme-day" id="dayPinBtn"></button>
-          </div>
-          <textarea class="review-textarea" id="dayReviewText" placeholder="今天完成了什么？效率如何？明天要改进什么？">${review ? review.content : ''}</textarea>
-          <div style="margin-top:6px"><button class="btn-primary" id="saveDayReview">保存复盘</button></div>
-        </div>
-      `;
-
-      const ratingEl = document.getElementById('dayRating');
-      const currentRating = review ? review.rating : 0;
-      ratingEl.innerHTML = Array.from({length:5}, (_,i) =>
-        `<span class="rating-star${i < currentRating ? ' active' : ''}" data-val="${i+1}">★</span>`
-      ).join('');
-      ratingEl.querySelectorAll('.rating-star').forEach(star => {
-        star.addEventListener('click', () => {
-          const val = parseInt(star.dataset.val);
-          const currentActive = ratingEl.querySelectorAll('.rating-star.active').length;
-          ratingEl.querySelectorAll('.rating-star').forEach(x => x.classList.remove('active'));
-          if (val !== currentActive) {
-            for (let i = 0; i < val; i++) ratingEl.querySelectorAll('.rating-star')[i].classList.add('active');
-          }
-        });
-      });
-
-      document.getElementById('saveDayReview').addEventListener('click', () => {
-        const content = document.getElementById('dayReviewText').value.trim();
-        const stars = ratingEl.querySelectorAll('.rating-star.active').length;
-        DB.saveReview({ date: dateStr, type: 'daily', content, rating: stars, createdAt: Date.now() });
-        toast('已保存今日复盘');
-      });
-
-      if (pinnedReviews.day) document.getElementById('dayReviewCard').classList.add('pinned');
-      if (pinnedReviews.day) document.getElementById('dayPinBtn').classList.add('active');
-      if (pinnedReviews.day) document.getElementById('reviewPinOverlay').classList.add('show');
-      if (pinnedReviews.day) document.querySelector('.app').classList.add('pin-active');
-      document.getElementById('dayPinBtn').addEventListener('click', () => {
-        pinnedReviews.day = !pinnedReviews.day;
-        document.getElementById('dayReviewCard').classList.toggle('pinned', pinnedReviews.day);
-        document.getElementById('dayPinBtn').classList.toggle('active', pinnedReviews.day);
-        document.getElementById('reviewPinOverlay').classList.toggle('show', pinnedReviews.day);
-        document.querySelector('.app').classList.toggle('pin-active', pinnedReviews.day);
-      });
     }
 
     // ============ Render: Day Plan ============
@@ -1972,7 +3016,6 @@
       deco.innerHTML = `
         <div class="deco-title">本周记录</div>
         <div class="deco-sub">${monday.getMonth()+1}/${monday.getDate()} - ${sunday.getMonth()+1}/${sunday.getDate()} · ${weekActCount}条 · ${fmtDuration(weekTotalMin)}</div>
-        <button class="deco-review-btn${weekReviewOnly ? ' active' : ''}" id="weekReviewToggle">只看复盘</button>
         <div class="deco-bubble" style="width:60px;height:60px;right:-15px;top:-15px"></div>
         <div class="deco-bubble" style="width:30px;height:30px;right:30px;bottom:-10px"></div>
         <div class="deco-leaf" style="left:-10px;bottom:-5px;transform:rotate(30deg)"></div>
@@ -1980,8 +3023,6 @@
 
       list.innerHTML = `
         ${days.map(day => {
-          const review = DB.getReview(day.ds, 'daily');
-          const stars = review ? '★'.repeat(review.rating || 0) + '☆'.repeat(5 - (review.rating || 0)) : '';
           return `
           <div class="week-day-card${day.isToday ? ' today' : ''}" data-date="${day.ds}">
             <div class="wdc-header">
@@ -1990,20 +3031,18 @@
               <span class="wdc-summary">${day.acts.length ? day.acts.length + '条 · ' + fmtDuration(day.totalMin) : '无记录'}</span>
             </div>
             <div class="wdc-events">
-              ${weekReviewOnly
-                ? (review && review.content
-                  ? `<div style="padding:6px 8px;font-size:13px;line-height:1.5;color:var(--ink);white-space:pre-wrap">${stars ? `<div style="font-size:12px;color:#e8a838;margin-bottom:4px">${stars}</div>` : ''}${review.content}</div>`
-                  : '<div style="font-size:12px;color:var(--muted);padding:4px 0">这天没有复盘</div>')
-                : (day.acts.length === 0
-                  ? '<div style="font-size:12px;color:var(--muted);padding:4px 0">这天没有记录</div>'
-                  : day.acts.map(a => `
-                    <div class="event-pill" data-id="${a.id}" data-date="${day.ds}" style="background:${catRgba(a.category,0.1)};border-left-color:${getCatColor(a.category)}">
-                      <span class="ep-time">${a.startTime}</span>
-                      <span class="ep-title">${a.title}</span>
-                      <span class="tag" data-cat="${a.category}" style="font-size:10px;background:${catRgba(a.category,0.14)};color:${getCatColor(a.category)};">${a.category}</span>
-                    </div>
-                  `).join('')
-                )
+              ${day.acts.length === 0
+                ? '<div style="font-size:12px;color:var(--muted);padding:4px 0">这天没有记录</div>'
+                : day.acts.map(a => {
+                    const cats = getActCats(a);
+                    const primaryCat = getPrimaryCat(a);
+                    return `
+                  <div class="event-pill" data-id="${a.id}" data-date="${day.ds}" style="background:${catRgba(primaryCat,0.1)};border-left-color:${getCatColor(primaryCat)}">
+                    <span class="ep-time">${a.startTime}</span>
+                    <span class="ep-title">${a.title}</span>
+                    <span class="ep-tags">${cats.map((c,i) => `<span class="tag${i === 0 ? ' tag-primary' : ''}" data-cat="${c}" style="font-size:10px;background:${catRgba(c,0.14)};color:${getCatColor(c)};">${i === 0 ? '★' : ''}${c}</span>`).join('')}</span>
+                  </div>
+                `;}).join('')
               }
             </div>
           </div>
@@ -2026,50 +3065,6 @@
           switchPage('Day');
         });
       });
-
-      document.getElementById('weekReviewToggle').addEventListener('click', () => {
-        weekReviewOnly = !weekReviewOnly;
-        renderWeek();
-      });
-
-      const review = DB.getReview(dateStr, 'weekly');
-      const reviewText = document.getElementById('weekReviewText');
-      reviewText.value = review ? review.content : '';
-
-      const ratingEl = document.getElementById('weekRating');
-      const currentRating = review ? review.rating : 0;
-      ratingEl.innerHTML = Array.from({length:5}, (_,i) =>
-        `<span class="rating-star${i < currentRating ? ' active' : ''}" data-val="${i+1}">★</span>`
-      ).join('');
-      ratingEl.querySelectorAll('.rating-star').forEach(s => {
-        s.addEventListener('click', () => {
-          const val = parseInt(s.dataset.val);
-          const currentActive = ratingEl.querySelectorAll('.rating-star.active').length;
-          ratingEl.querySelectorAll('.rating-star').forEach(x => x.classList.remove('active'));
-          if (val !== currentActive) {
-            for (let i = 0; i < val; i++) ratingEl.querySelectorAll('.rating-star')[i].classList.add('active');
-          }
-        });
-      });
-
-      document.getElementById('saveWeekReview').onclick = () => {
-        const content = reviewText.value.trim();
-        const stars = ratingEl.querySelectorAll('.rating-star.active').length;
-        DB.saveReview({ date: dateStr, type: 'weekly', content, rating: stars, createdAt: Date.now() });
-        toast('已保存本周复盘');
-      };
-
-      if (pinnedReviews.week) document.getElementById('weekReviewCard').classList.add('pinned');
-      if (pinnedReviews.week) document.getElementById('weekPinBtn').classList.add('active');
-      if (pinnedReviews.week) document.getElementById('reviewPinOverlay').classList.add('show');
-      if (pinnedReviews.week) document.querySelector('.app').classList.add('pin-active');
-      document.getElementById('weekPinBtn').onclick = () => {
-        pinnedReviews.week = !pinnedReviews.week;
-        document.getElementById('weekReviewCard').classList.toggle('pinned', pinnedReviews.week);
-        document.getElementById('weekPinBtn').classList.toggle('active', pinnedReviews.week);
-        document.getElementById('reviewPinOverlay').classList.toggle('show', pinnedReviews.week);
-        document.querySelector('.app').classList.toggle('pin-active', pinnedReviews.week);
-      };
     }
 
     // ============ Render: Month Page ============
@@ -2089,64 +3084,16 @@
       deco.innerHTML = `
         <div class="deco-title">${year}年${month+1}月</div>
         <div class="deco-sub">${monthActs.length}条记录 · ${fmtDuration(totalMin)}</div>
-        <button class="deco-review-btn theme-month${monthReviewOnly ? ' active' : ''}" id="monthReviewToggle">每周复盘</button>
         <div class="deco-bubble" style="width:50px;height:50px;right:20px;top:-12px"></div>
         <div class="deco-bubble" style="width:24px;height:24px;right:60px;bottom:-8px"></div>
         <div class="deco-leaf" style="left:-8px;bottom:-8px;transform:rotate(15deg);width:30px;height:30px"></div>
       `;
-
-      document.getElementById('monthReviewToggle').addEventListener('click', () => {
-        monthReviewOnly = !monthReviewOnly;
-        renderMonth();
-      });
 
       const firstDay = new Date(year, month, 1);
       const startWeekday = firstDay.getDay();
       const totalDays = lastDay.getDate();
       const todayStr = fmtDate(new Date());
       const grid = document.getElementById('monthGrid');
-      const reviewsList = document.getElementById('monthWeekReviews');
-
-      if (monthReviewOnly) {
-        grid.style.display = 'none';
-        reviewsList.style.display = '';
-        const lastDate = new Date(year, month + 1, 0);
-        let firstDate = new Date(year, month, 1);
-        if (startWeekday === 0) firstDate = new Date(year, month, 2);
-        const firstMonday = getWeekRange(firstDate).monday;
-        let weekNum = 0;
-        const weeks = [];
-        let currentMonday = new Date(firstMonday);
-        while (currentMonday <= lastDate) {
-          weekNum++;
-          const weekSunday = new Date(currentMonday);
-          weekSunday.setDate(currentMonday.getDate() + 6);
-          const weekKey = fmtDate(currentMonday);
-          const wRev = DB.getReview(weekKey, 'weekly');
-          const wStars = wRev ? '★'.repeat(wRev.rating || 0) + '☆'.repeat(5 - (wRev.rating || 0)) : '';
-          weeks.push({ monday: new Date(currentMonday), sunday: new Date(weekSunday), review: wRev, stars: wStars, weekNum });
-          currentMonday = new Date(weekSunday);
-          currentMonday.setDate(weekSunday.getDate() + 1);
-        }
-        reviewsList.innerHTML = weeks.map(wk => {
-          const sStr = `${wk.monday.getMonth()+1}/${wk.monday.getDate()}`;
-          const eStr = `${wk.sunday.getMonth()+1}/${wk.sunday.getDate()}`;
-          return `<div class="mwr-card">
-            <div class="mwr-header">
-              <span class="mwr-week-label">第${wk.weekNum}周</span>
-              <span class="mwr-date-range">${sStr} - ${eStr}</span>
-              <span class="mwr-summary">${wk.review && wk.review.content ? '有复盘' : '无复盘'}</span>
-            </div>
-            <div class="mwr-body">
-              ${wk.review && wk.review.content
-                ? `${wk.stars ? `<div class="mwr-day-stars">${wk.stars}</div>` : ''}<div class="mwr-day-content">${wk.review.content}</div>`
-                : '<span class="mwr-day-empty">本周没有复盘</span>'}
-            </div>
-          </div>`;
-        }).join('');
-      } else {
-        grid.style.display = '';
-        reviewsList.style.display = 'none';
 
       let cells = [];
       cells.push('<div class="mg-dot-cell"></div>');
@@ -2166,7 +3113,7 @@
           <div class="month-cell${isToday ? ' today' : ''}${acts.length > 0 ? ' has-events' : ''}" data-date="${ds}">
             <div class="mc-date">${day}</div>
             <div class="mc-events">
-              ${showActs.map(a => `<div class="mc-event" style="background:${catRgba(a.category,0.15)};color:${getCatColor(a.category)}">${a.title}</div>`).join('')}
+              ${showActs.map(a => `<div class="mc-event" style="background:${catRgba(getPrimaryCat(a),0.15)};color:${getCatColor(getPrimaryCat(a))}">${a.title}</div>`).join('')}
               ${extra > 0 ? `<div class="mc-more">+${extra}</div>` : ''}
               ${acts.length === 0 ? '<div class="mc-empty"></div>' : ''}
             </div>
@@ -2195,48 +3142,8 @@
           switchPage('Week');
         });
       });
-      }
 
       document.getElementById('monthStats').innerHTML = '';
-
-      const monthKey = `${year}-${String(month+1).padStart(2,'0')}`;
-      const review = DB.getReview(monthKey, 'monthly');
-      document.getElementById('monthReviewText').value = review ? review.content : '';
-
-      const ratingEl = document.getElementById('monthRating');
-      const currentRating = review ? review.rating : 0;
-      ratingEl.innerHTML = Array.from({length:5}, (_,i) =>
-        `<span class="rating-star${i < currentRating ? ' active' : ''}" data-val="${i+1}">★</span>`
-      ).join('');
-      ratingEl.querySelectorAll('.rating-star').forEach(s => {
-        s.addEventListener('click', () => {
-          const val = parseInt(s.dataset.val);
-          const currentActive = ratingEl.querySelectorAll('.rating-star.active').length;
-          ratingEl.querySelectorAll('.rating-star').forEach(x => x.classList.remove('active'));
-          if (val !== currentActive) {
-            for (let i = 0; i < val; i++) ratingEl.querySelectorAll('.rating-star')[i].classList.add('active');
-          }
-        });
-      });
-
-      document.getElementById('saveMonthReview').onclick = () => {
-        const content = document.getElementById('monthReviewText').value.trim();
-        const stars = ratingEl.querySelectorAll('.rating-star.active').length;
-        DB.saveReview({ date: monthKey, type: 'monthly', content, rating: stars, createdAt: Date.now() });
-        toast('已保存本月复盘');
-      };
-
-      if (pinnedReviews.month) document.getElementById('monthReviewCard').classList.add('pinned');
-      if (pinnedReviews.month) document.getElementById('monthPinBtn').classList.add('active');
-      if (pinnedReviews.month) document.getElementById('reviewPinOverlay').classList.add('show');
-      if (pinnedReviews.month) document.querySelector('.app').classList.add('pin-active');
-      document.getElementById('monthPinBtn').onclick = () => {
-        pinnedReviews.month = !pinnedReviews.month;
-        document.getElementById('monthReviewCard').classList.toggle('pinned', pinnedReviews.month);
-        document.getElementById('monthPinBtn').classList.toggle('active', pinnedReviews.month);
-        document.getElementById('reviewPinOverlay').classList.toggle('show', pinnedReviews.month);
-        document.querySelector('.app').classList.toggle('pin-active', pinnedReviews.month);
-      };
     }
 
     // ============ Render: Stats Page ============
@@ -2479,7 +3386,10 @@
       const acts = DB.getActivitiesByDateRange(range.start, range.end);
 
       const catMinutes = {};
-      acts.forEach(a => { catMinutes[a.category] = (catMinutes[a.category] || 0) + a.duration; });
+      acts.forEach(a => {
+        const cat = getPrimaryCat(a);
+        catMinutes[cat] = (catMinutes[cat] || 0) + a.duration;
+      });
       const totalMin = Object.values(catMinutes).reduce((s,v) => s + v, 0);
 
       const deco = document.getElementById('statsDeco');
@@ -2533,7 +3443,7 @@
           const d = new Date();
           d.setDate(d.getDate() - i);
           const ds = fmtDate(d);
-          const dayActs = acts.filter(a => a.date === ds && trendCats.includes(a.category));
+          const dayActs = acts.filter(a => a.date === ds && trendCats.includes(getPrimaryCat(a)));
           const min = dayActs.reduce((s,a) => s + a.duration, 0);
           labels.push(`${d.getMonth()+1}/${d.getDate()}`);
           totalData.push(min);
@@ -2543,7 +3453,7 @@
         const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
         for (let i = 1; i <= daysInMonth; i++) {
           const ds = fmtDate(new Date(now.getFullYear(), now.getMonth(), i));
-          const dayActs = acts.filter(a => a.date === ds && trendCats.includes(a.category));
+          const dayActs = acts.filter(a => a.date === ds && trendCats.includes(getPrimaryCat(a)));
           const min = dayActs.reduce((s,a) => s + a.duration, 0);
           labels.push(`${i}日`);
           totalData.push(min);
@@ -2618,7 +3528,7 @@
               const d = new Date();
               d.setDate(d.getDate() - i);
               const ds = fmtDate(d);
-              const min = acts.filter(a => a.date === ds && a.category === cat).reduce((s,a) => s + a.duration, 0);
+              const min = acts.filter(a => a.date === ds && getPrimaryCat(a) === cat).reduce((s,a) => s + a.duration, 0);
               catData.push(min);
             }
           } else {
@@ -2626,7 +3536,7 @@
             const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
             for (let i = 1; i <= daysInMonth; i++) {
               const ds = fmtDate(new Date(now.getFullYear(), now.getMonth(), i));
-              const min = acts.filter(a => a.date === ds && a.category === cat).reduce((s,a) => s + a.duration, 0);
+              const min = acts.filter(a => a.date === ds && getPrimaryCat(a) === cat).reduce((s,a) => s + a.duration, 0);
               catData.push(min);
             }
           }
@@ -2701,6 +3611,8 @@
 
     // ============ Navigation ============
     function switchPage(page) {
+      if (page === currentPage) return;
+      sfxPageFlip();
       currentPage = page;
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page' + page).classList.add('active');
@@ -2737,18 +3649,17 @@
     function openSheet() {
       document.getElementById('sheetTitle').textContent = '手动添加记录';
       document.getElementById('sheetDurationBanner').innerHTML = '';
-      document.getElementById('actTitle').value = '';
       document.getElementById('actNote').value = '';
       const now = new Date();
       const h = String(now.getHours()).padStart(2,'0');
       const m = String(now.getMinutes()).padStart(2,'0');
       document.getElementById('actStart').value = `${h}:${m}`;
       document.getElementById('actEnd').value = `${h}:${m}`;
-      selectedCategory = '工作';
+      selectedCategories = ['工作'];
       renderCatGrid();
+      renderSelectedCatsBar();
       document.getElementById('overlay').classList.add('show');
       document.getElementById('sheet').classList.add('show');
-      setTimeout(() => document.getElementById('actTitle').focus(), 300);
     }
 
     function openSheetWithTimer(timing) {
@@ -2760,29 +3671,120 @@
           <div class="db-range">${timing.startTime} → ${timing.endTime}</div>
         </div>
       `;
-      document.getElementById('actTitle').value = '';
       document.getElementById('actNote').value = '';
       document.getElementById('actStart').value = timing.startTime;
       document.getElementById('actEnd').value = timing.endTime;
-      selectedCategory = '工作';
+      selectedCategories = ['工作'];
       renderCatGrid();
+      renderSelectedCatsBar();
       document.getElementById('overlay').classList.add('show');
       document.getElementById('sheet').classList.add('show');
-      setTimeout(() => document.getElementById('actTitle').focus(), 300);
+    }
+
+    function renderSelectedCatsBar() {
+      const bar = document.getElementById('selectedCatsBar');
+      if (!bar) return;
+      if (selectedCategories.length === 0) {
+        bar.innerHTML = '<span style="font-size:11px;color:var(--muted);">请选择分类</span>';
+        return;
+      }
+      bar.innerHTML = selectedCategories.map((cat, idx) => `
+        <span class="selected-cat-chip${idx === 0 ? ' is-primary' : ''}"
+              data-cat="${cat}" draggable="true"
+              style="background:${catRgba(cat, 0.18)};color:${getCatColor(cat)};">
+          ${idx === 0 ? '★ ' : ''}${cat}
+          <button class="chip-remove" data-remove="${cat}" title="移除">×</button>
+        </span>
+      `).join('');
+
+      // 移除
+      bar.querySelectorAll('.chip-remove').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          const cat = btn.dataset.remove;
+          selectedCategories = selectedCategories.filter(c => c !== cat);
+          renderSelectedCatsBar();
+          renderCatGrid();
+        });
+      });
+
+      // 拖动排序
+      let dragCat = null;
+      bar.querySelectorAll('.selected-cat-chip').forEach(chip => {
+        chip.addEventListener('dragstart', e => {
+          dragCat = chip.dataset.cat;
+          chip.classList.add('dragging');
+          e.dataTransfer.effectAllowed = 'move';
+        });
+        chip.addEventListener('dragend', () => {
+          chip.classList.remove('dragging');
+        });
+        chip.addEventListener('dragover', e => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+        });
+        chip.addEventListener('drop', e => {
+          e.preventDefault();
+          if (!dragCat || dragCat === chip.dataset.cat) return;
+          const fromIdx = selectedCategories.indexOf(dragCat);
+          const toIdx = selectedCategories.indexOf(chip.dataset.cat);
+          selectedCategories.splice(fromIdx, 1);
+          selectedCategories.splice(toIdx, 0, dragCat);
+          renderSelectedCatsBar();
+        });
+      });
     }
 
     function renderCatGrid() {
       const grid = document.getElementById('catGrid');
       const cats = DB.getAllCats();
       grid.innerHTML = cats.map(cat =>
-        `<button type="button" class="cat-btn${cat === selectedCategory ? ' selected' : ''}" data-cat="${cat}">${cat}<span class="cat-del" data-del="${cat}">×</span></button>`
+        `<button type="button" class="cat-btn${selectedCategories.includes(cat) ? ' selected' : ''}" data-cat="${cat}" draggable="true">${cat}<span class="cat-del" data-del="${cat}">×</span></button>`
       ).join('') + `<button type="button" class="cat-btn cat-add-btn" id="catAddBtn">+ 新增</button>`;
 
       grid.querySelectorAll('.cat-btn[data-cat]').forEach(btn => {
         btn.addEventListener('click', () => {
-          grid.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
-          btn.classList.add('selected');
-          selectedCategory = btn.dataset.cat;
+          const cat = btn.dataset.cat;
+          if (selectedCategories.includes(cat)) {
+            // 取消选中
+            selectedCategories = selectedCategories.filter(c => c !== cat);
+            btn.classList.remove('selected');
+          } else {
+            // 添加到末尾
+            selectedCategories.push(cat);
+            btn.classList.add('selected');
+          }
+          renderSelectedCatsBar();
+        });
+      });
+
+      // 分类网格拖动排序
+      let dragCat = null;
+      grid.querySelectorAll('.cat-btn[data-cat]').forEach(btn => {
+        btn.addEventListener('dragstart', e => {
+          dragCat = btn.dataset.cat;
+          btn.classList.add('dragging');
+          e.dataTransfer.effectAllowed = 'move';
+        });
+        btn.addEventListener('dragend', () => {
+          btn.classList.remove('dragging');
+          dragCat = null;
+        });
+        btn.addEventListener('dragover', e => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+        });
+        btn.addEventListener('drop', e => {
+          e.preventDefault();
+          if (!dragCat || dragCat === btn.dataset.cat) return;
+          const allCats = DB.getAllCats();
+          const fromIdx = allCats.indexOf(dragCat);
+          const toIdx = allCats.indexOf(btn.dataset.cat);
+          allCats.splice(fromIdx, 1);
+          allCats.splice(toIdx, 0, dragCat);
+          DB.catOrder = [...allCats];
+          DB.saveCatOrder();
+          renderCatGrid();
         });
       });
 
@@ -2792,8 +3794,13 @@
           const cat = del.dataset.del;
           DB.deleteCat(cat);
           updateCustomCatStyles();
-          if (selectedCategory === cat) selectedCategory = DB.getAllCats()[0] || '其他';
+          selectedCategories = selectedCategories.filter(c => c !== cat);
+          if (selectedCategories.length === 0) {
+            const firstCat = DB.getAllCats()[0];
+            if (firstCat) selectedCategories.push(firstCat);
+          }
           renderCatGrid();
+          renderSelectedCatsBar();
         });
       });
 
@@ -2809,11 +3816,19 @@
           DB.customCats.push(name);
           DB.saveCustomCats();
           DB.assignCatColor(name);
+          // 新分类添加到排序末尾
+          if (!DB.catOrder) DB.catOrder = [];
+          if (!DB.catOrder.includes(name)) DB.catOrder.push(name);
+          DB.saveCatOrder();
           updateCustomCatStyles();
-          selectedCategory = name;
+          if (!selectedCategories.includes(name)) selectedCategories.push(name);
           renderCatGrid();
+          renderSelectedCatsBar();
         });
-        document.getElementById('catAddCancel').addEventListener('click', renderCatGrid);
+        document.getElementById('catAddCancel').addEventListener('click', () => {
+          renderCatGrid();
+          renderSelectedCatsBar();
+        });
         input.addEventListener('keydown', e => {
           if (e.key === 'Enter') { e.preventDefault(); document.getElementById('catAddConfirm').click(); }
         });
@@ -2821,7 +3836,32 @@
     }
 
     let sheetTimerBackup = null;
+    let editingActivityId = null;
+
+    function openSheetForEdit(id) {
+      const act = DB.activities.find(a => a.id === id);
+      if (!act) return;
+      editingActivityId = id;
+      document.getElementById('sheetTitle').textContent = '编辑记录';
+      document.getElementById('sheetDurationBanner').innerHTML = `
+        <div class="duration-banner">
+          <div class="db-label">本次用时</div>
+          <div class="db-time">${fmtDuration(act.duration)}</div>
+          <div class="db-range">${act.startTime} → ${act.endTime}</div>
+        </div>
+      `;
+      document.getElementById('actStart').value = act.startTime;
+      document.getElementById('actEnd').value = act.endTime;
+      document.getElementById('actNote').value = act.note || '';
+      selectedCategories = [...act.categories];
+      renderCatGrid();
+      renderSelectedCatsBar();
+      document.getElementById('overlay').classList.add('show');
+      document.getElementById('sheet').classList.add('show');
+    }
+
     function closeSheet() {
+      editingActivityId = null;
       document.getElementById('overlay').classList.remove('show');
       document.getElementById('sheet').classList.remove('show');
       if (sheetTimerBackup) {
@@ -2833,12 +3873,11 @@
     }
 
     function saveActivity() {
-      const title = document.getElementById('actTitle').value.trim();
       const start = document.getElementById('actStart').value;
       const end = document.getElementById('actEnd').value;
       const note = document.getElementById('actNote').value.trim();
 
-      if (!title) { toast('请输入做了什么'); return; }
+      if (selectedCategories.length === 0) { toast('请至少选择一个分类'); return; }
       if (!start || !end) { toast('请选择时间段'); return; }
       if (start >= end) { toast('结束时间需晚于开始'); return; }
 
@@ -2849,8 +3888,8 @@
       const newEnd = eh * 60 + em;
       const dateStr = fmtDate(currentDate);
 
-      // Check overlap with existing activities
-      const existingActs = DB.getActivitiesByDate(dateStr);
+      // Check overlap with existing activities (skip current editing record)
+      const existingActs = DB.getActivitiesByDate(dateStr).filter(a => a.id !== editingActivityId);
       for (const a of existingActs) {
         const [ash, asm] = a.startTime.split(':').map(Number);
         const [aeh, aem] = a.endTime.split(':').map(Number);
@@ -2875,15 +3914,34 @@
         }
       }
 
-      DB.addActivity({
-        date: dateStr,
-        startTime: start, endTime: end, duration,
-        title, category: selectedCategory, note
-      });
+      // 标题使用主标签
+      const title = selectedCategories[0];
+
+      if (editingActivityId) {
+        // 编辑模式：更新现有记录
+        const act = DB.activities.find(a => a.id === editingActivityId);
+        if (act) {
+          act.startTime = start;
+          act.endTime = end;
+          act.duration = duration;
+          act.title = title;
+          act.categories = [...selectedCategories];
+          act.note = note;
+          act.updatedAt = Date.now();
+          DB.save();
+        }
+      } else {
+        // 新增模式
+        DB.addActivity({
+          date: dateStr,
+          startTime: start, endTime: end, duration,
+          title, categories: [...selectedCategories], note
+        });
+      }
 
       sheetTimerBackup = null;
       closeSheet();
-      toast('已保存记录');
+      toast(editingActivityId ? '已更新记录' : '已保存记录');
       renderAll();
     }
 
@@ -2918,19 +3976,20 @@
 
       document.getElementById('saveActBtn').addEventListener('click', saveActivity);
 
-      document.getElementById('quickFillBtn').addEventListener('click', () => {
-        document.getElementById('actTitle').value = '稍后填写';
-        document.getElementById('actNote').focus();
-      });
-
-      document.getElementById('quickFillBtn2').addEventListener('click', () => {
-        document.getElementById('actTitle').value = '虚度光阴，该当何罪';
-        document.getElementById('actNote').focus();
-      });
-
       // Settings
       document.getElementById('exportBtn').addEventListener('click', () => {
-        const data = { activities: DB.activities, reviews: DB.reviews, plans: DB.plans, exportedAt: new Date().toISOString() };
+        const data = {
+          activities: DB.activities,
+          reviews: DB.reviews,
+          plans: DB.plans,
+          anchors: DB.anchors,
+          warehouse: DB.warehouse,
+          customCats: DB.customCats,
+          deletedDefaultCats: DB.deletedDefaultCats,
+          customCatColorMap: DB.customCatColorMap,
+          catOrder: DB.catOrder,
+          exportedAt: new Date().toISOString()
+        };
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -2955,7 +4014,14 @@
             if (data.activities) DB.activities = data.activities;
             if (data.reviews) DB.reviews = data.reviews;
             if (data.plans) DB.plans = data.plans;
-            DB.save();
+            if (data.anchors) DB.anchors = data.anchors;
+            if (data.warehouse) DB.warehouse = data.warehouse;
+            if (data.customCats) DB.customCats = data.customCats;
+            if (data.deletedDefaultCats) DB.deletedDefaultCats = data.deletedDefaultCats;
+            if (data.customCatColorMap) DB.customCatColorMap = data.customCatColorMap;
+            if (data.catOrder) DB.catOrder = data.catOrder;
+            DB.save(); DB.saveWarehouse(); DB.saveAnchors(); DB.saveCustomCats(); DB.saveDeletedDefaultCats(); DB.saveCustomCatColorMap(); DB.saveCatOrder();
+            updateCustomCatStyles();
             renderAll();
             toast('导入成功');
           } catch(err) { toast('文件格式错误'); }
@@ -2968,7 +4034,8 @@
           DB.activities = [];
           DB.reviews = [];
           DB.plans = [];
-          DB.save();
+          DB.warehouse = {};
+          DB.save(); DB.saveWarehouse();
           renderAll();
           toast('已清空');
         }
@@ -2981,10 +4048,6 @@
         await Sync.push();
         if (changed) renderAll();
         toast('同步完成');
-      });
-
-      document.getElementById('actTitle').addEventListener('keydown', e => {
-        if (e.key === 'Enter') { e.preventDefault(); saveActivity(); }
       });
 
       // ---- Pomodoro Timer ----
@@ -3039,25 +4102,93 @@
         pomoUpdateVisibility();
       }
 
-      function pomoPlayBeep() {
+      // 番茄钟结束铃声 - 清脆叮铃铃
+      let pomoAlarmCtx = null;
+      let pomoAlarmTimer = null;
+      let pomoAlarmStopTimer = null;
+      let pomoAlarmOscillators = [];
+
+      function pomoStartAlarm() {
+        // 先停掉之前的
+        pomoStopAlarm();
+
         try {
-          const ctx = new (window.AudioContext || window.webkitAudioContext)();
-          const playTone = (freq, start, dur) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.frequency.value = freq;
-            osc.type = 'sine';
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            gain.gain.setValueAtTime(0.3, ctx.currentTime + start);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
-            osc.start(ctx.currentTime + start);
-            osc.stop(ctx.currentTime + start + dur);
-          };
-          playTone(880, 0, 0.3);
-          playTone(660, 0.35, 0.3);
-          playTone(880, 0.7, 0.4);
-        } catch(e) {}
+          pomoAlarmCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch(e) { return; }
+
+        const playDing = (freq1, freq2, startTime, volume) => {
+          // 双音叠加，模拟铃铛的泛音
+          const osc1 = pomoAlarmCtx.createOscillator();
+          const osc2 = pomoAlarmCtx.createOscillator();
+          const gain = pomoAlarmCtx.createGain();
+
+          osc1.type = 'sine';
+          osc1.frequency.value = freq1;
+          osc2.type = 'triangle';
+          osc2.frequency.value = freq2;
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(pomoAlarmCtx.destination);
+
+          const t = pomoAlarmCtx.currentTime + startTime;
+          gain.gain.setValueAtTime(0, t);
+          gain.gain.linearRampToValueAtTime(volume, t + 0.01);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 1.2);
+
+          osc1.start(t);
+          osc2.start(t);
+          osc1.stop(t + 1.2);
+          osc2.stop(t + 1.2);
+
+          pomoAlarmOscillators.push(osc1, osc2);
+        };
+
+        // 叮铃铃节奏：叮-铃-铃
+        const playChime = (offset) => {
+          const v = 0.28;
+          playDing(1200, 1800, 0 + offset, v);      // 叮
+          playDing(1500, 2200, 0.22 + offset, v);   // 铃
+          playDing(1800, 2600, 0.44 + offset, v);   // 铃
+        };
+
+        // 先响一次
+        playChime(0);
+
+        // 每隔 1.8 秒重复一次
+        let count = 0;
+        const maxCount = 66; // 约 2 分钟（1.8 * 66 ≈ 119 秒）
+        pomoAlarmTimer = setInterval(() => {
+          count++;
+          if (count >= maxCount) {
+            // 2 分钟到了，停止铃声并自动重置
+            pomoStopAlarm();
+            pomoReset();
+            return;
+          }
+          if (pomoAlarmCtx) {
+            playChime(0);
+          }
+        }, 1800);
+      }
+
+      function pomoStopAlarm() {
+        if (pomoAlarmTimer) {
+          clearInterval(pomoAlarmTimer);
+          pomoAlarmTimer = null;
+        }
+        if (pomoAlarmStopTimer) {
+          clearTimeout(pomoAlarmStopTimer);
+          pomoAlarmStopTimer = null;
+        }
+        pomoAlarmOscillators.forEach(osc => {
+          try { osc.stop(); } catch(e) {}
+        });
+        pomoAlarmOscillators = [];
+        if (pomoAlarmCtx) {
+          try { pomoAlarmCtx.close(); } catch(e) {}
+          pomoAlarmCtx = null;
+        }
       }
 
       function pomoTick() {
@@ -3068,7 +4199,7 @@
           clearInterval(pomoInterval);
           pomoInterval = null;
           pomoIcon.classList.add('flash');
-          pomoPlayBeep();
+          pomoStartAlarm();
           pomoStartBtn.textContent = '开始';
           pomoUpdateDisplay();
           setTimeout(() => pomoIcon.classList.remove('flash'), 8000);
@@ -3100,6 +4231,7 @@
         pomoInterval = null;
         pomoRemainSec = 0;
         pomoIcon.classList.remove('flash');
+        pomoStopAlarm();
         pomoStartBtn.textContent = '开始';
         pomoUpdateDisplay();
       }
@@ -3143,6 +4275,7 @@
           pomoInterval = null;
           pomoRemainSec = pomoTotalSec;
           pomoIcon.classList.remove('flash');
+          pomoStopAlarm();
           pomoStartBtn.textContent = '开始';
           pomoUpdateDisplay();
         });
@@ -3153,6 +4286,7 @@
         if (min < 1) min = 1;
         if (min > 120) min = 120;
         pomoTotalSec = min * 60;
+        pomoStopAlarm();
         if (!pomoRunning) {
           pomoRemainSec = pomoTotalSec;
           pomoUpdateDisplay();
@@ -3231,9 +4365,944 @@
       };
     })();
 
+    // ============ Warehouse ============
+    let warehouseSaveTimers = {}; // { reflection: timer, miao: timer, thought: timer }
+    let warehousePanelOpen = false;
+    let warehouseCurrentView = 'edit'; // 'edit' | 'all'
+    let warehouseAllEditing = {}; // { date_type: true/false } 记录哪些正在编辑
+
+    function openWarehousePanel() {
+      warehousePanelOpen = true;
+      document.getElementById('warehousePanel').classList.add('open');
+      document.body.classList.add('warehouse-open');
+      sfxUnlock();
+      switchWarehouseView('edit');
+      loadWarehouseEditors();
+      renderAnchors();
+      // 更新背景图位置
+      requestAnimationFrame(() => {
+        const panel = document.getElementById('warehousePanel');
+        if (panel) {
+          document.body.style.setProperty('--bg-offset', (panel.offsetWidth / 2) + 'px');
+        }
+      });
+    }
+    function closeWarehousePanel() {
+      warehousePanelOpen = false;
+      document.getElementById('warehousePanel').classList.remove('open');
+      document.body.classList.remove('warehouse-open');
+    }
+    function toggleWarehousePanel() {
+      if (warehousePanelOpen) {
+        sfxFanClose();
+        closeWarehousePanel();
+      } else {
+        openWarehousePanel();
+      }
+    }
+
+    // 侧边栏拖拽调整宽度
+    (function initPanelResizer() {
+      const resizer = document.getElementById('panelResizer');
+      const panel = document.getElementById('warehousePanel');
+      if (!resizer || !panel) return;
+
+      const MIN_WIDTH = 260;
+      const MAX_WIDTH = 600;
+      let isDragging = false;
+      let startX = 0;
+      let startWidth = 0;
+
+      // 从 localStorage 读取保存的宽度
+      const savedWidth = localStorage.getItem('warehouseWidth');
+      if (savedWidth) {
+        const w = parseInt(savedWidth);
+        if (w >= MIN_WIDTH && w <= MAX_WIDTH) {
+          document.documentElement.style.setProperty('--warehouse-width', w + 'px');
+        }
+      }
+
+      // 更新右侧背景图位置，使其与内容区中心对齐
+      function updateBgPosition() {
+        if (!document.body.classList.contains('warehouse-open')) return;
+        const panelWidth = panel.offsetWidth;
+        const offset = panelWidth / 2;
+        document.body.style.setProperty('--bg-offset', offset + 'px');
+      }
+
+      resizer.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        const currentWidth = panel.offsetWidth;
+        startWidth = currentWidth;
+        resizer.classList.add('dragging');
+        document.body.classList.add('resizing');
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - startX;
+        let newWidth = startWidth + deltaX;
+        if (newWidth < MIN_WIDTH) newWidth = MIN_WIDTH;
+        if (newWidth > MAX_WIDTH) newWidth = MAX_WIDTH;
+        document.documentElement.style.setProperty('--warehouse-width', newWidth + 'px');
+        updateBgPosition();
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        resizer.classList.remove('dragging');
+        document.body.classList.remove('resizing');
+        // 保存宽度到 localStorage
+        const w = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--warehouse-width'));
+        if (w) localStorage.setItem('warehouseWidth', w);
+        updateBgPosition();
+      });
+
+      // 双击恢复默认宽度
+      resizer.addEventListener('dblclick', () => {
+        document.documentElement.style.removeProperty('--warehouse-width');
+        localStorage.removeItem('warehouseWidth');
+        setTimeout(updateBgPosition, 50);
+      });
+
+      // 初始化背景位置
+      setTimeout(updateBgPosition, 100);
+    })();
+
+    // 切换视图
+    function switchWarehouseView(view) {
+      warehouseCurrentView = view;
+      const panel = document.getElementById('warehousePanel');
+      const editView = document.getElementById('warehouseEditView');
+      const allView = document.getElementById('warehouseAllView');
+
+      if (view === 'all') {
+        panel.classList.add('show-all');
+        editView.classList.remove('active');
+        allView.classList.add('active');
+        renderWarehouseAll();
+      } else {
+        panel.classList.remove('show-all');
+        editView.classList.add('active');
+        allView.classList.remove('active');
+      }
+    }
+
+    function fmtWarehouseDate(dateStr) {
+      const d = new Date(dateStr);
+      const today = new Date();
+      const isToday = d.toDateString() === today.toDateString();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const isYesterday = d.toDateString() === yesterday.toDateString();
+      if (isToday) return '今天';
+      if (isYesterday) return '昨天';
+      return (d.getMonth() + 1) + '月' + d.getDate() + '日';
+    }
+
+    // 复制文本到剪贴板
+    function copyToClipboard(text, btnEl) {
+      if (!text) {
+        if (btnEl) {
+          btnEl.textContent = '空';
+          setTimeout(() => { btnEl.textContent = '📋'; }, 1000);
+        }
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => {
+        if (btnEl) {
+          btnEl.classList.add('copied');
+          btnEl.textContent = '✓';
+          setTimeout(() => {
+            btnEl.classList.remove('copied');
+            btnEl.textContent = '📋';
+          }, 1200);
+        }
+      }).catch(() => {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch(e) {}
+        document.body.removeChild(ta);
+        if (btnEl) {
+          btnEl.classList.add('copied');
+          btnEl.textContent = '✓';
+          setTimeout(() => {
+            btnEl.classList.remove('copied');
+            btnEl.textContent = '📋';
+          }, 1200);
+        }
+      });
+    }
+
+    // 加载三个分类的编辑区内容
+    function loadWarehouseEditors() {
+      const today = fmtDate(new Date());
+      ['reflection', 'miao', 'thought'].forEach(type => {
+        const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
+        if (!textarea) return;
+        textarea.value = DB.getWarehouseContent(today, type);
+      });
+    }
+
+    // 渲染全部视图（按类型分区）
+    function renderWarehouseAll() {
+      const container = document.getElementById('warehouseAllContent');
+      if (!container) return;
+
+      const types = ['reflection', 'miao', 'thought'];
+      let totalCount = 0;
+      types.forEach(t => { totalCount += DB.getWarehouseByType(t).length; });
+
+      if (totalCount === 0) {
+        container.innerHTML = `
+          <div class="warehouse-all-empty">
+            <div class="warehouse-all-empty-icon"><span class="warehouse-all-title-icon">📦</span></div>
+            <div class="warehouse-all-empty-text">还没有任何记录<br>在三个分类中写下你的想法吧</div>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      types.forEach(type => {
+        const info = DB.warehouseTypes[type];
+        const items = DB.getWarehouseByType(type);
+
+        html += `
+          <div class="warehouse-all-type-section" data-type="${type}">
+            <div class="warehouse-all-type-header">
+              <div class="warehouse-all-type-title">${info.icon} ${info.name}</div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="warehouse-all-type-count">${items.length}条</span>
+                <button class="warehouse-all-copy-all-btn" data-copy-type="all" data-type="${type}" title="复制全部内容">📋</button>
+              </div>
+            </div>
+            <div class="warehouse-all-type-list">
+        `;
+
+        if (items.length === 0) {
+          html += `<div class="warehouse-all-item-empty">暂无记录</div>`;
+        } else {
+          items.forEach(item => {
+            const key = `${item.date}|${type}`;
+            const isEditing = warehouseAllEditing[key];
+            const dateStr = fmtWarehouseDate(item.date);
+            const timeStr = formatTime(item.updatedAt);
+
+            html += `
+              <div class="warehouse-all-item${isEditing ? ' editing' : ''}" data-date="${item.date}" data-type="${type}">
+                <div class="warehouse-all-item-actions">
+                  ${!isEditing ? `
+                    <button class="warehouse-all-edit-btn" data-action="edit" data-date="${item.date}" data-type="${type}" title="编辑">✏️</button>
+                  ` : `
+                    <button class="warehouse-all-save-btn" data-action="save" data-date="${item.date}" data-type="${type}" title="保存">✓</button>
+                  `}
+                  <button class="warehouse-all-copy-btn" data-action="copy" data-date="${item.date}" data-type="${type}" title="复制">📋</button>
+                </div>
+                ${isEditing ? `
+                  <textarea class="warehouse-all-item-textarea" data-date="${item.date}" data-type="${type}">${escapeHtml(item.content)}</textarea>
+                ` : `
+                  <div class="warehouse-all-item-content">${escapeHtml(item.content)}</div>
+                `}
+                <div class="warehouse-all-item-time" title="${dateStr} ${timeStr}">${dateStr} ${timeStr}</div>
+              </div>
+            `;
+          });
+        }
+
+        html += `
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // 格式化时间（HH:mm）
+    function formatTime(timestamp) {
+      if (!timestamp) return '';
+      const d = new Date(timestamp);
+      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    }
+
+    // 全部视图中切换编辑状态
+    function toggleAllEdit(date, type) {
+      const key = `${date}|${type}`;
+      warehouseAllEditing[key] = !warehouseAllEditing[key];
+      renderWarehouseAll();
+      // 如果进入编辑模式，聚焦 textarea
+      if (warehouseAllEditing[key]) {
+        setTimeout(() => {
+          const ta = document.querySelector(`.warehouse-all-item-textarea[data-date="${date}"][data-type="${type}"]`);
+          if (ta) { ta.focus(); ta.scrollTop = ta.scrollHeight; }
+        }, 50);
+      }
+    }
+
+    // 保存全部视图中的编辑
+    function saveAllEdit(date, type) {
+      const ta = document.querySelector(`.warehouse-all-item-textarea[data-date="${date}"][data-type="${type}"]`);
+      if (!ta) return;
+      DB.setWarehouseContent(date, type, ta.value);
+      const key = `${date}|${type}`;
+      warehouseAllEditing[key] = false;
+      renderWarehouseAll();
+      // 同步刷新编辑区（如果是今天）
+      const today = fmtDate(new Date());
+      if (date === today) {
+        const editTa = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
+        if (editTa) editTa.value = ta.value;
+      }
+    }
+
+    // escape html
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // ============ Anchors (我的锚点) ============
+    let anchorViewDate = fmtDate(new Date()); // 当前查看的日期
+
+    function formatAnchorTime(ts) {
+      const d = new Date(ts);
+      return d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
+    }
+
+    function fmtAnchorDateLabel(dateStr) {
+      const d = new Date(dateStr);
+      const today = new Date();
+      const isToday = d.toDateString() === today.toDateString();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const isYesterday = d.toDateString() === yesterday.toDateString();
+      if (isToday) return '今天';
+      if (isYesterday) return '昨天';
+      return (d.getMonth() + 1) + '/' + d.getDate();
+    }
+
+    function renderAnchors() {
+      const listEl = document.getElementById('anchorList');
+      if (!listEl) return;
+      const anchors = DB.getAnchorsByDate(anchorViewDate);
+      const dateLabelEl = document.getElementById('anchorDateLabel');
+      if (dateLabelEl) dateLabelEl.textContent = fmtAnchorDateLabel(anchorViewDate);
+
+      // 后一天按钮：不能超过今天
+      const nextBtn = document.getElementById('anchorNextDay');
+      const today = fmtDate(new Date());
+      if (nextBtn) nextBtn.disabled = anchorViewDate >= today;
+
+      if (anchors.length === 0) {
+        listEl.innerHTML = '<div class="anchor-empty">还没有锚点，添加一个吧～</div>';
+        return;
+      }
+
+      listEl.innerHTML = anchors.map(a => `
+        <div class="anchor-item${a.done ? ' done' : ''}" data-id="${a.id}" draggable="true">
+          <div class="anchor-check${a.done ? ' done' : ''}" data-id="${a.id}">✓</div>
+          <div class="anchor-text" title="双击编辑">${escapeHtml(a.text)}</div>
+          <button class="anchor-del" data-id="${a.id}">×</button>
+        </div>
+      `).join('');
+
+      // 勾选/取消
+      listEl.querySelectorAll('.anchor-check').forEach(c => {
+        c.addEventListener('click', () => {
+          DB.toggleAnchor(c.dataset.id);
+          renderAnchors();
+        });
+      });
+
+      // 删除
+      listEl.querySelectorAll('.anchor-del').forEach(b => {
+        b.addEventListener('click', e => {
+          e.stopPropagation();
+          DB.deleteAnchor(b.dataset.id);
+          renderAnchors();
+        });
+      });
+
+      // 双击编辑
+      listEl.querySelectorAll('.anchor-text').forEach(txt => {
+        txt.addEventListener('dblclick', e => {
+          e.stopPropagation();
+          const id = txt.parentElement.dataset.id;
+          const oldText = txt.textContent;
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.style.cssText = 'flex:1;border:1px solid var(--accent);border-radius:6px;padding:4px 8px;font-size:13px;background:rgba(255,255,255,0.6);color:var(--ink);outline:none;font-family:inherit;min-width:0;';
+          input.value = oldText;
+          txt.replaceWith(input);
+          input.focus();
+          input.select();
+          const save = () => {
+            const newText = input.value.trim();
+            if (newText && newText !== oldText) {
+              DB.updateAnchor(id, newText);
+            }
+            renderAnchors();
+          };
+          input.addEventListener('blur', save);
+          input.addEventListener('keydown', ev => {
+            if (ev.key === 'Enter') { ev.preventDefault(); save(); }
+            if (ev.key === 'Escape') { renderAnchors(); }
+          });
+        });
+      });
+
+      // 拖动排序
+      let dragSrcId = null;
+      listEl.querySelectorAll('.anchor-item').forEach(item => {
+        item.addEventListener('dragstart', e => {
+          dragSrcId = item.dataset.id;
+          item.classList.add('dragging');
+          e.dataTransfer.effectAllowed = 'move';
+        });
+        item.addEventListener('dragend', () => {
+          item.classList.remove('dragging');
+          listEl.querySelectorAll('.anchor-item').forEach(i => i.classList.remove('drag-over'));
+        });
+        item.addEventListener('dragover', e => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          if (item.dataset.id !== dragSrcId) {
+            item.classList.add('drag-over');
+          }
+        });
+        item.addEventListener('dragleave', () => {
+          item.classList.remove('drag-over');
+        });
+        item.addEventListener('drop', e => {
+          e.preventDefault();
+          item.classList.remove('drag-over');
+          if (dragSrcId === item.dataset.id) return;
+          const ids = Array.from(listEl.querySelectorAll('.anchor-item')).map(i => i.dataset.id);
+          const srcIdx = ids.indexOf(dragSrcId);
+          const targetIdx = ids.indexOf(item.dataset.id);
+          ids.splice(srcIdx, 1);
+          ids.splice(targetIdx, 0, dragSrcId);
+          DB.reorderAnchors(anchorViewDate, ids);
+          renderAnchors();
+        });
+      });
+    }
+
+    function prevAnchorDay() {
+      const d = new Date(anchorViewDate);
+      d.setDate(d.getDate() - 1);
+      anchorViewDate = fmtDate(d);
+      renderAnchors();
+    }
+    function nextAnchorDay() {
+      const d = new Date(anchorViewDate);
+      d.setDate(d.getDate() + 1);
+      const today = fmtDate(new Date());
+      if (fmtDate(d) > today) return;
+      anchorViewDate = fmtDate(d);
+      renderAnchors();
+    }
+
+    // ===== 音效系统 =====
+    let audioCtx = null;
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    // 音效：耍刀出鞘（解锁面板）
+    function sfxUnlock() {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
+      const bufferSize = ctx.sampleRate * 0.2;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        const t = i / bufferSize;
+        const env = Math.sin(t * Math.PI);
+        data[i] = (Math.random() * 2 - 1) * env;
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1500, now);
+      filter.frequency.exponentialRampToValueAtTime(4000, now + 0.18);
+      filter.Q.value = 8;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.linearRampToValueAtTime(0.15, now + 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+      noise.connect(filter).connect(gain).connect(ctx.destination);
+      noise.start(now);
+      const osc = ctx.createOscillator();
+      const oscGain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1800, now + 0.15);
+      osc.frequency.exponentialRampToValueAtTime(2400, now + 0.25);
+      oscGain.gain.setValueAtTime(0, now + 0.15);
+      oscGain.gain.linearRampToValueAtTime(0.12, now + 0.18);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+      osc.connect(oscGain).connect(ctx.destination);
+      osc.start(now + 0.15); osc.stop(now + 0.55);
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(3200, now + 0.17);
+      gain2.gain.setValueAtTime(0.05, now + 0.17);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+      osc2.connect(gain2).connect(ctx.destination);
+      osc2.start(now + 0.17); osc2.stop(now + 0.45);
+    }
+
+    // 音效：清脆叮（锚点展开）
+    function sfxDing() {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1568, now);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.9);
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(2093, now);
+      gain2.gain.setValueAtTime(0.08, now);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+      osc2.connect(gain2).connect(ctx.destination);
+      osc2.start(now); osc2.stop(now + 0.6);
+    }
+
+    // 音效：纸页收拢（锚点折叠）
+    function sfxFanClose() {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
+      const bufferSize = ctx.sampleRate * 0.15;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        const t = i / bufferSize;
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-t * 8);
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.value = 1500;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      noise.connect(filter).connect(gain).connect(ctx.destination);
+      noise.start(now);
+    }
+
+    // 音效：轻柔翻页（tab切换）
+    function sfxPageFlip() {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
+      // 主体：纸页摩擦声
+      const bufferSize = ctx.sampleRate * 0.4;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(2000, now);
+      filter.frequency.exponentialRampToValueAtTime(800, now + 0.35);
+      filter.Q.value = 2;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.08, now + 0.05);
+      gain.gain.linearRampToValueAtTime(0.06, now + 0.15);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+      noise.connect(filter).connect(gain).connect(ctx.destination);
+      noise.start(now);
+      // 轻微的"啪"声（页边翻动）
+      const osc = ctx.createOscillator();
+      const oscGain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(600, now + 0.08);
+      osc.frequency.exponentialRampToValueAtTime(300, now + 0.2);
+      oscGain.gain.setValueAtTime(0, now + 0.08);
+      oscGain.gain.linearRampToValueAtTime(0.04, now + 0.1);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+      osc.connect(oscGain).connect(ctx.destination);
+      osc.start(now + 0.08); osc.stop(now + 0.3);
+    }
+
+    // 音效：磁吸关门（面板关闭按钮）
+    function sfxPanelClose() {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, now);
+      osc.frequency.exponentialRampToValueAtTime(300, now + 0.1);
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.12, now + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.18);
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'square';
+      osc2.frequency.setValueAtTime(600, now + 0.12);
+      gain2.gain.setValueAtTime(0.08, now + 0.12);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      osc2.connect(gain2).connect(ctx.destination);
+      osc2.start(now + 0.12); osc2.stop(now + 0.2);
+    }
+
+    // 音效：军刀出鞘（仓库展开）
+    function sfxWarehouseOpen() {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
+      const bufferSize = ctx.sampleRate * 0.3;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        const t = i / bufferSize;
+        const env = Math.sin(t * Math.PI) * 0.9 + 0.1;
+        data[i] = (Math.random() * 2 - 1) * env;
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1200, now);
+      filter.frequency.exponentialRampToValueAtTime(3500, now + 0.28);
+      filter.Q.value = 7;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.06, now);
+      gain.gain.linearRampToValueAtTime(0.18, now + 0.15);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+      noise.connect(filter).connect(gain).connect(ctx.destination);
+      noise.start(now);
+      const osc = ctx.createOscillator();
+      const oscGain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(600, now + 0.2);
+      osc.frequency.exponentialRampToValueAtTime(900, now + 0.3);
+      oscGain.gain.setValueAtTime(0, now + 0.2);
+      oscGain.gain.linearRampToValueAtTime(0.1, now + 0.25);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+      osc.connect(oscGain).connect(ctx.destination);
+      osc.start(now + 0.2); osc.stop(now + 0.65);
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(1600, now + 0.22);
+      osc2.frequency.exponentialRampToValueAtTime(2000, now + 0.35);
+      gain2.gain.setValueAtTime(0.08, now + 0.22);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+      osc2.connect(gain2).connect(ctx.destination);
+      osc2.start(now + 0.22); osc2.stop(now + 0.75);
+      const osc3 = ctx.createOscillator();
+      const gain3 = ctx.createGain();
+      osc3.type = 'sine';
+      osc3.frequency.setValueAtTime(2800, now + 0.25);
+      gain3.gain.setValueAtTime(0.04, now + 0.25);
+      gain3.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+      osc3.connect(gain3).connect(ctx.destination);
+      osc3.start(now + 0.25); osc3.stop(now + 0.55);
+    }
+
+    // 音效：重关门（仓库折叠）
+    function sfxWarehouseClose() {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(200, now);
+      osc.frequency.exponentialRampToValueAtTime(60, now + 0.15);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.3);
+      const bufferSize = ctx.sampleRate * 0.1;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const nfilter = ctx.createBiquadFilter();
+      nfilter.type = 'lowpass';
+      nfilter.frequency.value = 500;
+      const ngain = ctx.createGain();
+      ngain.gain.setValueAtTime(0.2, now);
+      ngain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      noise.connect(nfilter).connect(ngain).connect(ctx.destination);
+      noise.start(now);
+    }
+
+    // init warehouse events
+    function initWarehouseEvents() {
+      // menu button
+      document.getElementById('drawerMenuBtn').addEventListener('click', toggleWarehousePanel);
+
+      // 切换右侧内容显示/隐藏
+      let rightCollapsed = false;
+      document.getElementById('warehouseToggleRight').addEventListener('click', () => {
+        rightCollapsed = !rightCollapsed;
+        document.body.classList.toggle('right-collapsed', rightCollapsed);
+        const btn = document.getElementById('warehouseToggleRight');
+        btn.title = rightCollapsed ? '展开右侧' : '收起右侧';
+        if (rightCollapsed) {
+          sfxFanClose();
+        } else {
+          sfxUnlock();
+        }
+      });
+
+      // 板块折叠按钮
+      document.querySelectorAll('.panel-collapse-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const section = btn.closest('.panel-section');
+          if (section) {
+            const willCollapse = !section.classList.contains('collapsed');
+            section.classList.toggle('collapsed');
+            const isCollapsed = section.classList.contains('collapsed');
+            btn.title = isCollapsed ? '展开' : '折叠';
+            // 播放对应音效
+            const type = btn.dataset.collapse;
+            if (type === 'anchor') {
+              if (isCollapsed) sfxFanClose();
+              else sfxDing();
+            } else if (type === 'warehouse') {
+              if (isCollapsed) sfxWarehouseClose();
+              else sfxDing();
+            }
+            // 保存折叠状态
+            if (type) {
+              localStorage.setItem('tt_collapse_' + type, isCollapsed ? '1' : '0');
+            }
+          }
+        });
+      });
+      // 恢复折叠状态
+      ['anchor', 'warehouse'].forEach(type => {
+        const saved = localStorage.getItem('tt_collapse_' + type);
+        if (saved === '1') {
+          const btn = document.querySelector(`.panel-collapse-btn[data-collapse="${type}"]`);
+          if (btn) {
+            const section = btn.closest('.panel-section');
+            if (section) {
+              section.classList.add('collapsed');
+              btn.title = '展开';
+            }
+          }
+        }
+      });
+
+      // back button in all view — 返回编辑视图
+      document.getElementById('warehouseAllBackBtn').addEventListener('click', () => {
+        sfxWarehouseClose();
+        switchWarehouseView('edit');
+      });
+
+      // view all button
+      document.getElementById('warehouseViewAllBtn').addEventListener('click', () => {
+        sfxDing();
+        switchWarehouseView('all');
+      });
+
+      // three editors — auto save
+      const today = fmtDate(new Date());
+      ['reflection', 'miao', 'thought'].forEach(type => {
+        const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
+        if (!textarea) return;
+        textarea.addEventListener('input', () => {
+          clearTimeout(warehouseSaveTimers[type]);
+          warehouseSaveTimers[type] = setTimeout(() => {
+            DB.setWarehouseContent(today, type, textarea.value);
+            // 如果全部视图是打开的，刷新一下
+            if (warehouseCurrentView === 'all') renderWarehouseAll();
+          }, 800);
+        });
+      });
+
+      // copy buttons in edit view
+      document.querySelectorAll('.warehouse-copy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const type = btn.dataset.type;
+          const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
+          if (textarea) copyToClipboard(textarea.value, btn);
+        });
+      });
+
+      // all view — 事件委托
+      document.getElementById('warehouseAllContent').addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        const action = btn.dataset.action;
+        const date = btn.dataset.date;
+        const type = btn.dataset.type;
+
+        if (action === 'edit') {
+          toggleAllEdit(date, type);
+        } else if (action === 'save') {
+          saveAllEdit(date, type);
+        } else if (action === 'copy') {
+          const content = DB.getWarehouseContent(date, type);
+          copyToClipboard(content, btn);
+        }
+      });
+
+      // 复制全部按钮
+      document.getElementById('warehouseAllContent').addEventListener('click', (e) => {
+        const btn = e.target.closest('.warehouse-all-copy-all-btn');
+        if (!btn) return;
+        const type = btn.dataset.type;
+        const items = DB.getWarehouseByType(type);
+        if (items.length === 0) { toast('暂无内容可复制'); return; }
+        const typeInfo = DB.warehouseTypes[type];
+        const allText = items.map(item => {
+          const dateLabel = fmtWarehouseDate(item.date);
+          return `【${dateLabel}】\n${item.content}`;
+        }).join('\n\n');
+        const fullText = `— ${typeInfo.icon} ${typeInfo.name}（共${items.length}条） —\n\n${allText}`;
+        copyToClipboard(fullText, btn);
+      });
+
+      // ===== Anchor events =====
+      document.getElementById('anchorPrevDay').addEventListener('click', prevAnchorDay);
+      document.getElementById('anchorNextDay').addEventListener('click', nextAnchorDay);
+
+      // 日历选择器
+      let anchorCalMonth = new Date();
+      document.getElementById('anchorDateLabel').addEventListener('click', (e) => {
+        e.stopPropagation();
+        anchorCalMonth = new Date(anchorViewDate);
+        renderAnchorCalendar();
+        document.getElementById('anchorCalendarOverlay').classList.add('show');
+      });
+
+      document.getElementById('anchorCalendarOverlay').addEventListener('click', (e) => {
+        if (e.target.id === 'anchorCalendarOverlay') {
+          document.getElementById('anchorCalendarOverlay').classList.remove('show');
+        }
+      });
+
+      document.getElementById('anchorCalPrevMonth').addEventListener('click', () => {
+        anchorCalMonth.setMonth(anchorCalMonth.getMonth() - 1);
+        renderAnchorCalendar();
+      });
+
+      document.getElementById('anchorCalNextMonth').addEventListener('click', () => {
+        anchorCalMonth.setMonth(anchorCalMonth.getMonth() + 1);
+        renderAnchorCalendar();
+      });
+
+      document.getElementById('anchorCalTodayBtn').addEventListener('click', () => {
+        anchorCalMonth = new Date();
+        const today = fmtDate(new Date());
+        anchorViewDate = today;
+        renderAnchors();
+        document.getElementById('anchorCalendarOverlay').classList.remove('show');
+      });
+
+      function renderAnchorCalendar() {
+        const year = anchorCalMonth.getFullYear();
+        const month = anchorCalMonth.getMonth();
+        document.getElementById('anchorCalTitle').textContent = `${year}年${month + 1}月`;
+
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const startWeekday = firstDay.getDay();
+        const daysInMonth = lastDay.getDate();
+
+        const todayStr = fmtDate(new Date());
+        const selectedStr = anchorViewDate;
+
+        let html = '';
+        // 上月末尾
+        const prevMonthLastDay = new Date(year, month, 0).getDate();
+        for (let i = startWeekday - 1; i >= 0; i--) {
+          const day = prevMonthLastDay - i;
+          const d = new Date(year, month - 1, day);
+          const ds = fmtDate(d);
+          html += `<div class="anchor-cal-day other-month" data-date="${ds}">${day}</div>`;
+        }
+        // 本月
+        for (let day = 1; day <= daysInMonth; day++) {
+          const d = new Date(year, month, day);
+          const ds = fmtDate(d);
+          let cls = 'anchor-cal-day';
+          if (ds === todayStr) cls += ' today';
+          if (ds === selectedStr) cls += ' selected';
+          html += `<div class="${cls}" data-date="${ds}">${day}</div>`;
+        }
+        // 下月开头
+        const remaining = 42 - (startWeekday + daysInMonth);
+        for (let day = 1; day <= remaining; day++) {
+          const d = new Date(year, month + 1, day);
+          const ds = fmtDate(d);
+          html += `<div class="anchor-cal-day other-month" data-date="${ds}">${day}</div>`;
+        }
+
+        const daysEl = document.getElementById('anchorCalDays');
+        daysEl.innerHTML = html;
+
+        // 绑定点击事件
+        daysEl.querySelectorAll('.anchor-cal-day').forEach(dayEl => {
+          dayEl.addEventListener('click', () => {
+            const ds = dayEl.dataset.date;
+            anchorViewDate = ds;
+            renderAnchors();
+            document.getElementById('anchorCalendarOverlay').classList.remove('show');
+          });
+        });
+      }
+
+      const anchorInput = document.getElementById('anchorAddInput');
+      if (anchorInput) {
+        const addAnchor = () => {
+          const text = anchorInput.value.trim();
+          if (!text) return;
+          DB.addAnchor(anchorViewDate, text);
+          anchorInput.value = '';
+          renderAnchors();
+        };
+        anchorInput.addEventListener('keydown', e => {
+          if (e.key === 'Enter') { e.preventDefault(); addAnchor(); }
+        });
+      }
+    }
+
+    initWarehouseEvents();
+
     initEvents();
     renderAll();
-    Sync.pull().then(changed => { if (changed) renderAll(); });
+    Sync.pull().then(changed => {
+      if (!changed) return;
+      renderAll();
+      if (warehousePanelOpen) {
+        loadWarehouseEditors();
+        if (warehouseCurrentView === 'all') renderWarehouseAll();
+      }
+    });
   </script>
 
 </body></html>
