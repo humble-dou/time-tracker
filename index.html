@@ -158,6 +158,7 @@
       justify-content: center;
     }
     .header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    #headerCenter { transform: translateX(-0.8cm); }
     .header-title { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
     .header-date { font-size: 13px; color: var(--muted); margin-top: 2px; }
     .nav-btn {
@@ -166,6 +167,14 @@
       font-size: 18px; cursor: pointer; display: grid; place-items: center; flex-shrink: 0;
     }
     .nav-btn:active { transform: scale(0.9); }
+    .header-sound-btn {
+      width: 36px; height: 36px; border: none; border-radius: 50%;
+      background: var(--accent-light); color: var(--accent);
+      font-size: 16px; cursor: pointer; display: grid; place-items: center; flex-shrink: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .header-sound-btn:active { transform: scale(0.9); }
+    .header-sound-btn.muted { color: var(--muted); }
 
     /* ---- Bottom Tab Bar ---- */
     .tabbar {
@@ -1051,6 +1060,16 @@
       font-weight: 300; line-height: 1;
     }
     .warehouse-back-btn:hover { background: var(--accent-light); color: var(--accent); }
+    .warehouse-close-btn {
+      width: 28px; height: 28px;
+      border: none; background: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--muted);
+      border-radius: 6px; font-size: 18px;
+      line-height: 1;
+      transition: background 0.15s, color 0.15s;
+    }
+    .warehouse-close-btn:hover { background: var(--accent-light); color: var(--accent); }
     .warehouse-toggle-right {
       width: 36px; height: 36px;
       border: none; background: none;
@@ -1063,6 +1082,18 @@
     .warehouse-toggle-right svg { width: 22px; height: 22px; }
     .warehouse-toggle-right:hover { background: rgba(0,0,0,0.05); color: var(--accent); }
     .warehouse-toggle-right:active { background: rgba(0,0,0,0.08); }
+    .warehouse-sound-btn {
+      width: 36px; height: 36px;
+      border: none; background: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--ink);
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+      font-size: 18px;
+    }
+    .warehouse-sound-btn:hover { background: rgba(0,0,0,0.05); color: var(--accent); }
+    .warehouse-sound-btn:active { background: rgba(0,0,0,0.08); }
+    .warehouse-sound-btn.muted { color: var(--muted); }
 
     /* 右侧内容收起状态 */
     body.right-collapsed .app {
@@ -1182,7 +1213,62 @@
       border-radius: var(--radius) var(--radius) 0 0;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: border-radius 0.2s ease;
+    }
+    .warehouse-edit-block.collapsed .warehouse-edit-title {
+      border-radius: var(--radius);
+    }
+    .warehouse-collapse-arrow {
+      font-size: 11px;
+      transition: transform 0.2s ease;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .warehouse-edit-block.collapsed .warehouse-collapse-arrow {
+      transform: rotate(-90deg);
+    }
+    .warehouse-edit-title > span:nth-child(2) {
+      flex: 1;
+    }
+    .warehouse-edit-content {
+      overflow: hidden;
+      max-height: 1000px;
+      transition: max-height 0.3s ease, opacity 0.2s ease;
+      position: relative;
+    }
+    .warehouse-edit-block.collapsed .warehouse-edit-content {
+      max-height: 0;
+      opacity: 0;
+    }
+
+    /* 调整大小手柄 */
+    .warehouse-resize-handle {
+      height: 10px;
+      cursor: ns-resize;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      position: relative;
+      transition: background 0.2s ease;
+    }
+    .warehouse-resize-handle::before {
+      content: '';
+      width: 40px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--rule);
+      transition: background 0.2s ease;
+    }
+    .warehouse-resize-handle:hover::before,
+    .warehouse-resize-handle.active::before {
+      background: var(--accent);
+    }
+    .warehouse-resize-handle:hover {
+      background: rgba(232, 137, 91, 0.05);
     }
     .warehouse-edit-actions {
       display: flex;
@@ -1204,17 +1290,90 @@
       width: 100%;
       border: none;
       outline: none;
-      padding: 12px 16px;
+      padding: 8px 12px;
       font-size: 13px;
       line-height: 1.6;
       background: transparent;
       color: var(--ink);
-      resize: vertical;
+      resize: none;
       font-family: inherit;
-      min-height: 80px;
-      max-height: 200px;
-      border-radius: 0 0 var(--radius) var(--radius);
+      height: 120px;
+      min-height: 60px;
+      border-radius: 0;
       box-sizing: border-box;
+    }
+    .warehouse-edit-textarea::placeholder {
+      color: var(--muted);
+      opacity: 1;
+    }
+
+    /* 圆点列表编辑器 */
+    .warehouse-bullet-list {
+      padding: 8px 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink);
+      min-height: 60px;
+      height: 120px;
+      overflow-y: auto;
+      border-radius: 0;
+      box-sizing: border-box;
+    }
+    .warehouse-bullet-list:empty::before {
+      content: attr(data-placeholder);
+      color: var(--muted);
+      pointer-events: none;
+      display: block;
+      padding: 0;
+      line-height: 1.6;
+    }
+    .bullet-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 2px 0;
+    }
+    .bullet-dot {
+      flex-shrink: 0;
+      width: 16px;
+      text-align: center;
+      line-height: 1.6;
+      color: var(--accent);
+      user-select: none;
+    }
+    .bullet-text {
+      flex: 1;
+      min-width: 0;
+      outline: none;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+    .bullet-text:empty::before {
+      content: '\00a0'; /* 保持高度 */
+    }
+
+    /* 全部视图中的圆点列表 */
+    .warehouse-all-item-bullet-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      height: 100px;
+      min-height: 60px;
+      overflow-y: auto;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+    .warehouse-all-item-bullet-list .bullet-item {
+      padding: 2px 0;
+    }
+
+    /* 全部视图中的圆点编辑器 */
+    .warehouse-all-bullet-editor {
+      background: var(--bg-soft);
+      border-radius: var(--radius);
+      min-height: 80px;
+      max-height: 300px;
     }
 
     /* 查看全部按钮 */
@@ -1309,7 +1468,22 @@
       background: rgba(232, 137, 91, 0.18);
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: border-radius 0.2s ease;
+    }
+    .warehouse-all-type-section.collapsed .warehouse-all-type-header {
+      border-radius: var(--radius);
+    }
+    .warehouse-all-collapse-arrow {
+      font-size: 11px;
+      transition: transform 0.2s ease;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .warehouse-all-type-section.collapsed .warehouse-all-collapse-arrow {
+      transform: rotate(-90deg);
     }
     .warehouse-all-type-title { display: flex; align-items: center; gap: 6px; }
     .warehouse-all-type-count {
@@ -1320,6 +1494,13 @@
     .warehouse-all-type-list {
       display: flex;
       flex-direction: column;
+      overflow: hidden;
+      max-height: 3000px;
+      transition: max-height 0.3s ease, opacity 0.2s ease;
+    }
+    .warehouse-all-type-section.collapsed .warehouse-all-type-list {
+      max-height: 0;
+      opacity: 0;
     }
     .warehouse-all-item {
       padding: 12px 16px;
@@ -1395,6 +1576,15 @@
       word-break: break-word;
       padding-right: 8px;
     }
+    .warehouse-all-item-content-resizable {
+      height: 100px;
+      min-height: 60px;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+    .warehouse-all-resize-wrap {
+      position: relative;
+    }
     .warehouse-all-item-textarea {
       width: 100%;
       border: 1px solid rgba(255,255,255,0.5);
@@ -1404,12 +1594,21 @@
       line-height: 1.6;
       background: rgba(255,255,255,0.4);
       color: var(--ink);
-      resize: vertical;
+      resize: none;
       font-family: inherit;
+      height: 100px;
       min-height: 60px;
-      border-radius: 6px;
+      border-radius: 6px 6px 0 0;
       box-sizing: border-box;
       backdrop-filter: blur(2px);
+    }
+    .warehouse-all-edit-wrap {
+      position: relative;
+    }
+    .warehouse-all-edit-wrap .warehouse-bullet-list {
+      height: 100px;
+      min-height: 60px;
+      border-radius: 6px 6px 0 0;
     }
     .warehouse-all-item-time {
       font-size: 11px;
@@ -1732,7 +1931,10 @@
           <div class="header-title" id="headerTitle">今天</div>
           <div class="header-date" id="headerDate">2026年9月18日 周五</div>
         </div>
-        <button class="nav-btn" id="nextBtn">›</button>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button class="header-sound-btn" id="headerSoundBtn" title="关闭音效">🔊</button>
+          <button class="nav-btn" id="nextBtn">›</button>
+        </div>
       </div>
     </div>
 
@@ -1864,6 +2066,7 @@
   <div class="warehouse-panel" id="warehousePanel">
     <div class="panel-resizer" id="panelResizer"></div>
     <div class="warehouse-panel-header">
+      <button class="warehouse-close-btn" id="warehouseCloseBtn" title="关闭">✕</button>
       <button class="warehouse-back-btn" id="warehouseBackBtn" title="返回">‹</button>
       <div class="warehouse-panel-title" id="warehousePanelTitle">侧边栏</div>
       <button class="warehouse-toggle-right" id="warehouseToggleRight" title="收起/展开右侧">
@@ -1902,31 +2105,43 @@
         <div class="panel-section-content warehouse-content-wrap">
           <div class="warehouse-view warehouse-edit-view active" id="warehouseEditView">
           <div class="warehouse-edit-block" data-type="reflection">
-          <div class="warehouse-edit-title">
+          <div class="warehouse-edit-title" data-toggle-type="reflection">
+            <span class="warehouse-collapse-arrow">▾</span>
             <span>📝 吾日三省吾身</span>
             <div class="warehouse-edit-actions">
               <button class="warehouse-copy-btn" data-copy-type="edit" data-type="reflection" title="复制">📋</button>
             </div>
           </div>
-          <textarea class="warehouse-edit-textarea" data-type="reflection" placeholder="今天有什么感悟？反思一下自己..."></textarea>
+          <div class="warehouse-edit-content" data-content-type="reflection">
+            <textarea class="warehouse-edit-textarea" data-type="reflection" placeholder="今天有什么感悟？反思一下自己..."></textarea>
+            <div class="warehouse-resize-handle" data-resize-type="reflection"></div>
+          </div>
         </div>
         <div class="warehouse-edit-block" data-type="miao">
-          <div class="warehouse-edit-title">
+          <div class="warehouse-edit-title" data-toggle-type="miao">
+            <span class="warehouse-collapse-arrow">▾</span>
             <span>✨ 妙妙屋</span>
             <div class="warehouse-edit-actions">
               <button class="warehouse-copy-btn" data-copy-type="edit" data-type="miao" title="复制">📋</button>
             </div>
           </div>
-          <textarea class="warehouse-edit-textarea" data-type="miao" placeholder="记录那些让你眼前一亮的好点子..."></textarea>
+          <div class="warehouse-edit-content" data-content-type="miao">
+            <div class="warehouse-bullet-list" data-type="miao" data-placeholder="记录那些让你眼前一亮的奇妙与美好..."></div>
+            <div class="warehouse-resize-handle" data-resize-type="miao"></div>
+          </div>
         </div>
         <div class="warehouse-edit-block" data-type="thought">
-          <div class="warehouse-edit-title">
+          <div class="warehouse-edit-title" data-toggle-type="thought">
+            <span class="warehouse-collapse-arrow">▾</span>
             <span>💡 小念头</span>
             <div class="warehouse-edit-actions">
               <button class="warehouse-copy-btn" data-copy-type="edit" data-type="thought" title="复制">📋</button>
             </div>
           </div>
-          <textarea class="warehouse-edit-textarea" data-type="thought" placeholder="突然冒出来的想法，记下来吧..."></textarea>
+          <div class="warehouse-edit-content" data-content-type="thought">
+            <div class="warehouse-bullet-list" data-type="thought" data-placeholder="突然冒出来的想法，记下来吧..."></div>
+            <div class="warehouse-resize-handle" data-resize-type="thought"></div>
+          </div>
         </div>
         <button class="warehouse-view-all-btn" id="warehouseViewAllBtn">
           <span class="view-all-icon">📦</span>
@@ -2044,7 +2259,7 @@
       defaultCats: ['工作','学习','运动','休息','生活','其他'],
       warehouseTypes: {
         reflection: { name: '吾日三省吾身', icon: '📝', placeholder: '今天有什么感悟？反思一下自己...' },
-        miao: { name: '妙妙屋', icon: '✨', placeholder: '记录那些让你眼前一亮的好点子...' },
+        miao: { name: '妙妙屋', icon: '✨', placeholder: '记录那些让你眼前一亮的奇妙与美好...' },
         thought: { name: '小念头', icon: '💡', placeholder: '突然冒出来的想法，记下来吧...' }
       },
       load() {
@@ -2054,7 +2269,12 @@
           this.plans = JSON.parse(localStorage.getItem('tt_plans') || '[]');
           this.warehouse = JSON.parse(localStorage.getItem('tt_warehouse') || '{}');
           this.anchors = JSON.parse(localStorage.getItem('tt_anchors') || '[]');
-          this.timer = JSON.parse(localStorage.getItem('tt_timer') || 'null');
+          const savedTimer = JSON.parse(localStorage.getItem('tt_timer') || 'null');
+          if (savedTimer && typeof savedTimer === 'object') {
+            this.timer = { startTime: savedTimer.startTime || null, updatedAt: savedTimer.updatedAt || (savedTimer.startTime || 0) };
+          } else {
+            this.timer = { startTime: null, updatedAt: 0 };
+          }
           this.customCats = JSON.parse(localStorage.getItem('tt_customCats') || '[]');
           this.deletedDefaultCats = JSON.parse(localStorage.getItem('tt_deletedDefaultCats') || '[]');
           this.customCatColorMap = JSON.parse(localStorage.getItem('tt_customCatColorMap') || '{}');
@@ -2274,24 +2494,27 @@
         this.save();
       },
       startTimer() {
-        this.timer = { startTime: Date.now() };
+        this.timer = { startTime: Date.now(), updatedAt: Date.now() };
         this.saveTimer();
       },
       stopTimer() {
-        if (!this.timer) return null;
+        if (!this.timerActive()) return null;
         const start = new Date(this.timer.startTime);
         const end = new Date();
         const date = this.formatDate(start);
         const startTime = this.formatTime(start);
         const endTime = this.formatTime(end);
         const duration = Math.round((end - start) / 60000);
-        this.timer = null;
+        this.timer = { startTime: null, updatedAt: Date.now() };
         this.saveTimer();
         return { date, startTime, endTime, duration };
       },
       cancelTimer() {
-        this.timer = null;
+        this.timer = { startTime: null, updatedAt: Date.now() };
         this.saveTimer();
+      },
+      timerActive() {
+        return this.timer && this.timer.startTime;
       },
       formatDate(d) {
         const y = d.getFullYear();
@@ -2349,7 +2572,8 @@
             deletedDefaultCats: DB.deletedDefaultCats,
             customCatColorMap: DB.customCatColorMap,
             catOrder: DB.catOrder || [],
-            deletedIds: allDeleted
+            deletedIds: allDeleted,
+            timer: DB.timer
           };
 
           await this.client.from('time_tracker_data').delete().eq('device_id', this.deviceId).eq('data_type', 'snapshot');
@@ -2388,6 +2612,7 @@
           const mergedColorMap = { ...DB.customCatColorMap };
           let mergedCatOrder = DB.catOrder || [];
           const allDeleted = new Set();
+          let mergedTimer = DB.timer || { startTime: null, updatedAt: 0 };
 
           for (const row of data) {
             const v = row.data_value;
@@ -2435,6 +2660,14 @@
             if (v.catOrder && v.catOrder.length > mergedCatOrder.length) {
               mergedCatOrder = v.catOrder;
             }
+            // timer: 取 updatedAt 最新的
+            if (v.timer && typeof v.timer === 'object') {
+              const incomingTime = v.timer.updatedAt || (v.timer.startTime || 0);
+              const currentTime = mergedTimer.updatedAt || (mergedTimer.startTime || 0);
+              if (incomingTime > currentTime) {
+                mergedTimer = { startTime: v.timer.startTime || null, updatedAt: incomingTime };
+              }
+            }
           }
           // 最后应用删除标记
           allDeleted.forEach(id => {
@@ -2453,6 +2686,8 @@
           DB.deletedDefaultCats = Array.from(mergedDelCats);
           DB.customCatColorMap = mergedColorMap;
           DB.catOrder = mergedCatOrder;
+          DB.timer = mergedTimer;
+          DB.saveTimer();
 
           DB.save(); DB.saveWarehouse(); DB.saveAnchors(); DB.saveCustomCats(); DB.saveCustomCatColorMap(); DB.saveDeletedDefaultCats(); DB.saveCatOrder();
           updateCustomCatStyles();
@@ -2491,7 +2726,7 @@
     // ============ State ============
     let currentDate = new Date();
     let currentPage = 'Day';
-    let selectedCategories = ['工作']; // 数组，第一个为主标签
+    let selectedCategories = []; // 数组，第一个为主标签
     let planCollapsed = false;
     let highlightEventId = null;
     let clockInterval = null;
@@ -2638,14 +2873,14 @@
       const el = document.getElementById('timerWidget');
       // const badge = document.getElementById('timerBadge');
 
-      if (!DB.timer) {
+      if (!DB.timerActive()) {
         // State 1: Idle - show clock + start button
         // badge.classList.remove('show');
         el.innerHTML = `
           <div class="timer-widget idle">
             <div class="timer-clock-label">现在时间</div>
             <div class="timer-clock">
-              <span id="clockTime">${getNowTime()}</span><span class="timer-clock-seconds">:${getNowSeconds()}</span>
+              <span id="clockTime">${getNowTime()}</span>
             </div>
             <div class="timer-sub">点击开始记录你接下来要做的事</div>
             <button class="timer-big-btn start" id="timerStartBtn">开 始 记 录</button>
@@ -2654,17 +2889,16 @@
         document.getElementById('timerStartBtn').addEventListener('click', () => {
           DB.startTimer();
           renderAll();
+          Sync.debouncedPush();
         });
 
         // Start clock ticking
         if (clockInterval) clearInterval(clockInterval);
         clockInterval = setInterval(() => {
-          if (currentPage !== 'Day' || DB.timer) return;
+          if (currentPage !== 'Day' || DB.timerActive()) return;
           const ct = document.getElementById('clockTime');
           if (ct) {
             ct.textContent = getNowTime();
-            const secEl = ct.parentElement.querySelector('.timer-clock-seconds');
-            if (secEl) secEl.textContent = ':' + getNowSeconds();
           }
         }, 1000);
 
@@ -2721,7 +2955,7 @@
               </span>
             </div>
             <div class="timer-clock">
-              <span id="clockTime">${getNowTime()}</span><span class="timer-clock-seconds">:${getNowSeconds()}</span>
+              <span id="clockTime">${getNowTime()}</span>
             </div>
             <div class="timer-btn-row">
               <button class="timer-big-btn stop" id="timerStopBtn" style="margin-top:0">我 完 成 啦</button>
@@ -2733,12 +2967,10 @@
         // Start clock ticking for running state too
         if (clockInterval) clearInterval(clockInterval);
         clockInterval = setInterval(() => {
-          if (currentPage !== 'Day' || !DB.timer) return;
+          if (currentPage !== 'Day' || !DB.timerActive()) return;
           const ct = document.getElementById('clockTime');
           if (ct) {
             ct.textContent = getNowTime();
-            const secEl = ct.parentElement.querySelector('.timer-clock-seconds');
-            if (secEl) secEl.textContent = ':' + getNowSeconds();
           }
         }, 1000);
 
@@ -2751,22 +2983,25 @@
             sheetTimerBackup = null;
             toast('时间太短，未记录');
             renderAll();
+            Sync.debouncedPush();
             return;
           }
           // Open sheet pre-filled with timing data
           openSheetWithTimer(timing);
+          Sync.debouncedPush();
         });
 
         document.getElementById('timerRstBtn').addEventListener('dblclick', () => {
           DB.cancelTimer();
           sheetTimerBackup = null;
           renderAll();
+          Sync.debouncedPush();
         });
 
         // Start timer ticking
         if (timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(() => {
-          if (!DB.timer) { clearInterval(timerInterval); timerInterval = null; return; }
+          if (!DB.timerActive()) { clearInterval(timerInterval); timerInterval = null; return; }
           const elapsed = Math.floor((Date.now() - DB.timer.startTime) / 1000);
           const h = Math.floor(elapsed / 3600);
           const m = Math.floor((elapsed % 3600) / 60);
@@ -3655,7 +3890,7 @@
       const m = String(now.getMinutes()).padStart(2,'0');
       document.getElementById('actStart').value = `${h}:${m}`;
       document.getElementById('actEnd').value = `${h}:${m}`;
-      selectedCategories = ['工作'];
+      selectedCategories = [];
       renderCatGrid();
       renderSelectedCatsBar();
       document.getElementById('overlay').classList.add('show');
@@ -3674,7 +3909,7 @@
       document.getElementById('actNote').value = '';
       document.getElementById('actStart').value = timing.startTime;
       document.getElementById('actEnd').value = timing.endTime;
-      selectedCategories = ['工作'];
+      selectedCategories = [];
       renderCatGrid();
       renderSelectedCatsBar();
       document.getElementById('overlay').classList.add('show');
@@ -3785,6 +4020,7 @@
           DB.catOrder = [...allCats];
           DB.saveCatOrder();
           renderCatGrid();
+          Sync.debouncedPush();
         });
       });
 
@@ -3801,6 +4037,7 @@
           }
           renderCatGrid();
           renderSelectedCatsBar();
+          Sync.debouncedPush();
         });
       });
 
@@ -3824,6 +4061,7 @@
           if (!selectedCategories.includes(name)) selectedCategories.push(name);
           renderCatGrid();
           renderSelectedCatsBar();
+          Sync.debouncedPush();
         });
         document.getElementById('catAddCancel').addEventListener('click', () => {
           renderCatGrid();
@@ -3869,6 +4107,7 @@
         DB.saveTimer();
         sheetTimerBackup = null;
         renderAll();
+        Sync.debouncedPush();
       }
     }
 
@@ -3902,7 +4141,7 @@
       }
 
       // Check overlap with running timer
-      if (DB.timer) {
+      if (DB.timerActive()) {
         const timerDate = new Date(DB.timer.startTime);
         const timerDateStr = fmtDate(timerDate);
         const tStartMin = timerDate.getHours() * 60 + timerDate.getMinutes();
@@ -4305,6 +4544,18 @@
     DB.load();
     Sync.init();
 
+    // 页面可见性变化时同步数据
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden || !Sync.ready) return;
+      try {
+        Sync.pull().then(() => {
+          try {
+            if (typeof renderAll === 'function') renderAll();
+          } catch(e) { console.warn('Render after sync failed:', e); }
+        }).catch(e => console.warn('Visibility sync pull failed:', e));
+      } catch(e) { console.warn('Visibility sync failed:', e); }
+    });
+
     // 单窗口控制：已有窗口收到新窗口通知后，主动请求SW聚焦自己（可恢复最小化）
     (function() {
       const channel = new BroadcastChannel('time-tracker-single-instance');
@@ -4544,10 +4795,62 @@
     function loadWarehouseEditors() {
       const today = fmtDate(new Date());
       ['reflection', 'miao', 'thought'].forEach(type => {
-        const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
-        if (!textarea) return;
-        textarea.value = DB.getWarehouseContent(today, type);
+        const bulletTypes = ['miao', 'thought'];
+        const isBulletType = bulletTypes.includes(type);
+        if (isBulletType) {
+          const listEl = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
+          if (!listEl) return;
+          const content = DB.getWarehouseContent(today, type);
+          renderBulletList(listEl, content);
+        } else {
+          const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
+          if (!textarea) return;
+          textarea.value = DB.getWarehouseContent(today, type);
+        }
       });
+    }
+
+    // 渲染圆点列表
+    function renderBulletList(listEl, content) {
+      const lines = content ? content.split('\n').filter(l => l.trim()) : [];
+      listEl.innerHTML = '';
+      if (lines.length === 0) {
+        // 空列表，不添加条目（靠 placeholder 提示）
+        return;
+      }
+      lines.forEach(line => {
+        // 去掉开头的圆点
+        const text = line.replace(/^•\s*/, '');
+        listEl.appendChild(createBulletItem(text));
+      });
+    }
+
+    // 创建一个圆点条目
+    function createBulletItem(text) {
+      const item = document.createElement('div');
+      item.className = 'bullet-item';
+      const dot = document.createElement('div');
+      dot.className = 'bullet-dot';
+      dot.textContent = '•';
+      const textEl = document.createElement('div');
+      textEl.className = 'bullet-text';
+      textEl.contentEditable = 'true';
+      textEl.textContent = text || '';
+      item.appendChild(dot);
+      item.appendChild(textEl);
+      return item;
+    }
+
+    // 获取圆点列表的纯文本内容（每行前加•）
+    function getBulletListContent(listEl) {
+      const items = listEl.querySelectorAll('.bullet-item');
+      const lines = [];
+      items.forEach(item => {
+        const textEl = item.querySelector('.bullet-text');
+        const text = textEl.textContent.trim();
+        if (text) lines.push('• ' + text);
+      });
+      return lines.join('\n');
     }
 
     // 渲染全部视图（按类型分区）
@@ -4576,24 +4879,96 @@
 
         html += `
           <div class="warehouse-all-type-section" data-type="${type}">
-            <div class="warehouse-all-type-header">
+            <div class="warehouse-all-type-header" data-all-toggle-type="${type}">
+              <span class="warehouse-all-collapse-arrow">▾</span>
               <div class="warehouse-all-type-title">${info.icon} ${info.name}</div>
-              <div style="display:flex;align-items:center;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
                 <span class="warehouse-all-type-count">${items.length}条</span>
                 <button class="warehouse-all-copy-all-btn" data-copy-type="all" data-type="${type}" title="复制全部内容">📋</button>
               </div>
             </div>
-            <div class="warehouse-all-type-list">
+            <div class="warehouse-all-type-list" data-all-content-type="${type}">
         `;
 
         if (items.length === 0) {
           html += `<div class="warehouse-all-item-empty">暂无记录</div>`;
         } else {
+          const bulletTypes = ['miao', 'thought'];
+          const isBulletType = bulletTypes.includes(type);
           items.forEach(item => {
             const key = `${item.date}|${type}`;
             const isEditing = warehouseAllEditing[key];
             const dateStr = fmtWarehouseDate(item.date);
             const timeStr = formatTime(item.updatedAt);
+
+            let contentHtml = '';
+            if (isEditing) {
+              if (isBulletType) {
+                // 圆点列表类型的编辑模式
+                const lines = item.content ? item.content.split('\n').filter(l => l.trim()) : [];
+                let listHtml = `<div class="warehouse-all-edit-wrap">
+                  <div class="warehouse-bullet-list warehouse-all-bullet-editor" data-date="${item.date}" data-type="${type}">`;
+                if (lines.length === 0) {
+                  listHtml += `
+                    <div class="bullet-item">
+                      <div class="bullet-dot">•</div>
+                      <div class="bullet-text" contenteditable="true"></div>
+                    </div>
+                  `;
+                } else {
+                  lines.forEach(line => {
+                    const text = line.replace(/^•\s*/, '');
+                    listHtml += `
+                      <div class="bullet-item">
+                        <div class="bullet-dot">•</div>
+                        <div class="bullet-text" contenteditable="true">${escapeHtml(text)}</div>
+                      </div>
+                    `;
+                  });
+                }
+                listHtml += `</div>
+                  <div class="warehouse-resize-handle warehouse-all-resize-handle" data-all-resize-date="${item.date}" data-all-resize-type="${type}"></div>
+                </div>`;
+                contentHtml = listHtml;
+              } else {
+                contentHtml = `<div class="warehouse-all-edit-wrap">
+                  <textarea class="warehouse-all-item-textarea" data-date="${item.date}" data-type="${type}">${escapeHtml(item.content)}</textarea>
+                  <div class="warehouse-resize-handle warehouse-all-resize-handle" data-all-resize-date="${item.date}" data-all-resize-type="${type}"></div>
+                </div>`;
+              }
+            } else if (isBulletType) {
+              // 圆点列表类型：渲染成带圆点的列表
+              const lines = item.content ? item.content.split('\n').filter(l => l.trim()) : [];
+              if (lines.length === 0) {
+                contentHtml = `<div class="warehouse-all-item-content" style="color:var(--muted);">暂无内容</div>`;
+              } else {
+                let listHtml = `<div class="warehouse-all-resize-wrap" data-all-resize-date="${item.date}" data-all-resize-type="${type}" data-all-resize-mode="view">
+                  <div class="warehouse-all-item-bullet-list">`;
+                lines.forEach(line => {
+                  const text = line.replace(/^•\s*/, '');
+                  listHtml += `
+                    <div class="bullet-item">
+                      <div class="bullet-dot">•</div>
+                      <div class="bullet-text">${escapeHtml(text)}</div>
+                    </div>
+                  `;
+                });
+                listHtml += `</div>
+                  <div class="warehouse-resize-handle warehouse-all-resize-handle warehouse-all-view-resize-handle" data-all-resize-date="${item.date}" data-all-resize-type="${type}" data-all-resize-mode="view"></div>
+                </div>`;
+                contentHtml = listHtml;
+              }
+            } else {
+              const content = item.content || '';
+              if (!content.trim()) {
+                contentHtml = `<div class="warehouse-all-item-content" style="color:var(--muted);">暂无内容</div>`;
+              } else {
+                contentHtml = `<div class="warehouse-all-resize-wrap" data-all-resize-date="${item.date}" data-all-resize-type="${type}" data-all-resize-mode="view">
+                  <div class="warehouse-all-item-content warehouse-all-item-content-resizable">${escapeHtml(item.content)}</div>
+                  <div class="warehouse-resize-handle warehouse-all-resize-handle warehouse-all-view-resize-handle" data-all-resize-date="${item.date}" data-all-resize-type="${type}" data-all-resize-mode="view"></div>
+                </div>`;
+              }
+            }
 
             html += `
               <div class="warehouse-all-item${isEditing ? ' editing' : ''}" data-date="${item.date}" data-type="${type}">
@@ -4605,11 +4980,7 @@
                   `}
                   <button class="warehouse-all-copy-btn" data-action="copy" data-date="${item.date}" data-type="${type}" title="复制">📋</button>
                 </div>
-                ${isEditing ? `
-                  <textarea class="warehouse-all-item-textarea" data-date="${item.date}" data-type="${type}">${escapeHtml(item.content)}</textarea>
-                ` : `
-                  <div class="warehouse-all-item-content">${escapeHtml(item.content)}</div>
-                `}
+                ${contentHtml}
                 <div class="warehouse-all-item-time" title="${dateStr} ${timeStr}">${dateStr} ${timeStr}</div>
               </div>
             `;
@@ -4623,6 +4994,15 @@
       });
 
       container.innerHTML = html;
+
+      // 恢复全部视图的折叠状态
+      const allState = JSON.parse(localStorage.getItem('warehouse_all_collapsed') || '{}');
+      Object.keys(allState).forEach(type => {
+        if (allState[type]) {
+          const section = container.querySelector(`.warehouse-all-type-section[data-type="${type}"]`);
+          if (section) section.classList.add('collapsed');
+        }
+      });
     }
 
     // 格式化时间（HH:mm）
@@ -4637,28 +5017,55 @@
       const key = `${date}|${type}`;
       warehouseAllEditing[key] = !warehouseAllEditing[key];
       renderWarehouseAll();
-      // 如果进入编辑模式，聚焦 textarea
+      // 如果进入编辑模式，聚焦到编辑区
       if (warehouseAllEditing[key]) {
         setTimeout(() => {
-          const ta = document.querySelector(`.warehouse-all-item-textarea[data-date="${date}"][data-type="${type}"]`);
-          if (ta) { ta.focus(); ta.scrollTop = ta.scrollHeight; }
+          const bulletTypes = ['miao', 'thought'];
+          if (bulletTypes.includes(type)) {
+            const listEl = document.querySelector(`.warehouse-all-bullet-editor[data-date="${date}"][data-type="${type}"]`);
+            if (listEl) {
+              const lastText = listEl.querySelector('.bullet-item:last-child .bullet-text');
+              if (lastText) {
+                lastText.focus();
+                placeCaretAtEnd(lastText);
+              }
+            }
+          } else {
+            const ta = document.querySelector(`.warehouse-all-item-textarea[data-date="${date}"][data-type="${type}"]`);
+            if (ta) { ta.focus(); ta.scrollTop = ta.scrollHeight; }
+          }
         }, 50);
       }
     }
 
     // 保存全部视图中的编辑
     function saveAllEdit(date, type) {
-      const ta = document.querySelector(`.warehouse-all-item-textarea[data-date="${date}"][data-type="${type}"]`);
-      if (!ta) return;
-      DB.setWarehouseContent(date, type, ta.value);
+      const bulletTypes = ['miao', 'thought'];
+      let content = '';
+      if (bulletTypes.includes(type)) {
+        const listEl = document.querySelector(`.warehouse-all-bullet-editor[data-date="${date}"][data-type="${type}"]`);
+        if (!listEl) return;
+        content = getBulletListContent(listEl);
+      } else {
+        const ta = document.querySelector(`.warehouse-all-item-textarea[data-date="${date}"][data-type="${type}"]`);
+        if (!ta) return;
+        content = ta.value;
+      }
+      DB.setWarehouseContent(date, type, content);
       const key = `${date}|${type}`;
       warehouseAllEditing[key] = false;
       renderWarehouseAll();
       // 同步刷新编辑区（如果是今天）
       const today = fmtDate(new Date());
       if (date === today) {
-        const editTa = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
-        if (editTa) editTa.value = ta.value;
+        const bulletTypes = ['miao', 'thought'];
+        if (bulletTypes.includes(type)) {
+          const listEl = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
+          if (listEl) renderBulletList(listEl, ta.value);
+        } else {
+          const editTa = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
+          if (editTa) editTa.value = ta.value;
+        }
       }
     }
 
@@ -4667,6 +5074,17 @@
       const div = document.createElement('div');
       div.textContent = str;
       return div.innerHTML;
+    }
+
+    // 将光标放到元素末尾
+    function placeCaretAtEnd(el) {
+      el.focus();
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
     }
 
     // ============ Anchors (我的锚点) ============
@@ -4813,6 +5231,7 @@
 
     // ===== 音效系统 =====
     let audioCtx = null;
+    let soundMuted = false;
     function getAudioCtx() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -4821,6 +5240,7 @@
 
     // 音效：耍刀出鞘（解锁面板）
     function sfxUnlock() {
+      if (soundMuted) return;
       const ctx = getAudioCtx();
       const now = ctx.currentTime;
       const bufferSize = ctx.sampleRate * 0.2;
@@ -4866,6 +5286,7 @@
 
     // 音效：清脆叮（锚点展开）
     function sfxDing() {
+      if (soundMuted) return;
       const ctx = getAudioCtx();
       const now = ctx.currentTime;
       const osc = ctx.createOscillator();
@@ -4888,6 +5309,7 @@
 
     // 音效：纸页收拢（锚点折叠）
     function sfxFanClose() {
+      if (soundMuted) return;
       const ctx = getAudioCtx();
       const now = ctx.currentTime;
       const bufferSize = ctx.sampleRate * 0.15;
@@ -4911,6 +5333,7 @@
 
     // 音效：轻柔翻页（tab切换）
     function sfxPageFlip() {
+      if (soundMuted) return;
       const ctx = getAudioCtx();
       const now = ctx.currentTime;
       // 主体：纸页摩擦声
@@ -4949,6 +5372,7 @@
 
     // 音效：磁吸关门（面板关闭按钮）
     function sfxPanelClose() {
+      if (soundMuted) return;
       const ctx = getAudioCtx();
       const now = ctx.currentTime;
       const osc = ctx.createOscillator();
@@ -4973,6 +5397,7 @@
 
     // 音效：军刀出鞘（仓库展开）
     function sfxWarehouseOpen() {
+      if (soundMuted) return;
       const ctx = getAudioCtx();
       const now = ctx.currentTime;
       const bufferSize = ctx.sampleRate * 0.3;
@@ -5027,6 +5452,7 @@
 
     // 音效：重关门（仓库折叠）
     function sfxWarehouseClose() {
+      if (soundMuted) return;
       const ctx = getAudioCtx();
       const now = ctx.currentTime;
       const osc = ctx.createOscillator();
@@ -5060,6 +5486,38 @@
     function initWarehouseEvents() {
       // menu button
       document.getElementById('drawerMenuBtn').addEventListener('click', toggleWarehousePanel);
+
+      // close button — 关闭侧边栏
+      document.getElementById('warehouseCloseBtn').addEventListener('click', () => {
+        sfxFanClose();
+        closeWarehousePanel();
+      });
+
+      // 音效开关按钮
+      (function initSoundToggle() {
+        const btn = document.getElementById('headerSoundBtn');
+        const saved = localStorage.getItem('tt_sound_muted');
+        if (saved === '1') {
+          soundMuted = true;
+          btn.textContent = '🔇';
+          btn.title = '开启音效';
+          btn.classList.add('muted');
+        }
+        btn.addEventListener('click', () => {
+          soundMuted = !soundMuted;
+          if (soundMuted) {
+            btn.textContent = '🔇';
+            btn.title = '开启音效';
+            btn.classList.add('muted');
+            localStorage.setItem('tt_sound_muted', '1');
+          } else {
+            btn.textContent = '🔊';
+            btn.title = '关闭音效';
+            btn.classList.remove('muted');
+            localStorage.setItem('tt_sound_muted', '0');
+          }
+        });
+      })();
 
       // 切换右侧内容显示/隐藏
       let rightCollapsed = false;
@@ -5130,29 +5588,234 @@
       // three editors — auto save
       const today = fmtDate(new Date());
       ['reflection', 'miao', 'thought'].forEach(type => {
-        const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
-        if (!textarea) return;
-        textarea.addEventListener('input', () => {
-          clearTimeout(warehouseSaveTimers[type]);
-          warehouseSaveTimers[type] = setTimeout(() => {
-            DB.setWarehouseContent(today, type, textarea.value);
-            // 如果全部视图是打开的，刷新一下
-            if (warehouseCurrentView === 'all') renderWarehouseAll();
-          }, 800);
+        const bulletTypes = ['miao', 'thought'];
+        const isBulletType = bulletTypes.includes(type);
+
+        if (isBulletType) {
+          const listEl = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
+          if (!listEl) return;
+
+          function triggerBulletSave() {
+            clearTimeout(warehouseSaveTimers[type]);
+            warehouseSaveTimers[type] = setTimeout(() => {
+              const content = getBulletListContent(listEl);
+              DB.setWarehouseContent(today, type, content);
+              // 如果全部视图是打开的，刷新一下
+              if (warehouseCurrentView === 'all') renderWarehouseAll();
+            }, 800);
+          }
+
+          // 监听输入
+          listEl.addEventListener('input', (e) => {
+            if (e.target.classList.contains('bullet-text')) {
+              triggerBulletSave();
+            }
+          });
+
+          // 点击列表空白处，添加/聚焦到最后一行
+          listEl.addEventListener('click', (e) => {
+            if (e.target === listEl) {
+              let lastItem = listEl.querySelector('.bullet-item:last-child');
+              if (!lastItem || lastItem.querySelector('.bullet-text').textContent.trim()) {
+                lastItem = createBulletItem('');
+                listEl.appendChild(lastItem);
+              }
+              const textEl = lastItem.querySelector('.bullet-text');
+              textEl.focus();
+              placeCaretAtEnd(textEl);
+            }
+          });
+
+          // 键盘事件
+          listEl.addEventListener('keydown', (e) => {
+            const textEl = e.target;
+            if (!textEl.classList.contains('bullet-text')) return;
+            const item = textEl.closest('.bullet-item');
+            if (!item) return;
+
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              // 在当前条目后面插入新条目
+              const newItem = createBulletItem('');
+              item.after(newItem);
+              const newTextEl = newItem.querySelector('.bullet-text');
+              newTextEl.focus();
+              triggerBulletSave();
+            } else if (e.key === 'Backspace') {
+              const text = textEl.textContent;
+              const sel = window.getSelection();
+              const isAtStart = sel.anchorOffset === 0 && sel.focusOffset === 0;
+              if (text === '' || (isAtStart && sel.isCollapsed)) {
+                // 空行或光标在开头且按退格：删除当前行，聚焦上一行
+                const prevItem = item.previousElementSibling;
+                if (prevItem) {
+                  e.preventDefault();
+                  item.remove();
+                  const prevText = prevItem.querySelector('.bullet-text');
+                  prevText.focus();
+                  placeCaretAtEnd(prevText);
+                  triggerBulletSave();
+                } else if (listEl.querySelectorAll('.bullet-item').length === 1) {
+                  // 只有一行，删除后变空（显示 placeholder）
+                  e.preventDefault();
+                  item.remove();
+                  triggerBulletSave();
+                }
+              }
+            }
+          });
+        } else {
+          const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
+          if (!textarea) return;
+
+          textarea.addEventListener('input', () => {
+            clearTimeout(warehouseSaveTimers[type]);
+            warehouseSaveTimers[type] = setTimeout(() => {
+              DB.setWarehouseContent(today, type, textarea.value);
+              // 如果全部视图是打开的，刷新一下
+              if (warehouseCurrentView === 'all') renderWarehouseAll();
+            }, 800);
+          });
+        }
+      });
+
+      // 板块折叠/展开
+      document.querySelectorAll('.warehouse-edit-title[data-toggle-type]').forEach(title => {
+        title.addEventListener('click', (e) => {
+          // 点击复制按钮时不触发折叠
+          if (e.target.closest('.warehouse-edit-actions')) return;
+          const type = title.dataset.toggleType;
+          const block = title.closest('.warehouse-edit-block');
+          const willCollapse = !block.classList.contains('collapsed');
+          block.classList.toggle('collapsed');
+          // 播放折叠音效
+          if (willCollapse) {
+            sfxFanClose();
+          }
+          // 保存状态到 localStorage
+          const collapsed = block.classList.contains('collapsed');
+          const state = JSON.parse(localStorage.getItem('warehouse_collapsed') || '{}');
+          state[type] = collapsed;
+          localStorage.setItem('warehouse_collapsed', JSON.stringify(state));
         });
       });
+      // 恢复折叠状态
+      (function restoreCollapsedState() {
+        const state = JSON.parse(localStorage.getItem('warehouse_collapsed') || '{}');
+        Object.keys(state).forEach(type => {
+          if (state[type]) {
+            const block = document.querySelector(`.warehouse-edit-block[data-type="${type}"]`);
+            if (block) block.classList.add('collapsed');
+          }
+        });
+      })();
+
+      // 编辑区拖拽调整大小
+      (function initResizeHandles() {
+        const heightState = JSON.parse(localStorage.getItem('warehouse_editor_heights') || '{}');
+        const minHeight = 60;
+
+        // 恢复保存的高度
+        Object.keys(heightState).forEach(type => {
+          const h = heightState[type];
+          if (h && h >= minHeight) {
+            const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
+            if (textarea) textarea.style.height = h + 'px';
+            const bulletList = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
+            if (bulletList) bulletList.style.height = h + 'px';
+          }
+        });
+
+        document.querySelectorAll('.warehouse-resize-handle').forEach(handle => {
+          const type = handle.dataset.resizeType;
+          const content = handle.parentElement;
+          const textarea = content.querySelector('.warehouse-edit-textarea');
+          const bulletList = content.querySelector('.warehouse-bullet-list');
+          const target = textarea || bulletList;
+          if (!target) return;
+
+          let startY = 0;
+          let startHeight = 0;
+          let isResizing = false;
+
+          function onMouseMove(e) {
+            if (!isResizing) return;
+            const delta = e.clientY - startY;
+            let newHeight = startHeight + delta;
+            if (newHeight < minHeight) newHeight = minHeight;
+            target.style.height = newHeight + 'px';
+          }
+
+          function onMouseUp() {
+            if (!isResizing) return;
+            isResizing = false;
+            handle.classList.remove('active');
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+            // 保存高度
+            const h = target.offsetHeight;
+            const state = JSON.parse(localStorage.getItem('warehouse_editor_heights') || '{}');
+            state[type] = h;
+            localStorage.setItem('warehouse_editor_heights', JSON.stringify(state));
+          }
+
+          handle.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            isResizing = true;
+            startY = e.clientY;
+            startHeight = target.offsetHeight;
+            handle.classList.add('active');
+            document.body.style.cursor = 'ns-resize';
+            document.body.style.userSelect = 'none';
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          });
+        });
+      })();
 
       // copy buttons in edit view
       document.querySelectorAll('.warehouse-copy-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const type = btn.dataset.type;
-          const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
-          if (textarea) copyToClipboard(textarea.value, btn);
+          const bulletTypes = ['miao', 'thought'];
+          if (bulletTypes.includes(type)) {
+            const listEl = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
+            if (listEl) {
+              const content = getBulletListContent(listEl);
+              copyToClipboard(content, btn);
+            }
+          } else {
+            const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
+            if (textarea) copyToClipboard(textarea.value, btn);
+          }
         });
       });
 
       // all view — 事件委托
+      // 全部视图中分类折叠/展开
+      document.getElementById('warehouseAllContent').addEventListener('click', (e) => {
+        const header = e.target.closest('.warehouse-all-type-header');
+        if (!header) return;
+        // 点击复制按钮时不触发折叠
+        if (e.target.closest('button')) return;
+        const type = header.dataset.allToggleType;
+        const section = header.closest('.warehouse-all-type-section');
+        const willCollapse = !section.classList.contains('collapsed');
+        section.classList.toggle('collapsed');
+        // 播放折叠音效
+        if (willCollapse) {
+          sfxFanClose();
+        }
+        // 保存状态
+        const collapsed = section.classList.contains('collapsed');
+        const state = JSON.parse(localStorage.getItem('warehouse_all_collapsed') || '{}');
+        state[type] = collapsed;
+        localStorage.setItem('warehouse_all_collapsed', JSON.stringify(state));
+      });
+
       document.getElementById('warehouseAllContent').addEventListener('click', (e) => {
         const btn = e.target.closest('button[data-action]');
         if (!btn) return;
@@ -5167,6 +5830,119 @@
         } else if (action === 'copy') {
           const content = DB.getWarehouseContent(date, type);
           copyToClipboard(content, btn);
+        }
+      });
+
+      // 全部视图中编辑区拖拽调整大小
+      (function initAllResizeHandles() {
+        const allContent = document.getElementById('warehouseAllContent');
+        const minHeight = 60;
+        let currentTarget = null;
+        let startY = 0;
+        let startHeight = 0;
+        let currentHandle = null;
+
+        function onMouseMove(e) {
+          if (!currentTarget) return;
+          const delta = e.clientY - startY;
+          let newHeight = startHeight + delta;
+          if (newHeight < minHeight) newHeight = minHeight;
+          currentTarget.style.height = newHeight + 'px';
+        }
+
+        function onMouseUp() {
+          if (!currentTarget) return;
+          if (currentHandle) currentHandle.classList.remove('active');
+          currentTarget = null;
+          currentHandle = null;
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+        }
+
+        allContent.addEventListener('mousedown', (e) => {
+          const handle = e.target.closest('.warehouse-all-resize-handle');
+          if (!handle) return;
+          e.preventDefault();
+          const mode = handle.dataset.allResizeMode || 'edit';
+          let target = null;
+          if (mode === 'view') {
+            const wrap = handle.closest('.warehouse-all-resize-wrap');
+            if (!wrap) return;
+            const contentEl = wrap.querySelector('.warehouse-all-item-content-resizable');
+            const bulletList = wrap.querySelector('.warehouse-all-item-bullet-list');
+            target = contentEl || bulletList;
+          } else {
+            const wrap = handle.closest('.warehouse-all-edit-wrap');
+            if (!wrap) return;
+            const textarea = wrap.querySelector('.warehouse-all-item-textarea');
+            const bulletList = wrap.querySelector('.warehouse-all-bullet-editor');
+            target = textarea || bulletList;
+          }
+          if (!target) return;
+
+          currentTarget = target;
+          currentHandle = handle;
+          startY = e.clientY;
+          startHeight = target.offsetHeight;
+          handle.classList.add('active');
+          document.body.style.cursor = 'ns-resize';
+          document.body.style.userSelect = 'none';
+          document.addEventListener('mousemove', onMouseMove);
+          document.addEventListener('mouseup', onMouseUp);
+        });
+      })();
+
+      // 全部视图中圆点编辑器：点击空白处添加/聚焦到最后一行
+      document.getElementById('warehouseAllContent').addEventListener('click', (e) => {
+        const listEl = e.target.closest('.warehouse-all-bullet-editor');
+        if (!listEl) return;
+        if (e.target === listEl) {
+          let lastItem = listEl.querySelector('.bullet-item:last-child');
+          if (!lastItem || lastItem.querySelector('.bullet-text').textContent.trim()) {
+            lastItem = createBulletItem('');
+            listEl.appendChild(lastItem);
+          }
+          const textEl = lastItem.querySelector('.bullet-text');
+          textEl.focus();
+          placeCaretAtEnd(textEl);
+        }
+      });
+
+      // 全部视图中圆点编辑器的键盘事件
+      document.getElementById('warehouseAllContent').addEventListener('keydown', (e) => {
+        const textEl = e.target;
+        if (!textEl.classList.contains('bullet-text')) return;
+        const listEl = textEl.closest('.warehouse-all-bullet-editor');
+        if (!listEl) return;
+        const item = textEl.closest('.bullet-item');
+        if (!item) return;
+
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          const newItem = createBulletItem('');
+          item.after(newItem);
+          const newTextEl = newItem.querySelector('.bullet-text');
+          newTextEl.focus();
+        } else if (e.key === 'Backspace') {
+          const text = textEl.textContent;
+          const sel = window.getSelection();
+          const isAtStart = sel.anchorOffset === 0 && sel.focusOffset === 0;
+          if (text === '' || (isAtStart && sel.isCollapsed)) {
+            const prevItem = item.previousElementSibling;
+            if (prevItem) {
+              e.preventDefault();
+              item.remove();
+              const prevText = prevItem.querySelector('.bullet-text');
+              prevText.focus();
+              placeCaretAtEnd(prevText);
+            } else if (listEl.querySelectorAll('.bullet-item').length === 1) {
+              // 只有一行，删除后变空
+              e.preventDefault();
+              item.remove();
+            }
+          }
         }
       });
 
