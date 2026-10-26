@@ -2244,7 +2244,7 @@
   <div class="toast" id="toast"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase.js"></script>
   <script>
     // ============ Data Layer ============
     const DB = {
@@ -2974,7 +2974,13 @@
           }
         }, 1000);
 
-        document.getElementById('timerStopBtn').addEventListener('click', () => {
+        document.getElementById('timerStopBtn').addEventListener('click', async () => {
+          // 停止前先同步，确保拿到其他设备最新的计时器状态
+          if (Sync.ready) {
+            try {
+              await Sync.pull();
+            } catch(e) { console.warn('Pre-stop sync pull failed:', e); }
+          }
           // Stop timer and open sheet to fill in details
           sheetTimerBackup = { ...DB.timer };
           const timing = DB.stopTimer();
@@ -6079,6 +6085,19 @@
         if (warehouseCurrentView === 'all') renderWarehouseAll();
       }
     });
+
+    // 定时同步：每 30 秒拉取一次云端最新数据（页面可见时）
+    setInterval(() => {
+      if (document.hidden || !Sync.ready) return;
+      Sync.pull().then(changed => {
+        if (!changed) return;
+        renderAll();
+        if (warehousePanelOpen) {
+          loadWarehouseEditors();
+          if (warehouseCurrentView === 'all') renderWarehouseAll();
+        }
+      }).catch(e => console.warn('Periodic sync failed:', e));
+    }, 30000);
   </script>
 
 </body></html>

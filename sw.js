@@ -1,5 +1,5 @@
-const CACHE_NAME = 'time-tracker-v219';
-const ASSETS = ['./', './index.html', './manifest.json', './bg-fish.png', './bg-sidebar.png'];
+const CACHE_NAME = 'time-tracker-v221';
+const ASSETS = ['./', './index.html', './manifest.json', './bg-fish.png', './bg-sidebar.png', './supabase.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
