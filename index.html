@@ -2246,6 +2246,15 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="./supabase.js"></script>
   <script>
+    // Supabase 加载失败备用：如果本地文件没加载成功，自动从 CDN 加载
+    (function() {
+      if (typeof supabase !== 'undefined') return;
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+      document.head.appendChild(s);
+    })();
+  </script>
+  <script>
     // ============ Data Layer ============
     const DB = {
       activities: [],
@@ -2541,7 +2550,28 @@
 
       init() {
         try {
-          if (typeof supabase === 'undefined') { console.warn('Supabase SDK not loaded'); return; }
+          if (typeof supabase === 'undefined') {
+            console.warn('Supabase SDK not loaded yet, retrying...');
+            // 重试等待 SDK 加载（最多等 5 秒）
+            var tries = 0;
+            var self = this;
+            var timer = setInterval(function() {
+              tries++;
+              if (typeof supabase !== 'undefined') {
+                clearInterval(timer);
+                self._doInit();
+              } else if (tries >= 20) {
+                clearInterval(timer);
+                console.warn('Supabase SDK failed to load after 5s');
+              }
+            }, 250);
+            return;
+          }
+          this._doInit();
+        } catch(e) { console.warn('Sync init failed:', e); }
+      },
+      _doInit() {
+        try {
           this.client = supabase.createClient(this.URL, this.KEY);
           this.deviceId = localStorage.getItem('tt_device_id');
           if (!this.deviceId) {
@@ -2549,7 +2579,9 @@
             localStorage.setItem('tt_device_id', this.deviceId);
           }
           this.ready = true;
-        } catch(e) { console.warn('Sync init failed:', e); }
+          // 初始化完成后自动同步一次
+          this.pull().catch(function(e) { console.warn('Init pull failed:', e); });
+        } catch(e) { console.warn('Sync doInit failed:', e); }
       },
 
       async push() {
