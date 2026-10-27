@@ -3142,8 +3142,8 @@
     function renderDayPlan(dateStr) {
       const plans = DB.getPlansByDate(dateStr);
       const el = document.getElementById('dayPlan');
-      // 如果正在编辑（添加输入框或编辑输入框有焦点），跳过重新渲染，避免丢失焦点
-      if (el && el.contains(document.activeElement)) return;
+      // 如果正在输入文字，跳过重新渲染，避免丢失焦点
+      if (el && isFocusedInEditor() && el.contains(document.activeElement)) return;
       const doneCount = plans.filter(p => p.done).length;
       el.innerHTML = `
         <div class="card plan-card${planCollapsed ? ' collapsed' : ''}">
@@ -4840,14 +4840,14 @@
         if (isBulletType) {
           const listEl = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
           if (!listEl) return;
-          // 如果当前正在编辑（列表内有焦点），跳过重新渲染，避免丢失焦点
-          if (listEl.contains(document.activeElement)) return;
+          // 如果当前正在输入文字，跳过重新渲染，避免丢失焦点
+          if (isFocusedInEditor() && listEl.contains(document.activeElement)) return;
           const content = DB.getWarehouseContent(today, type);
           renderBulletList(listEl, content);
         } else {
           const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
           if (!textarea) return;
-          // 如果当前正在编辑，跳过重新赋值，避免丢失光标位置
+          // 如果当前正在输入文字，跳过重新赋值，避免丢失光标位置
           if (document.activeElement === textarea) return;
           const newContent = DB.getWarehouseContent(today, type);
           if (textarea.value !== newContent) {
@@ -4904,8 +4904,8 @@
     function renderWarehouseAll() {
       const container = document.getElementById('warehouseAllContent');
       if (!container) return;
-      // 如果正在编辑（全部视图内有焦点），跳过重新渲染，避免丢失焦点
-      if (container.contains(document.activeElement)) return;
+      // 如果正在输入文字，跳过重新渲染，避免丢失焦点
+      if (isFocusedInEditor() && container.contains(document.activeElement)) return;
 
       const types = ['reflection', 'miao', 'thought'];
       let totalCount = 0;
@@ -5119,6 +5119,16 @@
     }
 
     // escape html
+    // 判断当前焦点是否在可输入元素上（textarea、input、contenteditable）
+    function isFocusedInEditor() {
+      const el = document.activeElement;
+      if (!el) return false;
+      const tag = el.tagName.toLowerCase();
+      if (tag === 'textarea' || tag === 'input') return true;
+      if (el.isContentEditable) return true;
+      return false;
+    }
+
     function escapeHtml(str) {
       const div = document.createElement('div');
       div.textContent = str;
@@ -5159,8 +5169,8 @@
     function renderAnchors() {
       const listEl = document.getElementById('anchorList');
       if (!listEl) return;
-      // 如果正在编辑（列表内有焦点），跳过重新渲染，避免丢失焦点
-      if (listEl.contains(document.activeElement)) return;
+      // 如果正在输入文字，跳过重新渲染，避免丢失焦点
+      if (isFocusedInEditor() && listEl.contains(document.activeElement)) return;
       const anchors = DB.getAnchorsByDate(anchorViewDate);
       const dateLabelEl = document.getElementById('anchorDateLabel');
       if (dateLabelEl) dateLabelEl.textContent = fmtAnchorDateLabel(anchorViewDate);
