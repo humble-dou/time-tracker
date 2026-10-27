@@ -2344,7 +2344,7 @@
             });
           }
         });
-        return result.sort((a, b) => b.updatedAt - a.updatedAt);
+        return result.sort((a, b) => b.date.localeCompare(a.date));
       },
       // Anchors (我的锚点)
       saveAnchors() {
