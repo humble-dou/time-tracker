@@ -3142,6 +3142,8 @@
     function renderDayPlan(dateStr) {
       const plans = DB.getPlansByDate(dateStr);
       const el = document.getElementById('dayPlan');
+      // 如果正在编辑（添加输入框或编辑输入框有焦点），跳过重新渲染，避免丢失焦点
+      if (el && el.contains(document.activeElement)) return;
       const doneCount = plans.filter(p => p.done).length;
       el.innerHTML = `
         <div class="card plan-card${planCollapsed ? ' collapsed' : ''}">
@@ -4838,12 +4840,19 @@
         if (isBulletType) {
           const listEl = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
           if (!listEl) return;
+          // 如果当前正在编辑（列表内有焦点），跳过重新渲染，避免丢失焦点
+          if (listEl.contains(document.activeElement)) return;
           const content = DB.getWarehouseContent(today, type);
           renderBulletList(listEl, content);
         } else {
           const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
           if (!textarea) return;
-          textarea.value = DB.getWarehouseContent(today, type);
+          // 如果当前正在编辑，跳过重新赋值，避免丢失光标位置
+          if (document.activeElement === textarea) return;
+          const newContent = DB.getWarehouseContent(today, type);
+          if (textarea.value !== newContent) {
+            textarea.value = newContent;
+          }
         }
       });
     }
@@ -4895,6 +4904,8 @@
     function renderWarehouseAll() {
       const container = document.getElementById('warehouseAllContent');
       if (!container) return;
+      // 如果正在编辑（全部视图内有焦点），跳过重新渲染，避免丢失焦点
+      if (container.contains(document.activeElement)) return;
 
       const types = ['reflection', 'miao', 'thought'];
       let totalCount = 0;
@@ -5148,6 +5159,8 @@
     function renderAnchors() {
       const listEl = document.getElementById('anchorList');
       if (!listEl) return;
+      // 如果正在编辑（列表内有焦点），跳过重新渲染，避免丢失焦点
+      if (listEl.contains(document.activeElement)) return;
       const anchors = DB.getAnchorsByDate(anchorViewDate);
       const dateLabelEl = document.getElementById('anchorDateLabel');
       if (dateLabelEl) dateLabelEl.textContent = fmtAnchorDateLabel(anchorViewDate);
@@ -5776,20 +5789,29 @@
           let startHeight = 0;
           let isResizing = false;
 
-          function onMouseMove(e) {
+          function getY(e) {
+            if (e.touches && e.touches[0]) return e.touches[0].clientY;
+            if (e.changedTouches && e.changedTouches[0]) return e.changedTouches[0].clientY;
+            return e.clientY;
+          }
+
+          function onMove(e) {
             if (!isResizing) return;
-            const delta = e.clientY - startY;
+            e.preventDefault();
+            const delta = getY(e) - startY;
             let newHeight = startHeight + delta;
             if (newHeight < minHeight) newHeight = minHeight;
             target.style.height = newHeight + 'px';
           }
 
-          function onMouseUp() {
+          function onEnd(e) {
             if (!isResizing) return;
             isResizing = false;
             handle.classList.remove('active');
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onEnd);
+            document.removeEventListener('touchmove', onMove, { passive: false });
+            document.removeEventListener('touchend', onEnd);
             document.body.style.cursor = '';
             document.body.style.userSelect = '';
             // 保存高度
@@ -5799,17 +5821,22 @@
             localStorage.setItem('warehouse_editor_heights', JSON.stringify(state));
           }
 
-          handle.addEventListener('mousedown', (e) => {
+          function startResize(e) {
             e.preventDefault();
             isResizing = true;
-            startY = e.clientY;
+            startY = getY(e);
             startHeight = target.offsetHeight;
             handle.classList.add('active');
             document.body.style.cursor = 'ns-resize';
             document.body.style.userSelect = 'none';
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-          });
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onEnd);
+            document.addEventListener('touchmove', onMove, { passive: false });
+            document.addEventListener('touchend', onEnd);
+          }
+
+          handle.addEventListener('mousedown', startResize);
+          handle.addEventListener('touchstart', startResize, { passive: false });
         });
       })();
 
@@ -5880,28 +5907,35 @@
         let startHeight = 0;
         let currentHandle = null;
 
-        function onMouseMove(e) {
+        function getY(e) {
+          if (e.touches && e.touches[0]) return e.touches[0].clientY;
+          if (e.changedTouches && e.changedTouches[0]) return e.changedTouches[0].clientY;
+          return e.clientY;
+        }
+
+        function onMove(e) {
           if (!currentTarget) return;
-          const delta = e.clientY - startY;
+          if (e.touches) e.preventDefault();
+          const delta = getY(e) - startY;
           let newHeight = startHeight + delta;
           if (newHeight < minHeight) newHeight = minHeight;
           currentTarget.style.height = newHeight + 'px';
         }
 
-        function onMouseUp() {
+        function onEnd() {
           if (!currentTarget) return;
           if (currentHandle) currentHandle.classList.remove('active');
           currentTarget = null;
           currentHandle = null;
-          document.removeEventListener('mousemove', onMouseMove);
-          document.removeEventListener('mouseup', onMouseUp);
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onEnd);
+          document.removeEventListener('touchmove', onMove, { passive: false });
+          document.removeEventListener('touchend', onEnd);
           document.body.style.cursor = '';
           document.body.style.userSelect = '';
         }
 
-        allContent.addEventListener('mousedown', (e) => {
-          const handle = e.target.closest('.warehouse-all-resize-handle');
-          if (!handle) return;
+        function startResize(handle, e) {
           e.preventDefault();
           const mode = handle.dataset.allResizeMode || 'edit';
           let target = null;
@@ -5922,14 +5956,28 @@
 
           currentTarget = target;
           currentHandle = handle;
-          startY = e.clientY;
+          startY = getY(e);
           startHeight = target.offsetHeight;
           handle.classList.add('active');
           document.body.style.cursor = 'ns-resize';
           document.body.style.userSelect = 'none';
-          document.addEventListener('mousemove', onMouseMove);
-          document.addEventListener('mouseup', onMouseUp);
+          document.addEventListener('mousemove', onMove);
+          document.addEventListener('mouseup', onEnd);
+          document.addEventListener('touchmove', onMove, { passive: false });
+          document.addEventListener('touchend', onEnd);
+        }
+
+        allContent.addEventListener('mousedown', (e) => {
+          const handle = e.target.closest('.warehouse-all-resize-handle');
+          if (!handle) return;
+          startResize(handle, e);
         });
+
+        allContent.addEventListener('touchstart', (e) => {
+          const handle = e.target.closest('.warehouse-all-resize-handle');
+          if (!handle) return;
+          startResize(handle, e);
+        }, { passive: false });
       })();
 
       // 全部视图中圆点编辑器：点击空白处添加/聚焦到最后一行
