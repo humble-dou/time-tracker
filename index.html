@@ -4330,6 +4330,7 @@
       // ---- Pomodoro Timer ----
       let pomoTotalSec = 25 * 60;
       let pomoRemainSec = pomoTotalSec;
+      let pomoEndTime = null; // 结束时间戳（基于真实时间，后台也准确）
       let pomoInterval = null;
       let pomoRunning = false;
       let pomoHovering = false;
@@ -4469,10 +4470,14 @@
       }
 
       function pomoTick() {
-        pomoRemainSec--;
+        // 用真实时间戳计算剩余秒数，即使后台被节流也准确
+        if (pomoEndTime == null) return;
+        const remain = Math.ceil((pomoEndTime - Date.now()) / 1000);
+        pomoRemainSec = remain > 0 ? remain : 0;
         if (pomoRemainSec <= 0) {
           pomoRemainSec = 0;
           pomoRunning = false;
+          pomoEndTime = null;
           clearInterval(pomoInterval);
           pomoInterval = null;
           pomoIcon.classList.add('flash');
@@ -4488,14 +4493,22 @@
       function pomoStart() {
         if (pomoRemainSec <= 0) pomoRemainSec = pomoTotalSec;
         pomoRunning = true;
+        pomoEndTime = Date.now() + pomoRemainSec * 1000;
         pomoIcon.classList.remove('flash');
         pomoStartBtn.textContent = '暂停';
+        if (pomoInterval) clearInterval(pomoInterval);
         pomoInterval = setInterval(pomoTick, 1000);
         pomoUpdateDisplay();
       }
 
       function pomoPause() {
         pomoRunning = false;
+        // 暂停时根据真实时间更新剩余秒数
+        if (pomoEndTime != null) {
+          const remain = Math.ceil((pomoEndTime - Date.now()) / 1000);
+          pomoRemainSec = remain > 0 ? remain : 0;
+        }
+        pomoEndTime = null;
         clearInterval(pomoInterval);
         pomoInterval = null;
         pomoStartBtn.textContent = '继续';
@@ -4504,6 +4517,7 @@
 
       function pomoReset() {
         pomoRunning = false;
+        pomoEndTime = null;
         clearInterval(pomoInterval);
         pomoInterval = null;
         pomoRemainSec = 0;
@@ -4572,6 +4586,13 @@
 
       pomoUpdateDisplay();
       pomoUpdateVisibility();
+
+      // 页面切回前台时立即校正倒计时（避免后台 setInterval 节流导致显示滞后）
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && pomoRunning) {
+          pomoTick();
+        }
+      });
 
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').catch(() => {});

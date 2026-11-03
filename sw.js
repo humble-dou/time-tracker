@@ -1,4 +1,4 @@
-const CACHE_NAME = 'time-tracker-v228';
+const CACHE_NAME = 'time-tracker-v229';
 const ASSETS = ['./', './index.html', './manifest.json', './bg-fish.png', './bg-sidebar.png', './supabase.js'];
 
 self.addEventListener('install', e => {
