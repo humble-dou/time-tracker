@@ -1116,6 +1116,7 @@
     body.right-collapsed .warehouse-panel {
       width: 100% !important;
     }
+    body.right-collapsed .warehouse-close-btn { display: none; }
     .app, .tabbar {
       transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.3s ease;
     }
@@ -1307,73 +1308,516 @@
       opacity: 1;
     }
 
-    /* 圆点列表编辑器 */
-    .warehouse-bullet-list {
-      padding: 8px 12px;
+    /* ============ 知识记录 ============ */
+    .knowledge-add-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      padding: 8px 12px 4px;
+    }
+    .knowledge-add-input {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid rgba(205,150,70,0.3);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      background: rgba(255,255,255,0.5);
+      color: var(--ink);
+      outline: none;
+      font-family: inherit;
+      box-sizing: border-box;
+      resize: none;
+      max-height: 84px;
+      overflow-y: auto;
+    }
+    .knowledge-add-input:focus { border-color: var(--accent); }
+    .knowledge-add-btn {
+      flex-shrink: 0;
+      border: none;
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 12px;
+      background: rgba(205,150,70,0.22);
+      color: #8a5a20;
+      cursor: pointer;
+      font-family: inherit;
+      line-height: 1.4;
+    }
+    .knowledge-add-btn:hover { background: rgba(205,150,70,0.34); }
+    .knowledge-item-note {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--muted);
+      white-space: pre-wrap;
+      word-break: break-word;
+      padding: 1px 0 1px 0;
+      cursor: text;
+      border-radius: 4px;
+    }
+    .knowledge-item-note::before, .knowledge-all-item-note::before { content: "备注："; opacity: 0.75; }
+    .knowledge-item-note.editing, .knowledge-all-item-note.editing { background: rgba(255,255,255,0.55); outline: 1px solid rgba(205,150,70,0.4); }
+    .knowledge-all-item-note {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--muted);
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-top: 2px;
+      padding-right: 16px;
+      cursor: text;
+    }
+    .knowledge-dot-row + .knowledge-all-item-note { margin-left: 24px; }
+    .knowledge-hint {
+      padding: 0 12px 6px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .knowledge-list {
+      max-height: 220px;
+      overflow-y: auto;
+      padding: 0 8px 8px;
+    }
+    .knowledge-empty {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 10px 0;
+    }
+    .knowledge-item {
+      display: block;
+      padding: 3px 10px;
+      border-radius: 8px;
+      margin-bottom: 1px;
+      background: transparent;
+      position: relative;
+    }
+    .knowledge-item:hover { background: rgba(255,255,255,0.35); }
+    /* 行首标签（内联，替代小圆点），换行内容回到最左侧 */
+    .knowledge-item-content {
+      padding-right: 16px;
+    }
+    .knowledge-row-tags {
+      display: inline;
+      cursor: pointer;
+      font-family: inherit;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .knowledge-row-tags .knowledge-tag-chip {
+      vertical-align: middle;
+      margin-right: 4px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+    .knowledge-row-tags .knowledge-tag-add {
+      vertical-align: middle;
+      margin-right: 4px;
+      padding: 1px 6px;
+    }
+    .knowledge-item-text {
+      display: inline;
       font-size: 13px;
       line-height: 1.6;
       color: var(--ink);
-      min-height: 60px;
-      height: 120px;
-      overflow-y: auto;
-      border-radius: 0;
-      box-sizing: border-box;
+      word-break: break-word;
+      white-space: pre-wrap;
+      cursor: text;
     }
-    .warehouse-bullet-list:empty::before {
-      content: attr(data-placeholder);
-      color: var(--muted);
-      pointer-events: none;
-      display: block;
-      padding: 0;
+    /* 编辑中：保持行内排版，不出现输入框 */
+    .knowledge-item-text.editing {
+      outline: none;
+      cursor: text;
+      background: rgba(255,255,255,0.5);
+      border-radius: 3px;
+    }
+    .knowledge-item-text.editing:empty::before { content: "\200B"; }
+    .knowledge-item-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 5px;
+      align-items: center;
+    }
+    .knowledge-tag-chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      padding: 1px 8px;
+      border-radius: 10px;
+      background: rgba(205,150,70,0.18);
+      color: #8a5a20;
       line-height: 1.6;
+      cursor: pointer;
+      user-select: none;
     }
-    .bullet-item {
+    .knowledge-tag-add {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      padding: 1px 7px;
+      border-radius: 10px;
+      border: 1px dashed rgba(205,150,70,0.5);
+      color: var(--muted);
+      line-height: 1.6;
+      cursor: pointer;
+      background: transparent;
+      font-family: inherit;
+    }
+    .knowledge-item-del {
+      position: absolute;
+      top: 5px;
+      right: 6px;
+      border: none;
+      background: transparent;
+      color: var(--danger);
+      font-size: 14px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.15s;
+      padding: 0 4px;
+      line-height: 1.4;
+    }
+    .knowledge-item:hover .knowledge-item-del { opacity: 0.8; }
+    .knowledge-item-time {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    /* 标签选择弹窗 */
+    .ktag-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .ktag-overlay.active { display: flex; }
+    .ktag-popup {
+      width: 300px;
+      max-width: 90vw;
+      background: #fdf9f3;
+      border-radius: 14px;
+      padding: 18px 16px 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .ktag-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .ktag-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .ktag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .ktag-chip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      font-size: 13px;
+      padding: 5px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(205,150,70,0.4);
+      background: rgba(255,255,255,0.6);
+      color: var(--ink);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+    }
+    .ktag-chip.selected {
+      background: rgba(232,137,91,0.85);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .ktag-chip-del {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--danger);
+      color: #fff;
+      font-size: 11px;
+      line-height: 16px;
+      text-align: center;
+      display: none;
+      cursor: pointer;
+    }
+    .ktag-chip:hover .ktag-chip-del { display: block; }
+    .ktag-add-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .ktag-add-input {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid rgba(205,150,70,0.3);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      background: rgba(255,255,255,0.7);
+      color: var(--ink);
+      outline: none;
+      font-family: inherit;
+    }
+    .ktag-add-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      background: rgba(205,150,70,0.2);
+      color: #8a5a20;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .ktag-footer {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .ktag-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 7px 18px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .ktag-btn-cancel { background: rgba(0,0,0,0.06); color: var(--muted); }
+    .ktag-btn-ok { background: var(--accent); color: #fff; }
+    .ktag-note-wrap { margin-bottom: 14px; }
+    .ktag-note-input {
+      display: block;
+      width: 100%;
+      border: 1px dashed rgba(205,150,70,0.35);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      line-height: 1.6;
+      background: rgba(255,255,255,0.5);
+      color: var(--ink);
+      outline: none;
+      font-family: inherit;
+      box-sizing: border-box;
+      resize: none;
+      max-height: 84px;
+    }
+    .ktag-note-input:focus { border-color: var(--accent); border-style: solid; }
+    .ktag-note-input::placeholder { color: var(--muted); opacity: 0.65; }
+
+    /* 手机端：16px 避免 iOS 聚焦时页面自动放大 */
+    @media (pointer: coarse) {
+      .ktag-note-input, .ktag-add-input { font-size: 16px; }
+    }
+
+    /* 所有宝贝 - 知识记录 */
+    .knowledge-view-toggle {
+      border: 1px solid rgba(205,150,70,0.4);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.5);
+      color: #8a5a20;
+      font-size: 11px;
+      padding: 2px 10px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .knowledge-view-toggle:hover { background: rgba(205,150,70,0.2); }
+    .knowledge-all-group-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #8a5a20;
+      padding: 10px 4px 4px;
+      border-bottom: 1px solid rgba(205,150,70,0.22);
+      margin-bottom: 4px;
+    }
+    .knowledge-all-group-title:first-child { padding-top: 4px; }
+    .knowledge-tag-group-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #8a5a20;
+      padding: 8px 8px 4px;
+      margin-top: 4px;
+      border-bottom: 1px solid rgba(205,150,70,0.25);
+    }
+    .knowledge-tag-group-title:first-child { margin-top: 0; }
+    .knowledge-tag-copy-btn {
+      flex-shrink: 0;
+      border: 1px solid rgba(205,150,70,0.35);
+      background: rgba(255,255,255,0.5);
+      border-radius: 8px;
+      font-size: 12px;
+      padding: 2px 8px;
+      cursor: pointer;
+      opacity: 0.75;
+    }
+    .knowledge-tag-copy-btn:hover { opacity: 1; background: rgba(205,150,70,0.18); }
+    .knowledge-all-item {
+      background: rgba(255,255,255,0.35);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      position: relative;
+    }
+    .knowledge-all-item-text {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--ink);
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+    .knowledge-all-item-actions {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      display: flex;
+      gap: 2px;
+    }
+    .knowledge-all-item-actions button {
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      cursor: pointer;
+      opacity: 0.55;
+      padding: 2px 4px;
+    }
+    .knowledge-all-item-actions button:hover { opacity: 1; }
+
+    /* 按标签预览：每条前的圆点（与小念头一致） */
+    .knowledge-dot-row {
       display: flex;
       align-items: flex-start;
       gap: 8px;
       padding: 2px 0;
     }
-    .bullet-dot {
+    .knowledge-dot {
       flex-shrink: 0;
       width: 16px;
       text-align: center;
-      line-height: 1.6;
+      line-height: 1.7;
+      font-size: 13px;
       color: var(--accent);
       user-select: none;
     }
-    .bullet-text {
-      flex: 1;
-      min-width: 0;
-      outline: none;
-      word-break: break-word;
-      white-space: pre-wrap;
+    .knowledge-dot-row .knowledge-all-item-text { flex: 1; min-width: 0; }
+
+    /* 待我去做：完成圆点 + 删除 */
+    .knowledge-all-item-todo .knowledge-all-item-actions { opacity: 1; }
+    .todo-check {
+      flex-shrink: 0;
+      width: 16px; height: 16px;
+      margin-top: 3px;
+      padding: 0;
+      border: 1.5px solid rgba(107,158,78,0.5);
+      border-radius: 50%;
+      background: transparent;
+      color: #fff;
+      font-size: 10px;
+      line-height: 1;
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
     }
-    .bullet-text:empty::before {
-      content: '\00a0'; /* 保持高度 */
+    .todo-check:hover { border-color: var(--good); }
+    .todo-check.done { background: var(--good); border-color: var(--good); }
+    .knowledge-all-inline-content .todo-check { margin: 0 6px 0 0; vertical-align: -3px; }
+    .knowledge-all-item-text.done { text-decoration: line-through; color: var(--muted); opacity: 0.7; }
+    .knowledge-all-item-actions .todo-del-btn { color: var(--danger); opacity: 0.8; }
+    .knowledge-all-item-actions .todo-del-btn:hover { opacity: 1; }
+    .todo-logo { width: 26px; height: 26px; display: block; margin: 0 auto; }
+
+    /* 手机端：加大完成圆点与删除按钮的点击区域 */
+    @media (pointer: coarse) {
+      .todo-check { width: 20px; height: 20px; margin-top: 1px; font-size: 11px; }
+      .knowledge-all-item-actions .todo-del-btn { padding: 6px 7px; font-size: 14px; opacity: 0.9; }
     }
 
-    /* 全部视图中的圆点列表 */
-    .warehouse-all-item-bullet-list {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      height: 100px;
-      min-height: 60px;
-      overflow-y: auto;
-      font-size: 13px;
+    /* 按时间维度：行首标签 + 文案内联，紧凑排版 */
+    .knowledge-all-item-inline {
+      background: transparent;
+      border-radius: 8px;
+      padding: 3px 10px;
+      margin-bottom: 1px;
+    }
+    .knowledge-all-item-inline:hover { background: rgba(255,255,255,0.35); }
+    .knowledge-all-item-inline .knowledge-all-item-actions {
+      top: 2px;
+      right: 6px;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .knowledge-all-item-inline:hover .knowledge-all-item-actions { opacity: 1; }
+    /* 编辑中：操作按钮常显，铅笔替换为确认勾 */
+    .knowledge-all-item.editing .knowledge-all-item-actions { opacity: 1; }
+    .knowledge-all-item-actions button.editing-confirm {
+      color: var(--accent);
+      background: rgba(255,255,255,0.85);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 0 5px;
+      opacity: 1;
+    }
+    @media (hover: none) {
+      .knowledge-all-item-inline .knowledge-all-item-actions { opacity: 0.6; }
+    }
+    .knowledge-all-inline-content { padding-right: 16px; }
+    .knowledge-all-item-inline.knowledge-all-item-todo .knowledge-all-item-actions { opacity: 1; }
+    .knowledge-all-item-inline.knowledge-all-item-todo .knowledge-all-inline-content { padding-right: 62px; }
+    .knowledge-all-item-todo .knowledge-dot-row { padding-right: 60px; }
+    .knowledge-all-inline-tags {
+      display: inline;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .knowledge-all-inline-tags .knowledge-tag-chip {
+      vertical-align: middle;
+      margin-right: 4px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+    .knowledge-all-inline-tags .knowledge-tag-add {
+      vertical-align: middle;
+      margin-right: 4px;
+      padding: 1px 6px;
+    }
+    .knowledge-all-inline-text {
+      display: inline;
       line-height: 1.6;
-      color: var(--ink);
-    }
-    .warehouse-all-item-bullet-list .bullet-item {
-      padding: 2px 0;
-    }
-
-    /* 全部视图中的圆点编辑器 */
-    .warehouse-all-bullet-editor {
-      background: var(--bg-soft);
-      border-radius: var(--radius);
-      min-height: 80px;
-      max-height: 300px;
+      cursor: text;
     }
 
     /* 查看全部按钮 */
@@ -1448,7 +1892,7 @@
       font-size: 17px;
       display: inline-block;
     }
-    .warehouse-all-content { display: flex; flex-direction: column; gap: 12px; }
+    .warehouse-all-content { display: flex; flex-direction: column; gap: 8px; }
     /* 全部记录 — 按类型分区 */
     .warehouse-all-type-section {
       background: rgba(255,255,255,0.32);
@@ -1457,7 +1901,7 @@
       backdrop-filter: blur(2px);
       overflow: hidden;
       flex-shrink: 0;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
     .warehouse-all-type-section:last-child { margin-bottom: 0; }
     .warehouse-all-type-header {
@@ -1503,14 +1947,14 @@
       opacity: 0;
     }
     .warehouse-all-item {
-      padding: 12px 16px;
+      padding: 8px 14px;
       border-top: 1px solid var(--rule);
       position: relative;
     }
     .warehouse-all-item-actions {
       display: flex; gap: 6px;
       justify-content: flex-end;
-      margin-bottom: 6px;
+      margin-bottom: 2px;
     }
     .warehouse-all-edit-btn,
     .warehouse-all-save-btn {
@@ -1577,8 +2021,9 @@
       padding-right: 8px;
     }
     .warehouse-all-item-content-resizable {
-      height: 100px;
-      min-height: 60px;
+      height: auto;
+      max-height: 300px;
+      min-height: 0;
       overflow-y: auto;
       box-sizing: border-box;
     }
@@ -1605,16 +2050,11 @@
     .warehouse-all-edit-wrap {
       position: relative;
     }
-    .warehouse-all-edit-wrap .warehouse-bullet-list {
-      height: 100px;
-      min-height: 60px;
-      border-radius: 6px 6px 0 0;
-    }
     .warehouse-all-item-time {
       font-size: 11px;
       color: var(--muted);
       text-align: right;
-      margin-top: 6px;
+      margin-top: 3px;
       opacity: 0.7;
     }
     .warehouse-all-item-empty {
@@ -2082,13 +2522,6 @@
           <button class="panel-collapse-btn" data-collapse="anchor" title="折叠">▾</button>
         </div>
         <div class="anchor-block panel-section-content" id="anchorSectionContent">
-          <div class="anchor-header">
-            <div class="anchor-date-nav">
-              <button class="anchor-date-btn" id="anchorPrevDay" title="前一天">‹</button>
-              <span class="anchor-date-label" id="anchorDateLabel" title="点击选择日期">今天</span>
-              <button class="anchor-date-btn" id="anchorNextDay" title="后一天">›</button>
-            </div>
-          </div>
           <div class="anchor-list" id="anchorList"></div>
           <div class="anchor-add-row">
             <input type="text" class="anchor-add-input" id="anchorAddInput" placeholder="添加一个锚点...">
@@ -2125,9 +2558,13 @@
               <button class="warehouse-copy-btn" data-copy-type="edit" data-type="miao" title="复制">📋</button>
             </div>
           </div>
-          <div class="warehouse-edit-content" data-content-type="miao">
-            <div class="warehouse-bullet-list" data-type="miao" data-placeholder="记录那些让你眼前一亮的奇妙与美好..."></div>
-            <div class="warehouse-resize-handle" data-resize-type="miao"></div>
+          <div class="warehouse-edit-content" data-content-type="miao" data-knowledge-type="miao">
+            <div class="knowledge-add-row">
+              <textarea class="knowledge-add-input" data-knowledge-input="miao" rows="1" placeholder="记录那些让你眼前一亮的奇妙与美好…"></textarea>
+              <button class="knowledge-add-btn" data-knowledge-add="miao">添加</button>
+            </div>
+            <div class="knowledge-hint" data-knowledge-hint="miao">回车添加，Shift+回车换行</div>
+            <div class="knowledge-list" data-knowledge-list="miao"></div>
           </div>
         </div>
         <div class="warehouse-edit-block" data-type="thought">
@@ -2138,9 +2575,30 @@
               <button class="warehouse-copy-btn" data-copy-type="edit" data-type="thought" title="复制">📋</button>
             </div>
           </div>
-          <div class="warehouse-edit-content" data-content-type="thought">
-            <div class="warehouse-bullet-list" data-type="thought" data-placeholder="突然冒出来的想法，记下来吧..."></div>
-            <div class="warehouse-resize-handle" data-resize-type="thought"></div>
+          <div class="warehouse-edit-content" data-content-type="thought" data-knowledge-type="thought">
+            <div class="knowledge-add-row">
+              <textarea class="knowledge-add-input" data-knowledge-input="thought" rows="1" placeholder="突然冒出来的想法，记下来吧…"></textarea>
+              <button class="knowledge-add-btn" data-knowledge-add="thought">添加</button>
+            </div>
+            <div class="knowledge-hint" data-knowledge-hint="thought">回车添加，Shift+回车换行</div>
+            <div class="knowledge-list" data-knowledge-list="thought"></div>
+          </div>
+        </div>
+        <div class="warehouse-edit-block" data-type="knowledge">
+          <div class="warehouse-edit-title" data-toggle-type="knowledge">
+            <span class="warehouse-collapse-arrow">▾</span>
+            <span>📚 知识记录</span>
+            <div class="warehouse-edit-actions">
+              <button class="warehouse-copy-btn" data-copy-type="edit" data-type="knowledge" title="复制">📋</button>
+            </div>
+          </div>
+          <div class="warehouse-edit-content" data-content-type="knowledge" data-knowledge-type="knowledge">
+            <div class="knowledge-add-row">
+              <textarea class="knowledge-add-input" data-knowledge-input="knowledge" id="knowledgeAddInput" rows="1" placeholder="记录一个知识点，回车添加…"></textarea>
+              <button class="knowledge-add-btn" data-knowledge-add="knowledge" id="knowledgeAddBtn">添加</button>
+            </div>
+            <div class="knowledge-hint" data-knowledge-hint="knowledge">回车添加，Shift+回车换行</div>
+            <div class="knowledge-list" data-knowledge-list="knowledge" id="knowledgeList"></div>
           </div>
         </div>
         <button class="warehouse-view-all-btn" id="warehouseViewAllBtn">
@@ -2157,6 +2615,22 @@
           </div>
           <div class="warehouse-all-content" id="warehouseAllContent"></div>
         </div>
+        </div>
+      </div>
+
+      <!-- 待我去做 -->
+      <div class="panel-section">
+        <div class="panel-section-header">
+          <div class="panel-section-title"><span class="panel-section-title-icon"><svg class="todo-logo" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="todoLogoGrad" x1="6" y1="4" x2="26" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffd36e"/><stop offset="0.5" stop-color="#ff9a5a"/><stop offset="1" stop-color="#f26e93"/></linearGradient></defs><path d="M16 2.5c.8 6.2 4.4 9.8 10.6 10.6-6.2.8-9.8 4.4-10.6 10.6-.8-6.2-4.4-9.8-10.6-10.6C11.6 12.3 15.2 8.7 16 2.5z" fill="url(#todoLogoGrad)"/><path d="M24.8 20.6c.4 2.7 1.9 4.2 4.6 4.6-2.7.4-4.2 1.9-4.6 4.6-.4-2.7-1.9-4.2-4.6-4.6 2.7-.4 4.2-1.9 4.6-4.6z" fill="#ffb055" opacity=".95"/><circle cx="6.6" cy="23.4" r="1.7" fill="#f26e93" opacity=".9"/></svg></span>待我去做</div>
+          <button class="panel-collapse-btn" data-collapse="todo" title="折叠">▾</button>
+        </div>
+        <div class="panel-section-content" id="todoSectionContent">
+          <div class="knowledge-add-row">
+            <textarea class="knowledge-add-input" data-knowledge-input="todo" rows="1" placeholder="记录一件待去做的事，回车添加…"></textarea>
+            <button class="knowledge-add-btn" data-knowledge-add="todo">添加</button>
+          </div>
+          <div class="knowledge-hint" data-knowledge-hint="todo">回车添加，Shift+回车换行</div>
+          <div id="todoGroupedView"></div>
         </div>
       </div>
     </div>
@@ -2176,6 +2650,26 @@
       <div class="anchor-cal-days" id="anchorCalDays"></div>
       <div class="anchor-cal-footer">
         <button class="anchor-cal-today" id="anchorCalTodayBtn">回到今天</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 知识记录标签选择弹窗 -->
+  <div class="ktag-overlay" id="ktagOverlay">
+    <div class="ktag-popup">
+      <div class="ktag-title">选择标签</div>
+      <div class="ktag-sub">可多选；悬停标签可删除，下方可新增标签</div>
+      <div class="ktag-list" id="ktagList"></div>
+      <div class="ktag-add-row">
+        <input type="text" class="ktag-add-input" id="ktagAddInput" placeholder="新增标签...">
+        <button class="ktag-add-btn" id="ktagAddBtn">添加</button>
+      </div>
+      <div class="ktag-note-wrap" id="ktagNoteWrap">
+        <textarea class="ktag-note-input" id="ktagNoteInput" rows="2" placeholder="备注（可选）"></textarea>
+      </div>
+      <div class="ktag-footer">
+        <button class="ktag-btn ktag-btn-cancel" id="ktagCancelBtn">取消</button>
+        <button class="ktag-btn ktag-btn-ok" id="ktagOkBtn">确定</button>
       </div>
     </div>
   </div>
@@ -2278,6 +2772,8 @@
           this.plans = JSON.parse(localStorage.getItem('tt_plans') || '[]');
           this.warehouse = JSON.parse(localStorage.getItem('tt_warehouse') || '{}');
           this.anchors = JSON.parse(localStorage.getItem('tt_anchors') || '[]');
+          this.knowledge = JSON.parse(localStorage.getItem('tt_knowledge') || '[]');
+          this.knowledgeTags = JSON.parse(localStorage.getItem('tt_knowledgeTags') || 'null') || ['历史', '天文', '生活常识'];
           const savedTimer = JSON.parse(localStorage.getItem('tt_timer') || 'null');
           if (savedTimer && typeof savedTimer === 'object') {
             this.timer = { startTime: savedTimer.startTime || null, updatedAt: savedTimer.updatedAt || (savedTimer.startTime || 0) };
@@ -2288,7 +2784,7 @@
           this.deletedDefaultCats = JSON.parse(localStorage.getItem('tt_deletedDefaultCats') || '[]');
           this.customCatColorMap = JSON.parse(localStorage.getItem('tt_customCatColorMap') || '{}');
           this.catOrder = JSON.parse(localStorage.getItem('tt_catOrder') || '[]');
-        } catch(e) { this.activities = []; this.reviews = []; this.plans = []; this.warehouse = {}; this.anchors = []; this.timer = null; this.customCats = []; this.deletedDefaultCats = []; this.customCatColorMap = {}; this.catOrder = []; }
+        } catch(e) { this.activities = []; this.reviews = []; this.plans = []; this.warehouse = {}; this.anchors = []; this.knowledge = []; this.knowledgeTags = ['历史', '天文', '生活常识']; this.timer = null; this.customCats = []; this.deletedDefaultCats = []; this.customCatColorMap = {}; this.catOrder = []; }
       },
       save() {
         localStorage.setItem('tt_activities', JSON.stringify(this.activities));
@@ -2345,6 +2841,98 @@
           }
         });
         return result.sort((a, b) => b.date.localeCompare(a.date));
+      },
+      // 知识记录
+      saveKnowledge() {
+        localStorage.setItem('tt_knowledge', JSON.stringify(this.knowledge));
+        localStorage.setItem('tt_knowledgeTags', JSON.stringify(this.knowledgeTags));
+        Sync.debouncedPush();
+      },
+      getKnowledgeByDate(date, type) {
+        const t = type || 'knowledge';
+        return this.knowledge
+          .filter(k => k.date === date && (k.type || 'knowledge') === t)
+          .sort((a, b) => (a.updatedAt || 0) - (b.updatedAt || 0));
+      },
+      getKnowledgeByType(type) {
+        const t = type || 'knowledge';
+        return this.knowledge.filter(k => (k.type || 'knowledge') === t);
+      },
+      addKnowledge(date, text, tags, type, note) {
+        const now = Date.now();
+        const entry = {
+          id: now.toString(36) + Math.random().toString(36).slice(2, 6),
+          date, text, tags: tags || [], type: type || 'knowledge',
+          note: (note || '').replace(/\s+$/, ''),
+          createdAt: now,
+          updatedAt: now
+        };
+        this.knowledge.push(entry);
+        this.saveKnowledge();
+        return entry;
+      },
+      updateKnowledge(id, text, tags, note, done) {
+        const k = this.knowledge.find(x => x.id === id);
+        if (k) {
+          if (text !== undefined) k.text = text;
+          if (tags !== undefined) k.tags = tags;
+          if (note !== undefined) k.note = note;
+          if (done !== undefined) k.done = done;
+          k.updatedAt = Date.now();
+          this.saveKnowledge();
+        }
+      },
+      deleteKnowledge(id) {
+        this.knowledge = this.knowledge.filter(k => k.id !== id);
+        this.saveKnowledge();
+      },
+      addKnowledgeTag(tag) {
+        if (tag && !this.knowledgeTags.includes(tag)) {
+          this.knowledgeTags.push(tag);
+          this.saveKnowledge();
+        }
+      },
+      deleteKnowledgeTag(tag) {
+        this.knowledgeTags = this.knowledgeTags.filter(t => t !== tag);
+        this.saveKnowledge();
+      },
+      // 一次性迁移：把旧版妙妙屋/小念头的圆点列表导入 knowledge（type=miao/thought）
+      migrateWarehouseToKnowledge() {
+        const FLAG = 'tt_warehouse_knowledge_migration_v1';
+        if (localStorage.getItem(FLAG)) return;
+        const types = ['miao', 'thought'];
+        let addedCount = 0;
+        Object.keys(this.warehouse).forEach(key => {
+          const [date, type] = key.split('|');
+          if (!types.includes(type)) return;
+          const item = this.warehouse[key];
+          if (!item) return;
+          const lines = (item.content || '')
+            .split('\n')
+            .map(l => l.replace(/^•\s*/, '').trim())
+            .filter(Boolean);
+          lines.forEach((text, idx) => {
+            // 确定性 id：同一设备/多设备重复迁移都不会产生重复记录
+            let hash = 5381;
+            const src = `${type}|${date}|${idx}|${text}`;
+            for (let i = 0; i < src.length; i++) hash = ((hash << 5) + hash + src.charCodeAt(i)) | 0;
+            const id = 'mig' + (hash >>> 0).toString(36);
+            if (this.knowledge.some(k => k.id === id)) return;
+            this.knowledge.push({
+              id, type, date, text, tags: ['待定'],
+              updatedAt: item.updatedAt || Date.now()
+            });
+            addedCount++;
+          });
+          // 清空旧内容但保留 key 与 updatedAt，避免同步时覆盖其他设备尚未迁移的数据
+          if (item.content) item.content = '';
+        });
+        if (addedCount > 0) {
+          if (!this.knowledgeTags.includes('待定')) this.knowledgeTags.push('待定');
+          this.saveKnowledge();
+        }
+        this.saveWarehouse();
+        localStorage.setItem(FLAG, '1');
       },
       // Anchors (我的锚点)
       saveAnchors() {
@@ -2589,7 +3177,7 @@
         this.syncing = true;
         try {
           const snap = JSON.parse(localStorage.getItem('tt_sync_snap') || '{}');
-          const currentIds = [...DB.activities.map(a => a.id), ...DB.plans.map(p => p.id), ...DB.anchors.map(a => a.id), ...Object.keys(DB.warehouse)];
+          const currentIds = [...DB.activities.map(a => a.id), ...DB.plans.map(p => p.id), ...DB.anchors.map(a => a.id), ...DB.knowledge.map(k => k.id), ...Object.keys(DB.warehouse)];
           const lastIds = snap.ids || [];
           const newlyDeleted = lastIds.filter(id => !currentIds.includes(id));
           const allDeleted = [...new Set([...newlyDeleted, ...(snap.deletedIds || [])])].filter(id => !currentIds.includes(id));
@@ -2600,6 +3188,8 @@
             plans: DB.plans,
             warehouse: DB.warehouse,
             anchors: DB.anchors,
+            knowledge: DB.knowledge,
+            knowledgeTags: DB.knowledgeTags,
             customCats: DB.customCats,
             deletedDefaultCats: DB.deletedDefaultCats,
             customCatColorMap: DB.customCatColorMap,
@@ -2638,6 +3228,8 @@
           const mergedRev = new Map(DB.reviews.map(r => [r.date + '|' + r.type, r]));
           const mergedPlans = new Map(DB.plans.map(p => [p.id, p]));
           const mergedAnchors = new Map(DB.anchors.map(a => [a.id, a]));
+          const mergedKnowledge = new Map(DB.knowledge.map(k => [k.id, k]));
+          const mergedKnowledgeTags = new Set(DB.knowledgeTags);
           const mergedWarehouse = { ...DB.warehouse };
           const mergedCats = new Set(DB.customCats);
           const mergedDelCats = new Set(DB.deletedDefaultCats);
@@ -2685,6 +3277,14 @@
                 mergedWarehouse[key] = incoming;
               }
             });
+            if (v.knowledge) v.knowledge.forEach(k => {
+              if (allDeleted.has(k.id)) return;
+              const existing = mergedKnowledge.get(k.id);
+              if (!existing || (k.updatedAt || 0) > (existing.updatedAt || 0)) {
+                mergedKnowledge.set(k.id, k);
+              }
+            });
+            if (v.knowledgeTags) v.knowledgeTags.forEach(t => mergedKnowledgeTags.add(t));
             if (v.customCats) v.customCats.forEach(c => mergedCats.add(c));
             if (v.deletedDefaultCats) v.deletedDefaultCats.forEach(c => mergedDelCats.add(c));
             if (v.customCatColorMap) Object.assign(mergedColorMap, v.customCatColorMap);
@@ -2706,6 +3306,7 @@
             mergedAct.delete(id);
             mergedPlans.delete(id);
             mergedAnchors.delete(id);
+            mergedKnowledge.delete(id);
             delete mergedWarehouse[id];
           });
 
@@ -2713,6 +3314,8 @@
           DB.reviews = Array.from(mergedRev.values());
           DB.plans = Array.from(mergedPlans.values());
           DB.anchors = Array.from(mergedAnchors.values());
+          DB.knowledge = Array.from(mergedKnowledge.values());
+          DB.knowledgeTags = Array.from(mergedKnowledgeTags);
           DB.warehouse = mergedWarehouse;
           DB.customCats = Array.from(mergedCats);
           DB.deletedDefaultCats = Array.from(mergedDelCats);
@@ -2721,10 +3324,10 @@
           DB.timer = mergedTimer;
           DB.saveTimer();
 
-          DB.save(); DB.saveWarehouse(); DB.saveAnchors(); DB.saveCustomCats(); DB.saveCustomCatColorMap(); DB.saveDeletedDefaultCats(); DB.saveCatOrder();
+          DB.save(); DB.saveWarehouse(); DB.saveAnchors(); DB.saveKnowledge(); DB.saveCustomCats(); DB.saveCustomCatColorMap(); DB.saveDeletedDefaultCats(); DB.saveCatOrder();
           updateCustomCatStyles();
 
-          const currentIds = [...DB.activities.map(a => a.id), ...DB.plans.map(p => p.id), ...DB.anchors.map(a => a.id), ...Object.keys(DB.warehouse)];
+          const currentIds = [...DB.activities.map(a => a.id), ...DB.plans.map(p => p.id), ...DB.anchors.map(a => a.id), ...DB.knowledge.map(k => k.id), ...Object.keys(DB.warehouse)];
           localStorage.setItem('tt_sync_snap', JSON.stringify({
             ids: currentIds,
             deletedIds: Array.from(allDeleted).filter(id => !currentIds.includes(id))
@@ -4260,6 +4863,8 @@
           reviews: DB.reviews,
           plans: DB.plans,
           anchors: DB.anchors,
+          knowledge: DB.knowledge,
+          knowledgeTags: DB.knowledgeTags,
           warehouse: DB.warehouse,
           customCats: DB.customCats,
           deletedDefaultCats: DB.deletedDefaultCats,
@@ -4292,14 +4897,17 @@
             if (data.reviews) DB.reviews = data.reviews;
             if (data.plans) DB.plans = data.plans;
             if (data.anchors) DB.anchors = data.anchors;
+            if (data.knowledge) DB.knowledge = data.knowledge;
+            if (data.knowledgeTags) DB.knowledgeTags = data.knowledgeTags;
             if (data.warehouse) DB.warehouse = data.warehouse;
             if (data.customCats) DB.customCats = data.customCats;
             if (data.deletedDefaultCats) DB.deletedDefaultCats = data.deletedDefaultCats;
             if (data.customCatColorMap) DB.customCatColorMap = data.customCatColorMap;
             if (data.catOrder) DB.catOrder = data.catOrder;
-            DB.save(); DB.saveWarehouse(); DB.saveAnchors(); DB.saveCustomCats(); DB.saveDeletedDefaultCats(); DB.saveCustomCatColorMap(); DB.saveCatOrder();
+            DB.save(); DB.saveWarehouse(); DB.saveAnchors(); DB.saveKnowledge(); DB.saveCustomCats(); DB.saveDeletedDefaultCats(); DB.saveCustomCatColorMap(); DB.saveCatOrder();
             updateCustomCatStyles();
             renderAll();
+            renderAllKnowledgeLists();
             toast('导入成功');
           } catch(err) { toast('文件格式错误'); }
         };
@@ -4601,6 +5209,7 @@
 
     // ============ Boot ============
     DB.load();
+    DB.migrateWarehouseToKnowledge();
     Sync.init();
 
     // 页面可见性变化时同步数据
@@ -4615,6 +5224,8 @@
             if (typeof renderAll === 'function') renderAll();
             if (typeof warehousePanelOpen !== 'undefined' && warehousePanelOpen) {
               if (typeof loadWarehouseEditors === 'function') loadWarehouseEditors();
+              if (typeof renderAllKnowledgeLists === 'function') renderAllKnowledgeLists();
+              if (typeof renderTodoSection === 'function') renderTodoSection();
               if (typeof warehouseCurrentView !== 'undefined' && warehouseCurrentView === 'all' && typeof renderWarehouseAll === 'function') renderWarehouseAll();
             }
           } catch(e) { console.warn('Render after sync failed:', e); }
@@ -4696,6 +5307,7 @@
       switchWarehouseView('edit');
       loadWarehouseEditors();
       renderAnchors();
+      renderTodoSection();
       // 更新背景图位置
       requestAnimationFrame(() => {
         const panel = document.getElementById('warehousePanel');
@@ -4857,69 +5469,15 @@
       });
     }
 
-    // 加载三个分类的编辑区内容
+    // 加载编辑区内容（反省为文本框，其余三类为带标签的记录列表）
     function loadWarehouseEditors() {
       const today = fmtDate(new Date());
-      ['reflection', 'miao', 'thought'].forEach(type => {
-        const bulletTypes = ['miao', 'thought'];
-        const isBulletType = bulletTypes.includes(type);
-        if (isBulletType) {
-          const listEl = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
-          if (!listEl) return;
-          const content = DB.getWarehouseContent(today, type);
-          renderBulletList(listEl, content);
-        } else {
-          const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
-          if (!textarea) return;
-          const newContent = DB.getWarehouseContent(today, type);
-          if (textarea.value !== newContent) {
-            textarea.value = newContent;
-          }
-        }
-      });
-    }
-
-    // 渲染圆点列表
-    function renderBulletList(listEl, content) {
-      const lines = content ? content.split('\n').filter(l => l.trim()) : [];
-      listEl.innerHTML = '';
-      if (lines.length === 0) {
-        // 空列表，不添加条目（靠 placeholder 提示）
-        return;
+      const textarea = document.querySelector('.warehouse-edit-textarea[data-type="reflection"]');
+      if (textarea) {
+        const newContent = DB.getWarehouseContent(today, 'reflection');
+        if (textarea.value !== newContent) textarea.value = newContent;
       }
-      lines.forEach(line => {
-        // 去掉开头的圆点
-        const text = line.replace(/^•\s*/, '');
-        listEl.appendChild(createBulletItem(text));
-      });
-    }
-
-    // 创建一个圆点条目
-    function createBulletItem(text) {
-      const item = document.createElement('div');
-      item.className = 'bullet-item';
-      const dot = document.createElement('div');
-      dot.className = 'bullet-dot';
-      dot.textContent = '•';
-      const textEl = document.createElement('div');
-      textEl.className = 'bullet-text';
-      textEl.contentEditable = 'true';
-      textEl.textContent = text || '';
-      item.appendChild(dot);
-      item.appendChild(textEl);
-      return item;
-    }
-
-    // 获取圆点列表的纯文本内容（每行前加•）
-    function getBulletListContent(listEl) {
-      const items = listEl.querySelectorAll('.bullet-item');
-      const lines = [];
-      items.forEach(item => {
-        const textEl = item.querySelector('.bullet-text');
-        const text = textEl.textContent.trim();
-        if (text) lines.push('• ' + text);
-      });
-      return lines.join('\n');
+      renderAllKnowledgeLists();
     }
 
     // 渲染全部视图（按类型分区）
@@ -4927,140 +5485,87 @@
       const container = document.getElementById('warehouseAllContent');
       if (!container) return;
 
-      const types = ['reflection', 'miao', 'thought'];
-      let totalCount = 0;
-      types.forEach(t => { totalCount += DB.getWarehouseByType(t).length; });
+      let totalCount = DB.getWarehouseByType('reflection').length;
+      ['knowledge', 'miao', 'thought'].forEach(t => { totalCount += DB.getKnowledgeByType(t).length; });
 
       if (totalCount === 0) {
         container.innerHTML = `
           <div class="warehouse-all-empty">
             <div class="warehouse-all-empty-icon"><span class="warehouse-all-title-icon">📦</span></div>
-            <div class="warehouse-all-empty-text">还没有任何记录<br>在三个分类中写下你的想法吧</div>
+            <div class="warehouse-all-empty-text">还没有任何记录<br>在分类中写下你的想法吧</div>
           </div>
         `;
         return;
       }
 
       let html = '';
-      types.forEach(type => {
-        const info = DB.warehouseTypes[type];
-        const items = DB.getWarehouseByType(type);
+      const type = 'reflection';
+      const info = DB.warehouseTypes[type];
+      const items = DB.getWarehouseByType(type);
 
-        html += `
-          <div class="warehouse-all-type-section" data-type="${type}">
-            <div class="warehouse-all-type-header" data-all-toggle-type="${type}">
-              <span class="warehouse-all-collapse-arrow">▾</span>
-              <div class="warehouse-all-type-title">${info.icon} ${info.name}</div>
-              <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
-                <span class="warehouse-all-type-count">${items.length}条</span>
-                <button class="warehouse-all-copy-all-btn" data-copy-type="all" data-type="${type}" title="复制全部内容">📋</button>
-              </div>
-            </div>
-            <div class="warehouse-all-type-list" data-all-content-type="${type}">
-        `;
-
-        if (items.length === 0) {
-          html += `<div class="warehouse-all-item-empty">暂无记录</div>`;
-        } else {
-          const bulletTypes = ['miao', 'thought'];
-          const isBulletType = bulletTypes.includes(type);
-          items.forEach(item => {
-            const key = `${item.date}|${type}`;
-            const isEditing = warehouseAllEditing[key];
-            const dateStr = fmtWarehouseDate(item.date);
-            const timeStr = formatTime(item.updatedAt);
-
-            let contentHtml = '';
-            if (isEditing) {
-              if (isBulletType) {
-                // 圆点列表类型的编辑模式
-                const lines = item.content ? item.content.split('\n').filter(l => l.trim()) : [];
-                let listHtml = `<div class="warehouse-all-edit-wrap">
-                  <div class="warehouse-bullet-list warehouse-all-bullet-editor" data-date="${item.date}" data-type="${type}">`;
-                if (lines.length === 0) {
-                  listHtml += `
-                    <div class="bullet-item">
-                      <div class="bullet-dot">•</div>
-                      <div class="bullet-text" contenteditable="true"></div>
-                    </div>
-                  `;
-                } else {
-                  lines.forEach(line => {
-                    const text = line.replace(/^•\s*/, '');
-                    listHtml += `
-                      <div class="bullet-item">
-                        <div class="bullet-dot">•</div>
-                        <div class="bullet-text" contenteditable="true">${escapeHtml(text)}</div>
-                      </div>
-                    `;
-                  });
-                }
-                listHtml += `</div>
-                  <div class="warehouse-resize-handle warehouse-all-resize-handle" data-all-resize-date="${item.date}" data-all-resize-type="${type}"></div>
-                </div>`;
-                contentHtml = listHtml;
-              } else {
-                contentHtml = `<div class="warehouse-all-edit-wrap">
-                  <textarea class="warehouse-all-item-textarea" data-date="${item.date}" data-type="${type}">${escapeHtml(item.content)}</textarea>
-                  <div class="warehouse-resize-handle warehouse-all-resize-handle" data-all-resize-date="${item.date}" data-all-resize-type="${type}"></div>
-                </div>`;
-              }
-            } else if (isBulletType) {
-              // 圆点列表类型：渲染成带圆点的列表
-              const lines = item.content ? item.content.split('\n').filter(l => l.trim()) : [];
-              if (lines.length === 0) {
-                contentHtml = `<div class="warehouse-all-item-content" style="color:var(--muted);">暂无内容</div>`;
-              } else {
-                let listHtml = `<div class="warehouse-all-resize-wrap" data-all-resize-date="${item.date}" data-all-resize-type="${type}" data-all-resize-mode="view">
-                  <div class="warehouse-all-item-bullet-list">`;
-                lines.forEach(line => {
-                  const text = line.replace(/^•\s*/, '');
-                  listHtml += `
-                    <div class="bullet-item">
-                      <div class="bullet-dot">•</div>
-                      <div class="bullet-text">${escapeHtml(text)}</div>
-                    </div>
-                  `;
-                });
-                listHtml += `</div>
-                  <div class="warehouse-resize-handle warehouse-all-resize-handle warehouse-all-view-resize-handle" data-all-resize-date="${item.date}" data-all-resize-type="${type}" data-all-resize-mode="view"></div>
-                </div>`;
-                contentHtml = listHtml;
-              }
-            } else {
-              const content = item.content || '';
-              if (!content.trim()) {
-                contentHtml = `<div class="warehouse-all-item-content" style="color:var(--muted);">暂无内容</div>`;
-              } else {
-                contentHtml = `<div class="warehouse-all-resize-wrap" data-all-resize-date="${item.date}" data-all-resize-type="${type}" data-all-resize-mode="view">
-                  <div class="warehouse-all-item-content warehouse-all-item-content-resizable">${escapeHtml(item.content)}</div>
-                  <div class="warehouse-resize-handle warehouse-all-resize-handle warehouse-all-view-resize-handle" data-all-resize-date="${item.date}" data-all-resize-type="${type}" data-all-resize-mode="view"></div>
-                </div>`;
-              }
-            }
-
-            html += `
-              <div class="warehouse-all-item${isEditing ? ' editing' : ''}" data-date="${item.date}" data-type="${type}">
-                <div class="warehouse-all-item-actions">
-                  ${!isEditing ? `
-                    <button class="warehouse-all-edit-btn" data-action="edit" data-date="${item.date}" data-type="${type}" title="编辑">✏️</button>
-                  ` : `
-                    <button class="warehouse-all-save-btn" data-action="save" data-date="${item.date}" data-type="${type}" title="保存">✓</button>
-                  `}
-                  <button class="warehouse-all-copy-btn" data-action="copy" data-date="${item.date}" data-type="${type}" title="复制">📋</button>
-                </div>
-                ${contentHtml}
-                <div class="warehouse-all-item-time" title="${dateStr} ${timeStr}">${dateStr} ${timeStr}</div>
-              </div>
-            `;
-          });
-        }
-
-        html += `
+      html += `
+        <div class="warehouse-all-type-section" data-type="${type}">
+          <div class="warehouse-all-type-header" data-all-toggle-type="${type}">
+            <span class="warehouse-all-collapse-arrow">▾</span>
+            <div class="warehouse-all-type-title">${info.icon} ${info.name}</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+              <span class="warehouse-all-type-count">${items.length}条</span>
+              <button class="warehouse-all-copy-all-btn" data-copy-type="all" data-type="${type}" title="复制全部内容">📋</button>
             </div>
           </div>
-        `;
-      });
+          <div class="warehouse-all-type-list" data-all-content-type="${type}">
+      `;
+
+      if (items.length === 0) {
+        html += `<div class="warehouse-all-item-empty">暂无记录</div>`;
+      } else {
+        items.forEach(item => {
+          const key = `${item.date}|${type}`;
+          const isEditing = warehouseAllEditing[key];
+          const dateStr = fmtWarehouseDate(item.date);
+          const timeStr = formatTime(item.updatedAt);
+
+          let contentHtml = '';
+          if (isEditing) {
+            contentHtml = `<div class="warehouse-all-edit-wrap">
+              <textarea class="warehouse-all-item-textarea" data-date="${item.date}" data-type="${type}">${escapeHtml(item.content)}</textarea>
+              <div class="warehouse-resize-handle warehouse-all-resize-handle" data-all-resize-date="${item.date}" data-all-resize-type="${type}"></div>
+            </div>`;
+          } else {
+            const content = item.content || '';
+            if (!content.trim()) {
+              contentHtml = `<div class="warehouse-all-item-content" style="color:var(--muted);">暂无内容</div>`;
+            } else {
+              contentHtml = `<div class="warehouse-all-resize-wrap" data-all-resize-date="${item.date}" data-all-resize-type="${type}" data-all-resize-mode="view">
+                <div class="warehouse-all-item-content warehouse-all-item-content-resizable">${escapeHtml(item.content)}</div>
+                <div class="warehouse-resize-handle warehouse-all-resize-handle warehouse-all-view-resize-handle" data-all-resize-date="${item.date}" data-all-resize-type="${type}" data-all-resize-mode="view"></div>
+              </div>`;
+            }
+          }
+
+          html += `
+            <div class="warehouse-all-item${isEditing ? ' editing' : ''}" data-date="${item.date}" data-type="${type}">
+              <div class="warehouse-all-item-actions">
+                ${!isEditing ? `
+                  <button class="warehouse-all-edit-btn" data-action="edit" data-date="${item.date}" data-type="${type}" title="编辑">✏️</button>
+                ` : `
+                  <button class="warehouse-all-save-btn" data-action="save" data-date="${item.date}" data-type="${type}" title="保存">✓</button>
+                `}
+                <button class="warehouse-all-copy-btn" data-action="copy" data-date="${item.date}" data-type="${type}" title="复制">📋</button>
+              </div>
+              ${contentHtml}
+              <div class="warehouse-all-item-time" title="${dateStr} ${timeStr}">${dateStr} ${timeStr}</div>
+            </div>
+          `;
+        });
+      }
+
+      html += `
+          </div>
+        </div>
+      `;
+
+      ['miao', 'thought', 'knowledge'].forEach(t => { html += renderKnowledgeAllSection(t); });
 
       container.innerHTML = html;
 
@@ -5089,52 +5594,25 @@
       // 如果进入编辑模式，聚焦到编辑区
       if (warehouseAllEditing[key]) {
         setTimeout(() => {
-          const bulletTypes = ['miao', 'thought'];
-          if (bulletTypes.includes(type)) {
-            const listEl = document.querySelector(`.warehouse-all-bullet-editor[data-date="${date}"][data-type="${type}"]`);
-            if (listEl) {
-              const lastText = listEl.querySelector('.bullet-item:last-child .bullet-text');
-              if (lastText) {
-                lastText.focus();
-                placeCaretAtEnd(lastText);
-              }
-            }
-          } else {
-            const ta = document.querySelector(`.warehouse-all-item-textarea[data-date="${date}"][data-type="${type}"]`);
-            if (ta) { ta.focus(); ta.scrollTop = ta.scrollHeight; }
-          }
+          const ta = document.querySelector(`.warehouse-all-item-textarea[data-date="${date}"][data-type="${type}"]`);
+          if (ta) { ta.focus(); ta.scrollTop = ta.scrollHeight; }
         }, 50);
       }
     }
 
     // 保存全部视图中的编辑
     function saveAllEdit(date, type) {
-      const bulletTypes = ['miao', 'thought'];
-      let content = '';
-      if (bulletTypes.includes(type)) {
-        const listEl = document.querySelector(`.warehouse-all-bullet-editor[data-date="${date}"][data-type="${type}"]`);
-        if (!listEl) return;
-        content = getBulletListContent(listEl);
-      } else {
-        const ta = document.querySelector(`.warehouse-all-item-textarea[data-date="${date}"][data-type="${type}"]`);
-        if (!ta) return;
-        content = ta.value;
-      }
-      DB.setWarehouseContent(date, type, content);
+      const ta = document.querySelector(`.warehouse-all-item-textarea[data-date="${date}"][data-type="${type}"]`);
+      if (!ta) return;
+      DB.setWarehouseContent(date, type, ta.value);
       const key = `${date}|${type}`;
       warehouseAllEditing[key] = false;
       renderWarehouseAll();
       // 同步刷新编辑区（如果是今天）
       const today = fmtDate(new Date());
       if (date === today) {
-        const bulletTypes = ['miao', 'thought'];
-        if (bulletTypes.includes(type)) {
-          const listEl = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
-          if (listEl) renderBulletList(listEl, ta.value);
-        } else {
-          const editTa = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
-          if (editTa) editTa.value = ta.value;
-        }
+        const editTa = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
+        if (editTa) editTa.value = ta.value;
       }
     }
 
@@ -5189,14 +5667,12 @@
     function renderAnchors() {
       const listEl = document.getElementById('anchorList');
       if (!listEl) return;
-      const anchors = DB.getAnchorsByDate(anchorViewDate);
-      const dateLabelEl = document.getElementById('anchorDateLabel');
-      if (dateLabelEl) dateLabelEl.textContent = fmtAnchorDateLabel(anchorViewDate);
-
-      // 后一天按钮：不能超过今天
-      const nextBtn = document.getElementById('anchorNextDay');
-      const today = fmtDate(new Date());
-      if (nextBtn) nextBtn.disabled = anchorViewDate >= today;
+      // 展示全部锚点：日期倒序，再按 order / updatedAt 升序
+      const anchors = DB.anchors.slice().sort((a, b) =>
+        (b.date || '').localeCompare(a.date || '') ||
+        (a.order || 0) - (b.order || 0) ||
+        (a.updatedAt || 0) - (b.updatedAt || 0)
+      );
 
       if (anchors.length === 0) {
         listEl.innerHTML = '<div class="anchor-empty">还没有锚点，添加一个吧～</div>';
@@ -5287,25 +5763,701 @@
           const targetIdx = ids.indexOf(item.dataset.id);
           ids.splice(srcIdx, 1);
           ids.splice(targetIdx, 0, dragSrcId);
-          DB.reorderAnchors(anchorViewDate, ids);
+          DB.reorderAnchors(null, ids);
           renderAnchors();
         });
       });
     }
 
-    function prevAnchorDay() {
-      const d = new Date(anchorViewDate);
-      d.setDate(d.getDate() - 1);
-      anchorViewDate = fmtDate(d);
-      renderAnchors();
+    // ============ 知识记录 / 妙妙屋 / 小念头 ============
+    const knowledgeTypeMeta = {
+      knowledge: { name: '知识记录', icon: '📚', empty: '今天还没有记录知识点～' },
+      miao: { name: '妙妙屋', icon: '✨', empty: '今天还没有记录～' },
+      thought: { name: '小念头', icon: '💡', empty: '今天还没有记录～' },
+      todo: { name: '待我去做', icon: '✦', empty: '还没有待做事项～' }
+    };
+    const knowledgeViewModes = {
+      knowledge: localStorage.getItem('tt_knowledgeViewMode') || 'date',
+      miao: localStorage.getItem('tt_knowledgeViewMode_miao') || 'date',
+      thought: localStorage.getItem('tt_knowledgeViewMode_thought') || 'date',
+      todo: localStorage.getItem('tt_knowledgeViewMode_todo') || 'date'
+    };
+
+    function knowledgeTagChipsHtml(tags) {
+      if (!tags || tags.length === 0) return '';
+      return tags.map(t => `<span class="knowledge-tag-chip">${escapeHtml(t)}</span>`).join('');
     }
-    function nextAnchorDay() {
-      const d = new Date(anchorViewDate);
-      d.setDate(d.getDate() + 1);
+
+    // 备注原地编辑：点击进入编辑，清空后保存 = 删除备注
+    function startNoteEdit(el, onSaved) {
+      if (el.classList.contains('editing')) return;
+      const id = el.dataset.id;
+      const k = DB.knowledge.find(x => x.id === id);
+      if (!k) return;
+      const oldNote = k.note || '';
+      el.classList.add('editing');
+      el.setAttribute('contenteditable', 'true');
+      el.focus();
+      const sel = window.getSelection();
+      if (sel) {
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+      const isCoarseEdit = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || 'ontouchstart' in window;
+      let done = false;
+      const finish = save => {
+        if (done) return;
+        done = true;
+        el.removeAttribute('contenteditable');
+        el.classList.remove('editing');
+        if (!save) { el.textContent = oldNote; return; }
+        // 用 innerText 读取，兼容手机端回车生成的 div/br 换行
+        const val = (typeof el.innerText === 'string' ? el.innerText : el.textContent).replace(/\s+$/, '');
+        if (val !== oldNote) DB.updateKnowledge(id, undefined, undefined, val);
+        if (onSaved) onSaved();
+      };
+      el.addEventListener('blur', () => finish(true));
+      el.addEventListener('keydown', ev => {
+        if (ev.isComposing || ev.keyCode === 229) return;
+        if (ev.key === 'Escape') { ev.preventDefault(); finish(false); return; }
+        if (ev.key === 'Enter' && !ev.shiftKey && !isCoarseEdit) { ev.preventDefault(); finish(true); }
+      });
+      el.addEventListener('paste', ev => {
+        ev.preventDefault();
+        const text = (ev.clipboardData || window.clipboardData).getData('text/plain');
+        if (document.execCommand) document.execCommand('insertText', false, text);
+      });
+    }
+
+    // 侧边栏：展示今日记录（按类型）
+    function renderAllKnowledgeLists() {
+      Object.keys(knowledgeTypeMeta).forEach(type => renderKnowledgeList(type));
+    }
+
+    function renderKnowledgeList(type) {
+      type = type || 'knowledge';
+      const meta = knowledgeTypeMeta[type] || knowledgeTypeMeta.knowledge;
+      const listEl = document.querySelector(`.knowledge-list[data-knowledge-list="${type}"]`);
+      if (!listEl) return;
       const today = fmtDate(new Date());
-      if (fmtDate(d) > today) return;
-      anchorViewDate = fmtDate(d);
-      renderAnchors();
+      const items = DB.getKnowledgeByDate(today, type).slice().reverse();
+      if (items.length === 0) {
+        listEl.innerHTML = `<div class="knowledge-empty">${meta.empty}</div>`;
+        return;
+      }
+      listEl.innerHTML = items.map(k => {
+        const tagsHtml = (k.tags && k.tags.length > 0)
+          ? k.tags.map(t => `<span class="knowledge-tag-chip" title="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('')
+          : `<span class="knowledge-tag-add">+标签</span>`;
+        return `
+        <div class="knowledge-item" data-id="${k.id}">
+          <div class="knowledge-item-content">
+            <span class="knowledge-row-tags" data-id="${k.id}" title="单击编辑文案，双击修改标签">${tagsHtml}</span><span class="knowledge-item-text" title="点击编辑">${escapeHtml(k.text)}</span>
+          </div>
+          ${k.note ? `<div class="knowledge-item-note" data-id="${k.id}" title="点击编辑备注">${escapeHtml(k.note)}</div>` : ''}
+          <button class="knowledge-item-del" data-id="${k.id}" title="删除">×</button>
+        </div>
+      `; }).join('');
+
+      listEl.querySelectorAll('.knowledge-item-del').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          DB.deleteKnowledge(btn.dataset.id);
+          renderKnowledgeList(type);
+        });
+      });
+      // 进入文案编辑：行内直接编辑，保持原有排版（不出现输入框）
+      const startTextEdit = itemEl => {
+        const txt = itemEl.querySelector('.knowledge-item-text');
+        if (!txt || txt.classList.contains('editing')) return; // 已在编辑中
+        const id = itemEl.dataset.id;
+        const oldText = txt.textContent;
+        txt.classList.add('editing');
+        txt.setAttribute('contenteditable', 'true');
+        txt.focus();
+        // 光标置于末尾
+        const sel = window.getSelection();
+        if (sel) {
+          const range = document.createRange();
+          range.selectNodeContents(txt);
+          range.collapse(false);
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+        const isCoarseEdit = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || 'ontouchstart' in window;
+        let done = false;
+        const finish = save => {
+          if (done) return;
+          done = true;
+          txt.removeAttribute('contenteditable');
+          txt.classList.remove('editing');
+          if (!save) { txt.textContent = oldText; return; }
+          // 取纯文本（把换行 <br> 还原成 \n），只去掉末尾空白，保留开头换行
+          const clone = txt.cloneNode(true);
+          clone.querySelectorAll('br').forEach(br => br.replaceWith('\n'));
+          const newText = clone.textContent.replace(/\s+$/, '');
+          if (!newText.trim()) { DB.deleteKnowledge(id); renderKnowledgeList(type); }  // 清空即删除
+          else if (newText !== oldText) DB.updateKnowledge(id, newText);            // 原地已显示新文案，无需重绘
+        };
+        const insertLineBreak = () => {
+          if (document.execCommand && document.execCommand('insertLineBreak')) return;
+          const s = window.getSelection();
+          if (!s || !s.rangeCount) return;
+          const range = s.getRangeAt(0);
+          range.deleteContents();
+          const node = document.createTextNode('\n');
+          range.insertNode(node);
+          range.setStartAfter(node);
+          range.collapse(true);
+          s.removeAllRanges();
+          s.addRange(range);
+        };
+        txt.addEventListener('blur', () => finish(true));
+        txt.addEventListener('keydown', ev => {
+          if (ev.isComposing || ev.keyCode === 229) return;  // 中文输入法选词中
+          if (ev.key === 'Escape') { ev.preventDefault(); finish(false); return; }
+          if (ev.key !== 'Enter') return;
+          ev.preventDefault();
+          if (!isCoarseEdit && !ev.shiftKey) { finish(true); return; }  // 桌面：回车保存
+          insertLineBreak();                                            // 换行
+        });
+        txt.addEventListener('paste', ev => {
+          ev.preventDefault();
+          const text = (ev.clipboardData || window.clipboardData).getData('text/plain');
+          if (document.execCommand) document.execCommand('insertText', false, text);
+        });
+      };
+      // 整行可点击进入编辑（标签区、备注、删除按钮除外）
+      listEl.querySelectorAll('.knowledge-item').forEach(item => {
+        item.addEventListener('click', e => {
+          if (e.target.closest('.knowledge-item-del')) return;
+          if (e.target.closest('.knowledge-row-tags')) return;
+          if (e.target.closest('.knowledge-item-note')) return;
+          startTextEdit(item);
+        });
+      });
+      // 备注：点击原地编辑，清空保存即删除备注
+      listEl.querySelectorAll('.knowledge-item-note').forEach(nEl => {
+        nEl.addEventListener('click', e => {
+          e.stopPropagation();
+          startNoteEdit(nEl, () => renderKnowledgeList(type));
+        });
+      });
+      listEl.querySelectorAll('.knowledge-row-tags').forEach(el => {
+        let tapTimer = null, lastTap = 0, suppressUntil = 0;
+        const openPicker = e => {
+          e.stopPropagation();
+          e.preventDefault();
+          clearTimeout(tapTimer);
+          suppressUntil = Date.now() + 500;
+          const k = DB.knowledge.find(x => x.id === el.dataset.id);
+          if (!k) return;
+          openKtagPicker(k.tags, tags => {
+            DB.updateKnowledge(k.id, undefined, tags);
+            renderKnowledgeList(type);
+          });
+        };
+        // 单击标签也进入文案编辑（延迟判断，避免与双击冲突）
+        const scheduleEdit = () => {
+          clearTimeout(tapTimer);
+          tapTimer = setTimeout(() => {
+            if (Date.now() < suppressUntil) return;
+            startTextEdit(el.closest('.knowledge-item'));
+          }, 260);
+        };
+        el.addEventListener('dblclick', openPicker);
+        el.addEventListener('click', scheduleEdit);
+        // 手机端：双击（300ms 内两次轻触）改标签
+        el.addEventListener('touchend', e => {
+          const now = Date.now();
+          if (now - lastTap < 300) { openPicker(e); lastTap = 0; }
+          else { lastTap = now; }
+        });
+      });
+    }
+
+    // 所有宝贝：知识记录 / 妙妙屋 / 小念头分区（日期视图 / 标签视图）
+    function renderKnowledgeAllSection(type) {
+      type = type || 'knowledge';
+      const meta = knowledgeTypeMeta[type] || knowledgeTypeMeta.knowledge;
+      const items = DB.getKnowledgeByType(type);
+      const isTagMode = knowledgeViewModes[type] === 'tag';
+      return `
+        <div class="warehouse-all-type-section" data-type="${type}">
+          <div class="warehouse-all-type-header" data-all-toggle-type="${type}">
+            <span class="warehouse-all-collapse-arrow">▾</span>
+            <div class="warehouse-all-type-title">${meta.icon} ${meta.name}</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+              <button class="knowledge-view-toggle" data-knowledge-view-toggle="${type}" title="切换查看维度">${isTagMode ? '按日期' : '按标签'}</button>
+              <span class="warehouse-all-type-count">${items.length}条</span>
+              <button class="warehouse-all-copy-all-btn" data-copy-type="all" data-type="${type}" title="复制全部内容">📋</button>
+            </div>
+          </div>
+          <div class="warehouse-all-type-list" data-all-content-type="${type}">
+            ${renderKnowledgeGroupsHtml(type)}
+          </div>
+        </div>
+      `;
+    }
+
+    // 按类型生成分组列表 HTML（日期分组 / 标签分组），供「所有宝贝」与「待我去做」共用
+    function renderKnowledgeGroupsHtml(type) {
+      type = type || 'knowledge';
+      const items = DB.getKnowledgeByType(type);
+      const isTagMode = knowledgeViewModes[type] === 'tag';
+      let html = '';
+
+      if (items.length === 0) {
+        html += `<div class="warehouse-all-item-empty">暂无记录</div>`;
+      } else if (isTagMode) {
+        // 按标签分组：多标签的记录会重复出现在每个标签下
+        const groups = new Map();
+        items.forEach(k => {
+          const tags = (k.tags && k.tags.length > 0) ? k.tags : ['未分类'];
+          tags.forEach(t => {
+            if (!groups.has(t)) groups.set(t, []);
+            groups.get(t).push(k);
+          });
+        });
+        // 标签顺序：先按知识标签列表顺序，其余（含未分类）排后
+        const orderedTags = [];
+        DB.knowledgeTags.forEach(t => { if (groups.has(t)) orderedTags.push(t); });
+        groups.forEach((v, t) => { if (!orderedTags.includes(t)) orderedTags.push(t); });
+
+        orderedTags.forEach(tag => {
+          const list = groups.get(tag).sort((a, b) => b.date.localeCompare(a.date) || (b.createdAt || b.updatedAt || 0) - (a.createdAt || a.updatedAt || 0));
+          html += `
+            <div class="knowledge-tag-group-title">
+              <span>🏷️ ${escapeHtml(tag)}（${list.length}条）</span>
+              <button class="knowledge-tag-copy-btn" data-action="k-copy-tag" data-tag="${escapeHtml(tag)}" data-type="${type}" title="复制该标签下全部内容">📋</button>
+            </div>`;
+          list.forEach(k => { html += knowledgeAllItemHtml(k, true, true); });
+        });
+      } else {
+        // 按日期分组，最新日期在前
+        const groups = new Map();
+        items.forEach(k => {
+          if (!groups.has(k.date)) groups.set(k.date, []);
+          groups.get(k.date).push(k);
+        });
+        const dates = Array.from(groups.keys()).sort((a, b) => b.localeCompare(a));
+        dates.forEach(date => {
+          const list = groups.get(date).sort((a, b) => (b.createdAt || b.updatedAt || 0) - (a.createdAt || a.updatedAt || 0));
+          html += `<div class="knowledge-all-group-title"><span>📅 ${fmtWarehouseDate(date)}（${list.length}条）</span><button class="knowledge-tag-copy-btn" data-action="k-copy-date" data-date="${date}" data-type="${type}" title="复制当天全部内容">📋</button></div>`;
+          list.forEach(k => { html += knowledgeAllInlineItemHtml(k); });
+        });
+      }
+      return html;
+    }
+
+    // 待我去做：展示全部待做事项（不按天过滤）
+    function renderTodoSection() {
+      const container = document.getElementById('todoGroupedView');
+      if (!container) return;
+      const type = 'todo';
+      const items = DB.getKnowledgeByType(type);
+      const isTagMode = knowledgeViewModes[type] === 'tag';
+      container.innerHTML = `
+        <div class="warehouse-all-type-section" data-type="${type}">
+          <div class="warehouse-all-type-header" style="justify-content:flex-end;background:transparent;cursor:default;padding:6px 4px;">
+            <button class="knowledge-view-toggle" data-knowledge-view-toggle="${type}" title="切换查看维度">${isTagMode ? '按日期' : '按标签'}</button>
+            <span class="warehouse-all-type-count">${items.length}条</span>
+            <button class="warehouse-all-copy-all-btn" data-copy-type="all" data-type="${type}" title="复制全部内容">📋</button>
+          </div>
+          <div class="warehouse-all-type-list" data-all-content-type="${type}">
+            ${renderKnowledgeGroupsHtml(type)}
+          </div>
+        </div>
+      `;
+    }
+
+    // 刷新知识相关视图（所有宝贝 + 待我去做）
+    function refreshKnowledgeViews() {
+      if (typeof renderWarehouseAll === 'function') renderWarehouseAll();
+      if (typeof renderTodoSection === 'function') renderTodoSection();
+    }
+
+    function knowledgeAllItemHtml(k, showDate, hideTags) {
+      const timeStr = formatTime(k.updatedAt);
+      const foot = showDate
+        ? `${fmtWarehouseDate(k.date)} ${timeStr}`
+        : timeStr;
+      const tagsHtml = hideTags ? '' : `
+          <div class="knowledge-item-tags">
+            ${knowledgeTagChipsHtml(k.tags)}
+            <button class="knowledge-tag-add" data-action="k-tags" data-id="${k.id}" title="编辑标签">+标签</button>
+          </div>`;
+      const isTodo = (k.type || 'knowledge') === 'todo';
+      const isDone = isTodo && !!k.done;
+      const todoDelBtn = isTodo ? `<button class="todo-del-btn" data-action="k-delete" data-id="${k.id}" title="删除">✕</button>` : '';
+      const frontMark = isTodo
+        ? `<button class="todo-check${isDone ? ' done' : ''}" data-action="k-done" data-id="${k.id}" title="${isDone ? '取消完成' : '标记完成'}">${isDone ? '✓' : ''}</button>`
+        : `<div class="knowledge-dot">•</div>`;
+      return `
+        <div class="knowledge-all-item${isTodo ? ' knowledge-all-item-todo' : ''}" data-id="${k.id}">
+          <div class="knowledge-all-item-actions">
+            <button data-action="k-edit" data-id="${k.id}" title="编辑">✏️</button>
+            <button data-action="k-copy" data-id="${k.id}" title="复制">📋</button>
+            ${todoDelBtn}
+          </div>
+          <div class="knowledge-dot-row">${frontMark}<div class="knowledge-all-item-text${isDone ? ' done' : ''}">${escapeHtml((k.text || '').replace(/^\n+/, ''))}</div></div>${k.note ? `<div class="knowledge-all-item-note" data-id="${k.id}" title="点击编辑备注">${escapeHtml(k.note)}</div>` : ''}${tagsHtml}
+          <div class="knowledge-item-time">${foot}</div>
+        </div>
+      `;
+    }
+
+    // 按时间维度：行首标签 + 文案内联排版（与侧边栏一致）
+    function knowledgeAllInlineItemHtml(k) {
+      const chips = knowledgeTagChipsHtml(k.tags) || `<span class="knowledge-tag-add">+标签</span>`;
+      const isTodo = (k.type || 'knowledge') === 'todo';
+      const isDone = isTodo && !!k.done;
+      const todoDelBtn = isTodo ? `<button class="todo-del-btn" data-action="k-delete" data-id="${k.id}" title="删除">✕</button>` : '';
+      const frontMark = isTodo
+        ? `<button class="todo-check${isDone ? ' done' : ''}" data-action="k-done" data-id="${k.id}" title="${isDone ? '取消完成' : '标记完成'}">${isDone ? '✓' : ''}</button>`
+        : '';
+      return `
+        <div class="knowledge-all-item knowledge-all-item-inline${isTodo ? ' knowledge-all-item-todo' : ''}" data-id="${k.id}">
+          <div class="knowledge-all-item-actions">
+            <button data-action="k-edit" data-id="${k.id}" title="编辑">✏️</button>
+            <button data-action="k-copy" data-id="${k.id}" title="复制">📋</button>
+            ${todoDelBtn}
+          </div>
+          <div class="knowledge-all-inline-content">
+            ${frontMark}<span class="knowledge-all-inline-tags" data-id="${k.id}" title="点击修改标签">${chips}</span><span class="knowledge-all-item-text knowledge-all-inline-text${isDone ? ' done' : ''}">${escapeHtml(k.text)}</span>
+          </div>
+          ${k.note ? `<div class="knowledge-all-item-note" data-id="${k.id}" title="点击编辑备注">${escapeHtml(k.note)}</div>` : ''}
+        </div>
+      `;
+    }
+
+    // ===== 标签选择弹窗 =====
+    let ktagSelected = [];
+    let ktagOnOk = null;
+    let ktagNoteEnabled = false;
+
+    function renderKtagList() {
+      const listEl = document.getElementById('ktagList');
+      listEl.innerHTML = DB.knowledgeTags.map(t => `
+        <span class="ktag-chip${ktagSelected.includes(t) ? ' selected' : ''}" data-tag="${escapeHtml(t)}">
+          ${escapeHtml(t)}
+          <span class="ktag-chip-del" data-del-tag="${escapeHtml(t)}" title="删除该标签">×</span>
+        </span>
+      `).join('');
+
+      listEl.querySelectorAll('.ktag-chip').forEach(chip => {
+        chip.addEventListener('click', e => {
+          if (e.target.closest('.ktag-chip-del')) return;
+          const tag = chip.dataset.tag;
+          if (ktagSelected.includes(tag)) {
+            ktagSelected = ktagSelected.filter(t => t !== tag);
+          } else {
+            ktagSelected.push(tag);
+          }
+          renderKtagList();
+        });
+      });
+      listEl.querySelectorAll('.ktag-chip-del').forEach(del => {
+        del.addEventListener('click', e => {
+          e.stopPropagation();
+          const tag = del.dataset.delTag;
+          if (!confirm(`删除标签「${tag}」？已记录内容上的该标签会保留显示。`)) return;
+          DB.deleteKnowledgeTag(tag);
+          ktagSelected = ktagSelected.filter(t => t !== tag);
+          renderKtagList();
+        });
+      });
+    }
+
+    function openKtagPicker(selectedTags, onOk, note) {
+      ktagSelected = (selectedTags || []).slice();
+      ktagOnOk = onOk;
+      ktagNoteEnabled = (note !== undefined);
+      const noteWrap = document.getElementById('ktagNoteWrap');
+      const noteInput = document.getElementById('ktagNoteInput');
+      noteWrap.style.display = ktagNoteEnabled ? '' : 'none';
+      noteInput.value = ktagNoteEnabled ? (note || '') : '';
+      renderKtagList();
+      document.getElementById('ktagAddInput').value = '';
+      document.getElementById('ktagOverlay').classList.add('active');
+    }
+    function closeKtagPicker() {
+      document.getElementById('ktagOverlay').classList.remove('active');
+      document.getElementById('ktagNoteInput').value = '';
+      ktagOnOk = null;
+    }
+
+    function initKnowledgeEvents() {
+      const isCoarse = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || 'ontouchstart' in window;
+
+      // 侧边栏输入（知识记录 / 妙妙屋 / 小念头）：回车添加 / Shift+回车换行（手机端回车换行，点「添加」保存）
+      function autoGrow(el) {
+        el.style.height = 'auto';
+        el.style.height = Math.min(el.scrollHeight, 84) + 'px';
+      }
+
+      Object.keys(knowledgeTypeMeta).forEach(type => {
+        const input = document.querySelector(`.knowledge-add-input[data-knowledge-input="${type}"]`);
+        const addBtn = document.querySelector(`.knowledge-add-btn[data-knowledge-add="${type}"]`);
+        const hintEl = document.querySelector(`.knowledge-hint[data-knowledge-hint="${type}"]`);
+        if (!input || !addBtn) return;
+
+        const submitKnowledge = () => {
+          // 只去掉末尾空白，保留开头换行（首行仅显示标签）
+          const text = input.value.replace(/\s+$/, '');
+          if (!text.trim()) return;
+          const today = fmtDate(new Date());
+          openKtagPicker([], (tags, note) => {
+            DB.addKnowledge(today, text, tags, type, note);
+            renderKnowledgeList(type);
+            if (type === 'todo' && typeof renderTodoSection === 'function') renderTodoSection();
+          }, '');
+          input.value = '';
+          input.style.height = 'auto';
+        };
+
+        if (hintEl) {
+          hintEl.textContent = isCoarse ? '回车换行，点「添加」保存' : '回车添加，Shift+回车换行';
+        }
+        input.addEventListener('input', () => autoGrow(input));
+        input.addEventListener('keydown', e => {
+          if (e.key !== 'Enter') return;
+          if (e.isComposing || e.keyCode === 229) return;  // 中文输入法选词中
+          if (e.shiftKey) return;      // Shift+回车：换行
+          if (isCoarse) return;        // 手机端：回车换行，用按钮添加
+          e.preventDefault();
+          submitKnowledge();
+        });
+        addBtn.addEventListener('click', submitKnowledge);
+      });
+
+      // 弹窗按钮
+      document.getElementById('ktagOkBtn').addEventListener('click', () => {
+        const cb = ktagOnOk;
+        const note = ktagNoteEnabled
+          ? document.getElementById('ktagNoteInput').value.replace(/\s+$/, '')
+          : undefined;
+        closeKtagPicker();
+        if (cb) cb(ktagSelected.slice(), note);
+      });
+      document.getElementById('ktagCancelBtn').addEventListener('click', closeKtagPicker);
+      document.getElementById('ktagOverlay').addEventListener('click', e => {
+        if (e.target.id === 'ktagOverlay') closeKtagPicker();
+      });
+
+      // 新增标签
+      const addTag = () => {
+        const tagInput = document.getElementById('ktagAddInput');
+        const tag = tagInput.value.trim();
+        if (!tag) return;
+        DB.addKnowledgeTag(tag);
+        if (!ktagSelected.includes(tag)) ktagSelected.push(tag);
+        tagInput.value = '';
+        renderKtagList();
+      };
+      document.getElementById('ktagAddBtn').addEventListener('click', addTag);
+      document.getElementById('ktagAddInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') { if (e.isComposing || e.keyCode === 229) return; e.preventDefault(); addTag(); }
+      });
+
+      // 侧边栏复制按钮（按类型）
+      Object.keys(knowledgeTypeMeta).forEach(type => {
+        const sideCopyBtn = document.querySelector(`.warehouse-copy-btn[data-copy-type="edit"][data-type="${type}"]`);
+        if (!sideCopyBtn) return;
+        sideCopyBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          const today = fmtDate(new Date());
+          const items = DB.getKnowledgeByDate(today, type);
+          if (items.length === 0) { toast('暂无内容可复制'); return; }
+          const text = items.map(k => {
+            const tagStr = (k.tags && k.tags.length) ? ` [${k.tags.join(', ')}]` : '';
+            return `• ${k.text}${tagStr}${k.note ? '\n  备注：' + k.note : ''}`;
+          }).join('\n');
+          copyToClipboard(text, sideCopyBtn);
+        });
+      });
+
+      // 所有宝贝 + 待我去做：视图切换 + 条目操作 + 复制全部（捕获阶段，先于通用处理器）
+      function handleKnowledgeViewClick(e) {
+        const toggle = e.target.closest('.knowledge-view-toggle');
+        if (toggle) {
+          e.stopPropagation();
+          const type = toggle.dataset.knowledgeViewToggle || 'knowledge';
+          knowledgeViewModes[type] = knowledgeViewModes[type] === 'tag' ? 'date' : 'tag';
+          localStorage.setItem(type === 'knowledge' ? 'tt_knowledgeViewMode' : `tt_knowledgeViewMode_${type}`, knowledgeViewModes[type]);
+          refreshKnowledgeViews();
+          return;
+        }
+        const copyAllBtn = e.target.closest('.warehouse-all-copy-all-btn');
+        if (copyAllBtn && ['knowledge', 'miao', 'thought', 'todo'].includes(copyAllBtn.dataset.type)) {
+          e.stopPropagation();
+          e.preventDefault();
+          const type = copyAllBtn.dataset.type;
+          const meta = knowledgeTypeMeta[type];
+          const items = DB.getKnowledgeByType(type);
+          const mode = knowledgeViewModes[type];
+          if (items.length === 0) { toast('暂无内容可复制'); return; }
+          if (mode === 'tag') {
+            // 按标签分类复制：同一记录打了多个标签会出现在多个分类中
+            const groups = new Map();
+            items.forEach(k => {
+              const tags = (k.tags && k.tags.length > 0) ? k.tags : ['未分类'];
+              tags.forEach(t => {
+                if (!groups.has(t)) groups.set(t, []);
+                groups.get(t).push(k);
+              });
+            });
+            const orderedTags = [];
+            DB.knowledgeTags.forEach(t => { if (groups.has(t)) orderedTags.push(t); });
+            groups.forEach((v, t) => { if (!orderedTags.includes(t)) orderedTags.push(t); });
+            const parts = orderedTags.map(tag => {
+              const list = groups.get(tag).sort((a, b) => b.date.localeCompare(a.date) || (b.createdAt || b.updatedAt || 0) - (a.createdAt || a.updatedAt || 0));
+              const lines = list.map(k => `- ${k.text}${k.note ? '\n  备注：' + k.note : ''}`).join('\n');
+              return `${tag}：\n${lines}`;
+            });
+            copyToClipboard(parts.join('\n\n'), copyAllBtn);
+          } else {
+            // 按日期分组：每天只出现一次【今天】【昨天】标签
+            const groups = new Map();
+            items.forEach(k => {
+              if (!groups.has(k.date)) groups.set(k.date, []);
+              groups.get(k.date).push(k);
+            });
+            const dates = Array.from(groups.keys()).sort((a, b) => b.localeCompare(a));
+            const parts = dates.map(date => {
+              const list = groups.get(date).slice().sort((a, b) => (b.createdAt || b.updatedAt || 0) - (a.createdAt || a.updatedAt || 0));
+              const lines = list.map(k => {
+                const tagStr = (k.tags && k.tags.length) ? ` [${k.tags.join(', ')}]` : '';
+                return `${(k.text || '').replace(/^\n+/, '')}${tagStr}${k.note ? '\n  备注：' + k.note : ''}`;
+              }).join('\n');
+              return `【${fmtWarehouseDate(date)}】\n${lines}`;
+            });
+            copyToClipboard(`— ${meta.icon} ${meta.name}（共${items.length}条） —\n\n${parts.join('\n\n')}`, copyAllBtn);
+          }
+          return;
+        }
+        const inlineTags = e.target.closest('.knowledge-all-inline-tags');
+        if (inlineTags) {
+          e.stopPropagation();
+          const k = DB.knowledge.find(x => x.id === inlineTags.dataset.id);
+          if (!k) return;
+          openKtagPicker(k.tags, tags => {
+            DB.updateKnowledge(k.id, undefined, tags);
+            refreshKnowledgeViews();
+          });
+          return;
+        }
+        const dateCopyBtn = e.target.closest('button[data-action="k-copy-date"]');
+        if (dateCopyBtn) {
+          e.stopPropagation();
+          const d = dateCopyBtn.dataset.date;
+          const t = dateCopyBtn.dataset.type || 'knowledge';
+          const list = DB.getKnowledgeByType(t)
+            .filter(k => k.date === d)
+            .sort((a, b) => (b.createdAt || b.updatedAt || 0) - (a.createdAt || a.updatedAt || 0));
+          if (list.length === 0) { toast('暂无内容可复制'); return; }
+          const lines = list.map(k => {
+            const tagStr = (k.tags && k.tags.length) ? ` [${k.tags.join(', ')}]` : '';
+            return `${(k.text || '').replace(/^\n+/, '')}${tagStr}${k.note ? '\n  备注：' + k.note : ''}`;
+          }).join('\n');
+          copyToClipboard(`【${fmtWarehouseDate(d)}】\n${lines}`, dateCopyBtn);
+          return;
+        }
+        const tagCopyBtn = e.target.closest('button[data-action="k-copy-tag"]');
+        if (tagCopyBtn) {
+          e.stopPropagation();
+          const tag = tagCopyBtn.dataset.tag;
+          const sectionEl = tagCopyBtn.closest('.warehouse-all-type-section');
+          const sectionType = tagCopyBtn.dataset.type || (sectionEl ? sectionEl.dataset.type : 'knowledge');
+          const list = DB.getKnowledgeByType(sectionType)
+            .filter(k => (k.tags && k.tags.length > 0 ? k.tags : ['未分类']).includes(tag))
+            .sort((a, b) => b.date.localeCompare(a.date) || (b.createdAt || b.updatedAt || 0) - (a.createdAt || a.updatedAt || 0));
+          if (list.length === 0) { toast('暂无内容可复制'); return; }
+          const lines = list.map(k => `- ${k.text}${k.note ? '\n  备注：' + k.note : ''}`).join('\n');
+          copyToClipboard(`${tag}：\n${lines}`, tagCopyBtn);
+          return;
+        }
+        const noteEl = e.target.closest('.knowledge-all-item-note');
+        if (noteEl) {
+          e.stopPropagation();
+          startNoteEdit(noteEl, () => refreshKnowledgeViews());
+          return;
+        }
+        const btn = e.target.closest('button[data-action^="k-"]');
+        if (!btn) return;
+        e.stopPropagation();
+        const action = btn.dataset.action;
+        const id = btn.dataset.id;
+        const k = DB.knowledge.find(x => x.id === id);
+        if (action === 'k-copy') {
+          if (k) {
+            const tagStr = (k.tags && k.tags.length) ? ` [${k.tags.join(', ')}]` : '';
+            copyToClipboard(k.text + tagStr + (k.note ? '\n  备注：' + k.note : ''), btn);
+          }
+        } else if (action === 'k-done') {
+          if (!k) return;
+          DB.updateKnowledge(id, undefined, undefined, undefined, !k.done);
+          refreshKnowledgeViews();
+        } else if (action === 'k-delete') {
+          if (!k) return;
+          DB.deleteKnowledge(id);
+          refreshKnowledgeViews();
+        } else if (action === 'k-tags') {
+          if (!k) return;
+          openKtagPicker(k.tags, tags => {
+            DB.updateKnowledge(id, undefined, tags);
+            refreshKnowledgeViews();
+          });
+        } else if (action === 'k-edit') {
+          if (!k) return;
+          const itemEl = btn.closest('.knowledge-all-item');
+          const actionsEl = itemEl.querySelector('.knowledge-all-item-actions');
+          const textEl = itemEl.querySelector('.knowledge-all-item-text');
+          if (!textEl) return;
+          const oldText = k.text;
+          const ta = document.createElement('textarea');
+          ta.style.cssText = 'width:100%;flex:1 1 0;min-width:0;min-height:60px;border:1px solid var(--accent);border-radius:6px;padding:6px 8px;font-size:13px;background:rgba(255,255,255,0.6);color:var(--ink);outline:none;font-family:inherit;box-sizing:border-box;line-height:1.7;';
+          ta.value = oldText;
+          textEl.replaceWith(ta);
+          ta.focus();
+          let done = false;
+          const save = () => {
+            if (done) return;
+            done = true;
+            // 只去掉末尾空白，保留开头换行
+            const newText = ta.value.replace(/\s+$/, '');
+            if (!newText.trim()) { DB.deleteKnowledge(id); refreshKnowledgeViews(); return; }  // 清空即删除
+            if (newText !== oldText) DB.updateKnowledge(id, newText);
+            refreshKnowledgeViews();
+          };
+          itemEl._saveEdit = save;
+          // 编辑态：铅笔变确认勾，按钮常显
+          itemEl.classList.add('editing');
+          if (actionsEl) {
+            btn.dataset.action = 'k-confirm';
+            btn.textContent = '✓';
+            btn.title = '确认';
+            btn.classList.add('editing-confirm');
+          }
+          ta.addEventListener('blur', save);
+          ta.addEventListener('keydown', ev => {
+            if (ev.key === 'Escape') { done = true; refreshKnowledgeViews(); }
+          });
+        } else if (action === 'k-confirm') {
+          const itemEl = btn.closest('.knowledge-all-item');
+          if (itemEl && typeof itemEl._saveEdit === 'function') itemEl._saveEdit();
+        }
+      }
+
+      const allContent = document.getElementById('warehouseAllContent');
+      if (allContent) allContent.addEventListener('click', handleKnowledgeViewClick, true);
+      const todoContent = document.getElementById('todoSectionContent');
+      if (todoContent) todoContent.addEventListener('click', handleKnowledgeViewClick, true);
+
+      renderAllKnowledgeLists();
+      renderTodoSection();
     }
 
     // ===== 音效系统 =====
@@ -5629,6 +6781,9 @@
             } else if (type === 'warehouse') {
               if (isCollapsed) sfxWarehouseClose();
               else sfxDing();
+            } else if (type === 'todo') {
+              if (isCollapsed) sfxFanClose();
+              else sfxDing();
             }
             // 保存折叠状态
             if (type) {
@@ -5638,7 +6793,7 @@
         });
       });
       // 恢复折叠状态
-      ['anchor', 'warehouse'].forEach(type => {
+      ['anchor', 'warehouse', 'todo'].forEach(type => {
         const saved = localStorage.getItem('tt_collapse_' + type);
         if (saved === '1') {
           const btn = document.querySelector(`.panel-collapse-btn[data-collapse="${type}"]`);
@@ -5664,99 +6819,19 @@
         switchWarehouseView('all');
       });
 
-      // three editors — auto save
+      // 反省编辑区 — auto save（其余三类由知识记录逻辑即时保存）
       const today = fmtDate(new Date());
-      ['reflection', 'miao', 'thought'].forEach(type => {
-        const bulletTypes = ['miao', 'thought'];
-        const isBulletType = bulletTypes.includes(type);
-
-        if (isBulletType) {
-          const listEl = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
-          if (!listEl) return;
-
-          function triggerBulletSave() {
-            clearTimeout(warehouseSaveTimers[type]);
-            warehouseSaveTimers[type] = setTimeout(() => {
-              const content = getBulletListContent(listEl);
-              DB.setWarehouseContent(today, type, content);
-              // 如果全部视图是打开的，刷新一下
-              if (warehouseCurrentView === 'all') renderWarehouseAll();
-            }, 800);
-          }
-
-          // 监听输入
-          listEl.addEventListener('input', (e) => {
-            if (e.target.classList.contains('bullet-text')) {
-              triggerBulletSave();
-            }
-          });
-
-          // 点击列表空白处，添加/聚焦到最后一行
-          listEl.addEventListener('click', (e) => {
-            if (e.target === listEl) {
-              let lastItem = listEl.querySelector('.bullet-item:last-child');
-              if (!lastItem || lastItem.querySelector('.bullet-text').textContent.trim()) {
-                lastItem = createBulletItem('');
-                listEl.appendChild(lastItem);
-              }
-              const textEl = lastItem.querySelector('.bullet-text');
-              textEl.focus();
-              placeCaretAtEnd(textEl);
-            }
-          });
-
-          // 键盘事件
-          listEl.addEventListener('keydown', (e) => {
-            const textEl = e.target;
-            if (!textEl.classList.contains('bullet-text')) return;
-            const item = textEl.closest('.bullet-item');
-            if (!item) return;
-
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              // 在当前条目后面插入新条目
-              const newItem = createBulletItem('');
-              item.after(newItem);
-              const newTextEl = newItem.querySelector('.bullet-text');
-              newTextEl.focus();
-              triggerBulletSave();
-            } else if (e.key === 'Backspace') {
-              const text = textEl.textContent;
-              const sel = window.getSelection();
-              const isAtStart = sel.anchorOffset === 0 && sel.focusOffset === 0;
-              if (text === '' || (isAtStart && sel.isCollapsed)) {
-                // 空行或光标在开头且按退格：删除当前行，聚焦上一行
-                const prevItem = item.previousElementSibling;
-                if (prevItem) {
-                  e.preventDefault();
-                  item.remove();
-                  const prevText = prevItem.querySelector('.bullet-text');
-                  prevText.focus();
-                  placeCaretAtEnd(prevText);
-                  triggerBulletSave();
-                } else if (listEl.querySelectorAll('.bullet-item').length === 1) {
-                  // 只有一行，删除后变空（显示 placeholder）
-                  e.preventDefault();
-                  item.remove();
-                  triggerBulletSave();
-                }
-              }
-            }
-          });
-        } else {
-          const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
-          if (!textarea) return;
-
-          textarea.addEventListener('input', () => {
-            clearTimeout(warehouseSaveTimers[type]);
-            warehouseSaveTimers[type] = setTimeout(() => {
-              DB.setWarehouseContent(today, type, textarea.value);
-              // 如果全部视图是打开的，刷新一下
-              if (warehouseCurrentView === 'all') renderWarehouseAll();
-            }, 800);
-          });
-        }
-      });
+      const reflectionTa = document.querySelector('.warehouse-edit-textarea[data-type="reflection"]');
+      if (reflectionTa) {
+        reflectionTa.addEventListener('input', () => {
+          clearTimeout(warehouseSaveTimers.reflection);
+          warehouseSaveTimers.reflection = setTimeout(() => {
+            DB.setWarehouseContent(today, 'reflection', reflectionTa.value);
+            // 如果全部视图是打开的，刷新一下
+            if (warehouseCurrentView === 'all') renderWarehouseAll();
+          }, 800);
+        });
+      }
 
       // 板块折叠/展开
       document.querySelectorAll('.warehouse-edit-title[data-toggle-type]').forEach(title => {
@@ -5800,17 +6875,13 @@
           if (h && h >= minHeight) {
             const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
             if (textarea) textarea.style.height = h + 'px';
-            const bulletList = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
-            if (bulletList) bulletList.style.height = h + 'px';
           }
         });
 
         document.querySelectorAll('.warehouse-resize-handle').forEach(handle => {
           const type = handle.dataset.resizeType;
           const content = handle.parentElement;
-          const textarea = content.querySelector('.warehouse-edit-textarea');
-          const bulletList = content.querySelector('.warehouse-bullet-list');
-          const target = textarea || bulletList;
+          const target = content.querySelector('.warehouse-edit-textarea');
           if (!target) return;
 
           let startY = 0;
@@ -5868,22 +6939,13 @@
         });
       })();
 
-      // copy buttons in edit view
+      // copy button in edit view（反省；其余三类由知识记录事件处理）
       document.querySelectorAll('.warehouse-copy-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          const type = btn.dataset.type;
-          const bulletTypes = ['miao', 'thought'];
-          if (bulletTypes.includes(type)) {
-            const listEl = document.querySelector(`.warehouse-bullet-list[data-type="${type}"]`);
-            if (listEl) {
-              const content = getBulletListContent(listEl);
-              copyToClipboard(content, btn);
-            }
-          } else {
-            const textarea = document.querySelector(`.warehouse-edit-textarea[data-type="${type}"]`);
-            if (textarea) copyToClipboard(textarea.value, btn);
-          }
+          if (btn.dataset.type !== 'reflection') return;
+          const textarea = document.querySelector('.warehouse-edit-textarea[data-type="reflection"]');
+          if (textarea) copyToClipboard(textarea.value, btn);
         });
       });
 
@@ -5970,15 +7032,11 @@
           if (mode === 'view') {
             const wrap = handle.closest('.warehouse-all-resize-wrap');
             if (!wrap) return;
-            const contentEl = wrap.querySelector('.warehouse-all-item-content-resizable');
-            const bulletList = wrap.querySelector('.warehouse-all-item-bullet-list');
-            target = contentEl || bulletList;
+            target = wrap.querySelector('.warehouse-all-item-content-resizable');
           } else {
             const wrap = handle.closest('.warehouse-all-edit-wrap');
             if (!wrap) return;
-            const textarea = wrap.querySelector('.warehouse-all-item-textarea');
-            const bulletList = wrap.querySelector('.warehouse-all-bullet-editor');
-            target = textarea || bulletList;
+            target = wrap.querySelector('.warehouse-all-item-textarea');
           }
           if (!target) return;
 
@@ -6008,63 +7066,12 @@
         }, { passive: false });
       })();
 
-      // 全部视图中圆点编辑器：点击空白处添加/聚焦到最后一行
-      document.getElementById('warehouseAllContent').addEventListener('click', (e) => {
-        const listEl = e.target.closest('.warehouse-all-bullet-editor');
-        if (!listEl) return;
-        if (e.target === listEl) {
-          let lastItem = listEl.querySelector('.bullet-item:last-child');
-          if (!lastItem || lastItem.querySelector('.bullet-text').textContent.trim()) {
-            lastItem = createBulletItem('');
-            listEl.appendChild(lastItem);
-          }
-          const textEl = lastItem.querySelector('.bullet-text');
-          textEl.focus();
-          placeCaretAtEnd(textEl);
-        }
-      });
-
-      // 全部视图中圆点编辑器的键盘事件
-      document.getElementById('warehouseAllContent').addEventListener('keydown', (e) => {
-        const textEl = e.target;
-        if (!textEl.classList.contains('bullet-text')) return;
-        const listEl = textEl.closest('.warehouse-all-bullet-editor');
-        if (!listEl) return;
-        const item = textEl.closest('.bullet-item');
-        if (!item) return;
-
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          const newItem = createBulletItem('');
-          item.after(newItem);
-          const newTextEl = newItem.querySelector('.bullet-text');
-          newTextEl.focus();
-        } else if (e.key === 'Backspace') {
-          const text = textEl.textContent;
-          const sel = window.getSelection();
-          const isAtStart = sel.anchorOffset === 0 && sel.focusOffset === 0;
-          if (text === '' || (isAtStart && sel.isCollapsed)) {
-            const prevItem = item.previousElementSibling;
-            if (prevItem) {
-              e.preventDefault();
-              item.remove();
-              const prevText = prevItem.querySelector('.bullet-text');
-              prevText.focus();
-              placeCaretAtEnd(prevText);
-            } else if (listEl.querySelectorAll('.bullet-item').length === 1) {
-              // 只有一行，删除后变空
-              e.preventDefault();
-              item.remove();
-            }
-          }
-        }
-      });
-
-      // 复制全部按钮
+      // 复制全部按钮（反省；其余三类由知识记录事件处理）
       document.getElementById('warehouseAllContent').addEventListener('click', (e) => {
         const btn = e.target.closest('.warehouse-all-copy-all-btn');
         if (!btn) return;
         const type = btn.dataset.type;
+        if (type !== 'reflection') return;
         const items = DB.getWarehouseByType(type);
         if (items.length === 0) { toast('暂无内容可复制'); return; }
         const typeInfo = DB.warehouseTypes[type];
@@ -6077,12 +7084,10 @@
       });
 
       // ===== Anchor events =====
-      document.getElementById('anchorPrevDay').addEventListener('click', prevAnchorDay);
-      document.getElementById('anchorNextDay').addEventListener('click', nextAnchorDay);
-
-      // 日历选择器
+      // 日期导航已移除；日历选择器逻辑保留并做存在性保护
       let anchorCalMonth = new Date();
-      document.getElementById('anchorDateLabel').addEventListener('click', (e) => {
+      const anchorDateLabelEl = document.getElementById('anchorDateLabel');
+      if (anchorDateLabelEl) anchorDateLabelEl.addEventListener('click', (e) => {
         e.stopPropagation();
         anchorCalMonth = new Date(anchorViewDate);
         renderAnchorCalendar();
@@ -6171,7 +7176,7 @@
         const addAnchor = () => {
           const text = anchorInput.value.trim();
           if (!text) return;
-          DB.addAnchor(anchorViewDate, text);
+          DB.addAnchor(fmtDate(new Date()), text);
           anchorInput.value = '';
           renderAnchors();
         };
@@ -6183,6 +7188,8 @@
 
     initWarehouseEvents();
 
+    initKnowledgeEvents();
+
     initEvents();
     renderAll();
     Sync.pull().then(changed => {
@@ -6190,6 +7197,7 @@
       renderAll();
       if (warehousePanelOpen) {
         loadWarehouseEditors();
+        renderTodoSection();
         if (warehouseCurrentView === 'all') renderWarehouseAll();
       }
     });
@@ -6204,6 +7212,7 @@
         renderAll();
         if (warehousePanelOpen) {
           loadWarehouseEditors();
+          renderTodoSection();
           if (warehouseCurrentView === 'all') renderWarehouseAll();
         }
       }).catch(e => console.warn('Periodic sync failed:', e));
