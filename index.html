@@ -1823,38 +1823,38 @@
     /* 查看全部按钮 */
     .warehouse-view-all-btn {
       flex-shrink: 0;
-      padding: 12px 8px;
-      border: 1px dashed var(--rule);
-      border-radius: var(--radius);
-      background: var(--bg);
+      padding: 6px 6px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
       color: var(--muted);
       font-size: 12px;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: color 0.15s, transform 0.15s;
       font-family: inherit;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 4px;
       width: fit-content;
-      min-width: 80px;
       align-self: center;
     }
     .warehouse-view-all-btn:hover {
-      border-color: var(--accent);
       color: var(--accent);
-      background: var(--accent-light);
+      background: transparent;
     }
     .view-all-icon {
-      display: inline-block;
-      font-size: 28px;
+      display: block;
+      width: 34px;
+      height: 34px;
+      pointer-events: none;
       animation: bounce 2s ease-in-out infinite;
-      line-height: 1;
     }
     .view-all-text {
       font-size: 12px;
       font-weight: 500;
+      pointer-events: none;
     }
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
@@ -2348,9 +2348,13 @@
     .tp-toolbar {
       display: flex; gap: 8px;
       padding: 6px 10px 10px;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .tp-theme-input {
-      flex: 1;
+      flex: 1 1 auto;
+      min-width: 0;
+      width: 100%;
       border: 1px solid rgba(205,150,70,0.3);
       border-radius: 8px;
       padding: 8px 12px;
@@ -2373,7 +2377,8 @@
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
-      flex-shrink: 0;
+      flex: 0 0 auto;
+      max-width: 100%;
     }
     .tp-theme-add-btn:active { transform: scale(0.95); }
     .tp-themes { display: flex; flex-direction: column; gap: 10px; }
@@ -2412,7 +2417,9 @@
     }
     .tp-theme-toggle.collapsed { transform: rotate(-90deg); }
     .tp-theme-name {
-      flex: 1;
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow-wrap: anywhere;
       font-size: 15px;
       font-weight: 700;
       color: var(--ink);
@@ -2433,6 +2440,8 @@
       color: var(--muted);
       opacity: 0.6;
       margin-right: 4px;
+      flex: 0 0 auto;
+      white-space: nowrap;
     }
     .tp-theme-actions { display: flex; gap: 2px; opacity: 0; transition: opacity 0.15s; }
     .tp-theme-header:hover .tp-theme-actions { opacity: 1; }
@@ -2512,7 +2521,8 @@
       padding: 4px 0 6px;
     }
     .tp-add-input {
-      flex: 1;
+      flex: 1 1 auto;
+      min-width: 0;
       border: 1px dashed rgba(205,150,70,0.4);
       border-radius: 7px;
       padding: 5px 10px;
@@ -3006,7 +3016,16 @@
           </div>
         </div>
         <button class="warehouse-view-all-btn" id="warehouseViewAllBtn">
-          <span class="view-all-icon">📦</span>
+          <svg class="view-all-icon" viewBox="0 0 64 64" aria-hidden="true">
+            <polygon points="13,23 35,11 57,23 35,35" fill="#EBC79B" stroke="#1C1C1C" stroke-width="3.2" stroke-linejoin="round"/>
+            <polygon points="13,23 35,35 35,57 13,45" fill="#CE9A63" stroke="#1C1C1C" stroke-width="3.2" stroke-linejoin="round"/>
+            <polygon points="35,35 57,23 57,45 35,57" fill="#A97442" stroke="#1C1C1C" stroke-width="3.2" stroke-linejoin="round"/>
+            <path d="M26.5 17.9 L29.5 16.3 L44.5 24.8 L41.5 26.4 Z" fill="#E9E9E9"/>
+            <path d="M31 16.6 L43.5 23.9" stroke="#CFCFCF" stroke-width="1" stroke-linecap="round"/>
+            <rect x="15.5" y="29.5" width="6.5" height="9.5" rx="1.2" fill="#E0433F"/>
+            <path d="M45.5 42.5 L52 39" stroke="#8F8A84" stroke-width="2" stroke-linecap="round"/>
+            <path d="M46.5 47 L53 43.5" stroke="#8F8A84" stroke-width="2" stroke-linecap="round"/>
+          </svg>
           <span class="view-all-text">查看所有宝贝</span>
         </button>
       </div>
