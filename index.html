@@ -3775,8 +3775,16 @@
             localStorage.setItem('tt_device_id', this.deviceId);
           }
           this.ready = true;
-          // 初始化完成后自动同步一次
-          this.pull().catch(function(e) { console.warn('Init pull failed:', e); });
+          // 初始化完成后先 pull，再主动 push 一次——确保修复前漏传的 memos/themePark 快照能补上传
+          const self = this;
+          this.pull().then(function() {
+            return self.push();
+          }).then(function() {
+            // ready 之前被跳过的 debouncedPush，现在补发一次
+            if (self._needPushWhenReady) { self._needPushWhenReady = false; return self.push(); }
+          }).catch(function(e) {
+            console.warn('Init sync failed:', e);
+          });
         } catch(e) { console.warn('Sync doInit failed:', e); }
       },
 
@@ -3817,8 +3825,9 @@
           localStorage.setItem('tt_sync_snap', JSON.stringify({ ids: currentIds, deletedIds: allDeleted }));
           this.updateStatus('synced');
         } catch(e) {
-          console.warn('Sync push failed:', e);
+          console.error('Sync push failed:', e);
           this.updateStatus('error');
+          this.lastError = String(e && (e.message || e.error_description || e));
         }
         this.syncing = false;
       },
@@ -3963,17 +3972,20 @@
           this.updateStatus('synced');
           return true;
         } catch(e) {
-          console.warn('Sync pull failed:', e);
+          console.error('Sync pull failed:', e);
           this.updateStatus('error');
           this.syncing = false;
+          this.lastError = String(e && (e.message || e.error_description || e));
           return false;
         }
       },
 
       debouncedPush() {
-        if (!this.ready) return;
         clearTimeout(this.debounceTimer);
-        this.debounceTimer = setTimeout(() => this.push(), 2000);
+        this.debounceTimer = setTimeout(() => {
+          if (this.ready) this.push();
+          else this._needPushWhenReady = true;
+        }, 2000);
       },
 
       updateStatus(status) {
@@ -3981,7 +3993,10 @@
         if (!el) return;
         if (status === 'syncing') { el.textContent = '同步中…'; el.style.color = '#89bceb'; }
         else if (status === 'synced') { el.textContent = '已同步'; el.style.color = '#7fb069'; }
-        else if (status === 'error') { el.textContent = '同步失败'; el.style.color = 'var(--danger)'; }
+        else if (status === 'error') {
+          el.textContent = '同步失败' + (this.lastError ? '：' + this.lastError.slice(0, 24) : '');
+          el.style.color = 'var(--danger)';
+        }
       }
     };
 
