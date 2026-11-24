@@ -2205,6 +2205,394 @@
     .anchor-add-input:focus { border-color: var(--accent); }
     .anchor-add-input::placeholder { color: var(--muted); }
 
+    /* 我的备忘 */
+    .memo-section-content { padding: 0 4px 6px; }
+    .memo-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+    .memo-item {
+      position: relative;
+      padding: 8px 44px 6px 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.4);
+      backdrop-filter: blur(3px);
+      border: 1px solid rgba(205,150,70,0.18);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .memo-item:hover { background: rgba(255,255,255,0.55); }
+    .memo-item-text {
+      font-size: 14px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      color: var(--ink);
+      word-break: break-word;
+    }
+    .memo-item.editing .memo-item-text {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.75);
+      padding: 10px 12px;
+      min-height: 48px;
+      line-height: 1.6;
+      font-size: 15px;
+      overflow-y: auto;
+      max-height: 240px;
+    }
+    .memo-item-actions {
+      position: absolute;
+      top: 6px; right: 6px;
+      display: flex; gap: 2px;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .memo-item:hover .memo-item-actions,
+    .memo-item.editing .memo-item-actions { opacity: 1; }
+    .memo-item-actions button {
+      width: 26px; height: 26px;
+      border: none; border-radius: 6px;
+      background: rgba(255,255,255,0.6);
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      display: grid; place-items: center;
+      transition: background 0.12s, color 0.12s;
+    }
+    .memo-item-actions button:hover { background: var(--accent-light); color: var(--accent); }
+    .memo-item-actions .memo-del-btn:hover { background: rgba(217,102,90,0.15); color: var(--danger); }
+    .memo-item-time {
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.7;
+    }
+    .memo-item-editing-hint {
+      position: absolute;
+      top: -22px; right: 0;
+      font-size: 11px;
+      color: var(--accent);
+      background: rgba(255,255,255,0.9);
+      padding: 1px 6px;
+      border-radius: 4px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .memo-empty {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      padding: 8px 0;
+      opacity: 0.7;
+    }
+    .memo-add-row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding: 8px 10px 4px;
+    }
+    .memo-add-input {
+      width: 100%;
+      border: 1px solid rgba(205,150,70,0.35);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 15px;
+      line-height: 1.6;
+      background: rgba(255,255,255,0.55);
+      color: var(--ink);
+      outline: none;
+      font-family: inherit;
+      box-sizing: border-box;
+      resize: none;
+      min-height: 56px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .memo-add-input:focus { border-color: var(--accent); background: rgba(255,255,255,0.7); box-shadow: 0 0 0 3px var(--accent-light); }
+    .memo-add-input::placeholder { color: var(--muted); opacity: 0.65; }
+    .memo-add-btn {
+      margin-left: auto;
+      padding: 8px 18px;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .memo-add-btn:active { transform: scale(0.95); }
+    .memo-hint {
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.55;
+      padding: 0 12px 4px;
+    }
+
+    /* ============ 主题公园 ============ */
+    .tp-sort-btn {
+      width: 32px; height: 28px;
+      border: 1px solid rgba(205,150,70,0.35);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.55);
+      color: var(--accent);
+      font-size: 14px;
+      cursor: pointer;
+      padding: 0 4px;
+      margin-right: 4px;
+      white-space: nowrap;
+      display: grid; place-items: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .tp-sort-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+
+    .tp-section-content { padding: 4px 4px 6px; }
+    .tp-toolbar {
+      display: flex; gap: 8px;
+      padding: 6px 10px 10px;
+    }
+    .tp-theme-input {
+      flex: 1;
+      border: 1px solid rgba(205,150,70,0.3);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      background: rgba(255,255,255,0.55);
+      color: var(--ink);
+      outline: none;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    .tp-theme-input:focus { border-color: var(--accent); }
+    .tp-theme-input::placeholder { color: var(--muted); opacity: 0.65; }
+    .tp-theme-add-btn {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tp-theme-add-btn:active { transform: scale(0.95); }
+    .tp-themes { display: flex; flex-direction: column; gap: 10px; }
+    .tp-empty {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      opacity: 0.65;
+      padding: 12px 0 8px;
+    }
+
+    /* 主题卡片 */
+    .tp-theme-card {
+      border-radius: 12px;
+      border: 1px solid rgba(205,150,70,0.22);
+      background: linear-gradient(135deg, rgba(255,255,255,0.62), rgba(255,255,255,0.35));
+      backdrop-filter: blur(4px);
+      overflow: hidden;
+    }
+    .tp-theme-card.dragging-source { opacity: 0.35; }
+    .tp-theme-header { cursor: grab; }
+    .tp-theme-header:active { cursor: grabbing; }
+    .tp-theme-header {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 10px 6px;
+      border-bottom: 1px solid rgba(205,150,70,0.15);
+      background: rgba(255,255,255,0.25);
+    }
+    .tp-theme-toggle {
+      width: 22px; height: 22px;
+      border: none; background: transparent; cursor: pointer;
+      color: var(--muted); font-size: 12px;
+      display: grid; place-items: center;
+      transition: transform 0.18s;
+      padding: 0;
+    }
+    .tp-theme-toggle.collapsed { transform: rotate(-90deg); }
+    .tp-theme-name {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: 4px;
+      line-height: 1.4;
+      min-height: 1.4em;
+    }
+    .tp-theme-name:hover { background: rgba(205,150,70,0.1); }
+    .tp-theme-name.editing {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+      background: rgba(255,255,255,0.7);
+    }
+    .tp-theme-count {
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.6;
+      margin-right: 4px;
+    }
+    .tp-theme-actions { display: flex; gap: 2px; opacity: 0; transition: opacity 0.15s; }
+    .tp-theme-header:hover .tp-theme-actions { opacity: 1; }
+    .tp-theme-actions button {
+      width: 24px; height: 24px;
+      border: none; border-radius: 6px;
+      background: rgba(255,255,255,0.6);
+      color: var(--muted); font-size: 12px;
+      cursor: pointer;
+      display: grid; place-items: center;
+      transition: background 0.12s, color 0.12s;
+    }
+    .tp-theme-actions button:hover { background: var(--accent-light); color: var(--accent); }
+    .tp-theme-actions .tp-theme-del:hover { background: rgba(217,102,90,0.15); color: var(--danger); }
+
+    .tp-theme-body { padding: 4px 6px 6px; }
+    .tp-theme-body.collapsed { display: none; }
+
+    /* 子板块 */
+    .tp-section {
+      border-radius: 8px;
+      padding: 2px 0 4px;
+    }
+    .tp-section + .tp-section { border-top: 1px dashed rgba(205,150,70,0.2); }
+    .tp-section-head {
+      display: flex; align-items: center; gap: 4px;
+      padding: 4px 4px 2px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.12s;
+    }
+    .tp-section-head:hover { background: rgba(205,150,70,0.08); }
+    .tp-section-toggle {
+      width: 18px; height: 18px;
+      border: none; background: transparent; cursor: pointer;
+      color: var(--muted); font-size: 10px;
+      display: grid; place-items: center;
+      transition: transform 0.18s; padding: 0;
+    }
+    .tp-section-toggle.collapsed { transform: rotate(-90deg); }
+    .tp-section-title {
+      font-size: 12px; font-weight: 700; color: var(--muted);
+      letter-spacing: 0.3px;
+    }
+    .tp-section-title .tp-section-emoji { margin-right: 3px; }
+    .tp-section-count {
+      font-size: 10px; color: var(--muted); opacity: 0.55;
+      margin-left: 2px;
+    }
+    .tp-section-copy {
+      margin-left: auto;
+      width: 22px; height: 22px;
+      border: none; border-radius: 5px;
+      background: transparent; color: var(--muted);
+      font-size: 11px; cursor: pointer;
+      opacity: 0; transition: opacity 0.15s, background 0.12s, color 0.12s;
+      display: grid; place-items: center;
+    }
+    .tp-section-head:hover .tp-section-copy { opacity: 1; }
+    .tp-section-copy:hover { background: var(--accent-light); color: var(--accent); }
+
+    .tp-section-sort {
+      margin-left: auto;
+      border: none; background: transparent; cursor: pointer;
+      font-size: 10px; color: var(--muted); opacity: 0.75;
+      padding: 2px 6px; border-radius: 5px;
+      white-space: nowrap;
+      transition: background 0.12s, color 0.12s, opacity 0.12s;
+    }
+    .tp-section-sort:hover { background: var(--accent-light); color: var(--accent); opacity: 1; }
+
+    .tp-section-body { padding: 4px 4px 2px; }
+    .tp-section-body.collapsed { display: none; }
+
+    .tp-add-row {
+      display: flex; gap: 6px; align-items: flex-end;
+      padding: 4px 0 6px;
+    }
+    .tp-add-input {
+      flex: 1;
+      border: 1px dashed rgba(205,150,70,0.4);
+      border-radius: 7px;
+      padding: 5px 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      background: rgba(255,255,255,0.45);
+      color: var(--ink); outline: none;
+      font-family: inherit; box-sizing: border-box;
+      resize: none;
+      min-height: 28px;
+      max-height: 90px;
+      overflow-y: auto;
+    }
+    .tp-add-input:focus { border-style: solid; border-color: var(--accent); background: rgba(255,255,255,0.6); }
+    .tp-add-input::placeholder { color: var(--muted); opacity: 0.6; }
+    .tp-add-btn {
+      padding: 5px 10px;
+      border: none; border-radius: 6px;
+      background: rgba(205,150,70,0.7);
+      color: #fff; font-size: 12px; font-weight: 600;
+      cursor: pointer; white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tp-add-btn:active { transform: scale(0.95); }
+
+    .tp-item {
+      position: relative;
+      padding: 6px 38px 4px 10px;
+      border-radius: 7px;
+      background: rgba(255,255,255,0.4);
+      border: 1px solid rgba(205,150,70,0.14);
+      margin-bottom: 4px;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .tp-item:hover { background: rgba(255,255,255,0.55); }
+    .tp-item.dragging-source { opacity: 0.35; }
+    .tp-item:not(.editing) { cursor: grab; }
+    .tp-item.editing { cursor: default; }
+    .tp-item-text {
+      font-size: 13px; line-height: 1.55;
+      white-space: pre-wrap; color: var(--ink); word-break: break-word;
+    }
+    .tp-item.editing .tp-item-text {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 5px;
+      background: rgba(255,255,255,0.75);
+      padding: 6px 8px;
+      min-height: 32px;
+      line-height: 1.55;
+      font-size: 13px;
+      overflow-y: auto; max-height: 160px;
+    }
+    .tp-item-time {
+      margin-top: 3px; font-size: 10px;
+      color: var(--muted); opacity: 0.6;
+    }
+    .tp-item-actions {
+      position: absolute; top: 4px; right: 4px;
+      display: flex; gap: 1px; opacity: 0; transition: opacity 0.12s;
+    }
+    .tp-item:hover .tp-item-actions,
+    .tp-item.editing .tp-item-actions { opacity: 1; }
+    .tp-item-actions button {
+      width: 22px; height: 22px;
+      border: none; border-radius: 5px;
+      background: rgba(255,255,255,0.6);
+      color: var(--muted); font-size: 11px; cursor: pointer;
+      display: grid; place-items: center;
+      transition: background 0.1s, color 0.1s;
+    }
+    .tp-item-actions button:hover { background: var(--accent-light); color: var(--accent); }
+    .tp-item-actions .tp-item-del:hover { background: rgba(217,102,90,0.15); color: var(--danger); }
+
+    .tp-section-empty {
+      font-size: 11px; color: var(--muted); opacity: 0.5;
+      padding: 4px 8px; font-style: italic;
+    }
+
     /* 锚点日历选择器 */
     .anchor-calendar-overlay {
       position: fixed;
@@ -2529,6 +2917,22 @@
         </div>
       </div>
 
+      <!-- 我的备忘 -->
+      <div class="panel-section">
+        <div class="panel-section-header">
+          <div class="panel-section-title"><span class="panel-section-title-icon">📋</span>我的备忘</div>
+          <button class="panel-collapse-btn" data-collapse="memo" title="折叠">▾</button>
+        </div>
+        <div class="panel-section-content memo-section-content">
+          <div class="memo-list" id="memoList"></div>
+          <div class="memo-add-row">
+            <textarea class="memo-add-input" id="memoAddInput" rows="1" placeholder="记录一条备忘，回车添加…"></textarea>
+            <button class="memo-add-btn" id="memoAddBtn">添加</button>
+          </div>
+          <div class="memo-hint">回车添加，Shift+回车换行</div>
+        </div>
+      </div>
+
       <!-- 编辑视图：三个分类直接编辑 -->
       <div class="panel-section">
         <div class="panel-section-header">
@@ -2615,6 +3019,21 @@
           </div>
           <div class="warehouse-all-content" id="warehouseAllContent"></div>
         </div>
+        </div>
+      </div>
+
+      <!-- 主题公园 -->
+      <div class="panel-section">
+        <div class="panel-section-header">
+          <div class="panel-section-title"><span class="panel-section-title-icon">🎡</span>主题公园</div>
+          <button class="panel-collapse-btn" data-collapse="themePark" title="折叠">▾</button>
+        </div>
+        <div class="panel-section-content tp-section-content">
+          <div class="tp-toolbar">
+            <input type="text" class="tp-theme-input" id="tpNewThemeInput" placeholder="新建主题（如：数学、英语、编程）">
+            <button class="tp-theme-add-btn" id="tpNewThemeBtn">＋ 新建主题</button>
+          </div>
+          <div class="tp-themes" id="tpThemes"></div>
         </div>
       </div>
 
@@ -2774,6 +3193,8 @@
           this.anchors = JSON.parse(localStorage.getItem('tt_anchors') || '[]');
           this.knowledge = JSON.parse(localStorage.getItem('tt_knowledge') || '[]');
           this.knowledgeTags = JSON.parse(localStorage.getItem('tt_knowledgeTags') || 'null') || ['历史', '天文', '生活常识'];
+          this.memos = JSON.parse(localStorage.getItem('tt_memos') || '[]');
+          this.themePark = JSON.parse(localStorage.getItem('tt_themePark') || 'null') || { order: 'desc', themes: [] };
           const savedTimer = JSON.parse(localStorage.getItem('tt_timer') || 'null');
           if (savedTimer && typeof savedTimer === 'object') {
             this.timer = { startTime: savedTimer.startTime || null, updatedAt: savedTimer.updatedAt || (savedTimer.startTime || 0) };
@@ -2784,7 +3205,7 @@
           this.deletedDefaultCats = JSON.parse(localStorage.getItem('tt_deletedDefaultCats') || '[]');
           this.customCatColorMap = JSON.parse(localStorage.getItem('tt_customCatColorMap') || '{}');
           this.catOrder = JSON.parse(localStorage.getItem('tt_catOrder') || '[]');
-        } catch(e) { this.activities = []; this.reviews = []; this.plans = []; this.warehouse = {}; this.anchors = []; this.knowledge = []; this.knowledgeTags = ['历史', '天文', '生活常识']; this.timer = null; this.customCats = []; this.deletedDefaultCats = []; this.customCatColorMap = {}; this.catOrder = []; }
+        } catch(e) { this.activities = []; this.reviews = []; this.plans = []; this.warehouse = {}; this.anchors = []; this.knowledge = []; this.knowledgeTags = ['历史', '天文', '生活常识']; this.timer = null; this.customCats = []; this.deletedDefaultCats = []; this.customCatColorMap = {}; this.catOrder = []; this.memos = []; this.themePark = { order: 'desc', themes: [] }; }
       },
       save() {
         localStorage.setItem('tt_activities', JSON.stringify(this.activities));
@@ -2972,6 +3393,105 @@
           if (a) { a.order = i; a.updatedAt = now; }
         });
         this.saveAnchors();
+      },
+      // Memos (我的备忘)
+      saveMemos() {
+        localStorage.setItem('tt_memos', JSON.stringify(this.memos));
+        Sync.debouncedPush();
+      },
+      addMemo(text) {
+        const now = Date.now();
+        const memo = {
+          id: now.toString(36) + Math.random().toString(36).slice(2,6),
+          text: (text || '').replace(/\s+$/, ''),
+          createdAt: now,
+          updatedAt: now
+        };
+        this.memos.unshift(memo); // 最新在前
+        this.saveMemos();
+        return memo;
+      },
+      updateMemo(id, text) {
+        const m = this.memos.find(x => x.id === id);
+        if (m) { m.text = text; m.updatedAt = Date.now(); this.saveMemos(); }
+      },
+      deleteMemo(id) {
+        this.memos = this.memos.filter(x => x.id !== id);
+        this.saveMemos();
+      },
+      // Theme Park (主题公园)
+      saveThemePark() {
+        localStorage.setItem('tt_themePark', JSON.stringify(this.themePark));
+        Sync.debouncedPush();
+      },
+      addTheme(name) {
+        const now = Date.now();
+        const theme = {
+          id: now.toString(36) + Math.random().toString(36).slice(2, 6),
+          name: (name || '').trim() || '未命名主题',
+          createdAt: now, updatedAt: now,
+          sections: { knowledge: [], questions: [], summary: [] }
+        };
+        this.themePark.themes.unshift(theme);
+        this.saveThemePark();
+        return theme;
+      },
+      renameTheme(id, name) {
+        const t = this.themePark.themes.find(x => x.id === id);
+        if (t) { t.name = (name || '').trim() || t.name; t.updatedAt = Date.now(); this.saveThemePark(); }
+      },
+      deleteTheme(id) {
+        this.themePark.themes = this.themePark.themes.filter(x => x.id !== id);
+        this.saveThemePark();
+      },
+      addThemeItem(themeId, section, text) {
+        const t = this.themePark.themes.find(x => x.id === themeId);
+        if (!t || !t.sections[section]) return null;
+        const now = Date.now();
+        const item = {
+          id: now.toString(36) + Math.random().toString(36).slice(2, 6),
+          text: (text || '').replace(/\s+$/, ''),
+          createdAt: now, updatedAt: now
+        };
+        t.sections[section].unshift(item);
+        t.updatedAt = now;
+        this.saveThemePark();
+        return item;
+      },
+      updateThemeItem(themeId, section, itemId, text) {
+        const t = this.themePark.themes.find(x => x.id === themeId);
+        if (!t || !t.sections[section]) return;
+        const it = t.sections[section].find(x => x.id === itemId);
+        if (it) { it.text = text; it.updatedAt = Date.now(); t.updatedAt = Date.now(); this.saveThemePark(); }
+      },
+      deleteThemeItem(themeId, section, itemId) {
+        const t = this.themePark.themes.find(x => x.id === themeId);
+        if (!t || !t.sections[section]) return;
+        t.sections[section] = t.sections[section].filter(x => x.id !== itemId);
+        t.updatedAt = Date.now();
+        this.saveThemePark();
+      },
+      reorderThemes(orderedIds) {
+        const map = new Map(this.themePark.themes.map(t => [t.id, t]));
+        const next = [];
+        orderedIds.forEach(id => { if (map.has(id)) next.push(map.get(id)); });
+        this.themePark.themes.forEach(t => { if (!next.includes(t)) next.push(t); });
+        this.themePark.themes = next;
+        this.saveThemePark();
+      },
+      reorderThemeItems(themeId, section, orderedIds) {
+        const t = this.themePark.themes.find(x => x.id === themeId);
+        if (!t || !t.sections[section]) return;
+        const map = new Map(t.sections[section].map(it => [it.id, it]));
+        const next = [];
+        orderedIds.forEach(id => { if (map.has(id)) next.push(map.get(id)); });
+        t.sections[section].forEach(it => { if (!next.includes(it)) next.push(it); });
+        t.sections[section] = next;
+        this.saveThemePark();
+      },
+      toggleThemeParkOrder() {
+        this.themePark.order = (this.themePark.order === 'desc') ? 'asc' : 'desc';
+        this.saveThemePark();
       },
       saveCustomCats() {
         localStorage.setItem('tt_customCats', JSON.stringify(this.customCats));
@@ -3324,7 +3844,7 @@
           DB.timer = mergedTimer;
           DB.saveTimer();
 
-          DB.save(); DB.saveWarehouse(); DB.saveAnchors(); DB.saveKnowledge(); DB.saveCustomCats(); DB.saveCustomCatColorMap(); DB.saveDeletedDefaultCats(); DB.saveCatOrder();
+          DB.save(); DB.saveWarehouse(); DB.saveAnchors(); DB.saveKnowledge(); DB.saveMemos(); DB.saveThemePark(); DB.saveCustomCats(); DB.saveCustomCatColorMap(); DB.saveDeletedDefaultCats(); DB.saveCatOrder();
           updateCustomCatStyles();
 
           const currentIds = [...DB.activities.map(a => a.id), ...DB.plans.map(p => p.id), ...DB.anchors.map(a => a.id), ...DB.knowledge.map(k => k.id), ...Object.keys(DB.warehouse)];
@@ -5432,6 +5952,17 @@
       return (d.getMonth() + 1) + '月' + d.getDate() + '日';
     }
 
+    // 复制按钮成功反馈
+    function showCopiedFeedback(btnEl) {
+      if (!btnEl) return;
+      btnEl.classList.add('copied');
+      btnEl.textContent = '✓';
+      setTimeout(() => {
+        btnEl.classList.remove('copied');
+        btnEl.textContent = '📋';
+      }, 1200);
+    }
+
     // 复制文本到剪贴板
     function copyToClipboard(text, btnEl) {
       if (!text) {
@@ -5441,32 +5972,24 @@
         }
         return;
       }
-      navigator.clipboard.writeText(text).then(() => {
-        if (btnEl) {
-          btnEl.classList.add('copied');
-          btnEl.textContent = '✓';
-          setTimeout(() => {
-            btnEl.classList.remove('copied');
-            btnEl.textContent = '📋';
-          }, 1200);
-        }
-      }).catch(() => {
-        // fallback
+      const fallbackCopy = () => {
         const ta = document.createElement('textarea');
         ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
         document.body.appendChild(ta);
         ta.select();
-        try { document.execCommand('copy'); } catch(e) {}
+        try { document.execCommand('copy'); } catch (e) {}
         document.body.removeChild(ta);
-        if (btnEl) {
-          btnEl.classList.add('copied');
-          btnEl.textContent = '✓';
-          setTimeout(() => {
-            btnEl.classList.remove('copied');
-            btnEl.textContent = '📋';
-          }, 1200);
-        }
-      });
+        showCopiedFeedback(btnEl);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => showCopiedFeedback(btnEl))
+          .catch(fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
     }
 
     // 加载编辑区内容（反省为文本框，其余三类为带标签的记录列表）
@@ -5865,6 +6388,7 @@
       listEl.querySelectorAll('.knowledge-item-del').forEach(btn => {
         btn.addEventListener('click', e => {
           e.stopPropagation();
+          if (!confirm('确认删除这条记录？')) return;
           DB.deleteKnowledge(btn.dataset.id);
           renderKnowledgeList(type);
         });
@@ -6402,6 +6926,7 @@
           refreshKnowledgeViews();
         } else if (action === 'k-delete') {
           if (!k) return;
+          if (!confirm('确认删除这条记录？')) return;
           DB.deleteKnowledge(id);
           refreshKnowledgeViews();
         } else if (action === 'k-tags') {
@@ -6781,7 +7306,7 @@
             } else if (type === 'warehouse') {
               if (isCollapsed) sfxWarehouseClose();
               else sfxDing();
-            } else if (type === 'todo') {
+            } else if (type === 'todo' || type === 'memo' || type === 'themePark') {
               if (isCollapsed) sfxFanClose();
               else sfxDing();
             }
@@ -6793,7 +7318,7 @@
         });
       });
       // 恢复折叠状态
-      ['anchor', 'warehouse', 'todo'].forEach(type => {
+      ['anchor', 'warehouse', 'todo', 'memo', 'themePark'].forEach(type => {
         const saved = localStorage.getItem('tt_collapse_' + type);
         if (saved === '1') {
           const btn = document.querySelector(`.panel-collapse-btn[data-collapse="${type}"]`);
@@ -7184,7 +7709,640 @@
           if (e.key === 'Enter') { e.preventDefault(); addAnchor(); }
         });
       }
+
+      // ===== Memo events =====
+      function renderMemos() {
+        const listEl = document.getElementById('memoList');
+        if (!listEl) return;
+        const memos = DB.memos;
+        if (!memos.length) {
+          listEl.innerHTML = '<div class="memo-empty">还没有备忘～写点草稿或文案备用吧</div>';
+          return;
+        }
+        listEl.innerHTML = memos.map(m => {
+          const timeStr = formatTime(m.updatedAt || m.createdAt);
+          return `
+            <div class="memo-item" data-id="${m.id}">
+              <div class="memo-item-text">${escapeHtml(m.text)}</div>
+              <div class="memo-item-time">${timeStr}</div>
+              <div class="memo-item-actions">
+                <button class="memo-copy-btn" title="复制">📋</button>
+                <button class="memo-del-btn" title="删除">✕</button>
+              </div>
+            </div>`;
+        }).join('');
+
+        listEl.querySelectorAll('.memo-item').forEach(item => {
+          const id = item.dataset.id;
+          const textEl = item.querySelector('.memo-item-text');
+          const actionsEl = item.querySelector('.memo-item-actions');
+
+          // 复制
+          item.querySelector('.memo-copy-btn').addEventListener('click', e => {
+            e.stopPropagation();
+            const m = DB.memos.find(x => x.id === id);
+            if (m) copyToClipboard(m.text, e.currentTarget);
+          });
+          // 删除
+          item.querySelector('.memo-del-btn').addEventListener('click', e => {
+            e.stopPropagation();
+            if (!confirm('确认删除这条备忘？')) return;
+            DB.deleteMemo(id);
+            renderMemos();
+          });
+
+          // 点击条目进入编辑
+          item.addEventListener('click', e => {
+            if (item.classList.contains('editing')) return;
+            if (e.target.closest('.memo-item-actions')) return;
+            startMemoEdit(textEl, id);
+          });
+        });
+      }
+
+      function startMemoEdit(textEl, id) {
+        const item = textEl.closest('.memo-item');
+        const oldText = textEl.textContent;
+        item.classList.add('editing');
+        textEl.contentEditable = 'true';
+        textEl.focus();
+        // 选中文本
+        const range = document.createRange();
+        range.selectNodeContents(textEl);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        const finish = (save) => {
+          item.classList.remove('editing');
+          textEl.contentEditable = 'false';
+          const val = (typeof textEl.innerText === 'string' ? textEl.innerText : textEl.textContent).replace(/\s+$/, '');
+          if (save) {
+            if (!val.trim()) {
+              DB.deleteMemo(id);
+              renderMemos();
+              return;
+            }
+            if (val !== oldText) {
+              DB.updateMemo(id, val);
+            }
+          } else {
+            textEl.textContent = oldText;
+          }
+          renderMemos();
+        };
+
+        let done = false;
+        const handleKey = (e) => {
+          if (done) return;
+          if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
+            e.preventDefault();
+            done = true;
+            finish(true);
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            done = true;
+            finish(false);
+          }
+        };
+        const handleBlur = () => {
+          if (done) return;
+          done = true;
+          finish(true);
+        };
+        textEl.addEventListener('keydown', handleKey);
+        textEl.addEventListener('blur', handleBlur, { once: true });
+      }
+
+      const memoInput = document.getElementById('memoAddInput');
+      const memoAddBtn = document.getElementById('memoAddBtn');
+      if (memoInput && memoAddBtn) {
+        const autoGrow = (el) => {
+          el.style.height = 'auto';
+          el.style.height = Math.min(el.scrollHeight, 220) + 'px';
+        };
+        const submitMemo = () => {
+          const text = memoInput.value.replace(/\s+$/, '');
+          if (!text.trim()) return;
+          DB.addMemo(text);
+          memoInput.value = '';
+          memoInput.style.height = 'auto';
+          renderMemos();
+        };
+        memoInput.addEventListener('input', () => autoGrow(memoInput));
+        memoAddBtn.addEventListener('click', submitMemo);
+        memoInput.addEventListener('keydown', e => {
+          if (e.key !== 'Enter') return;
+          if (e.isComposing || e.keyCode === 229) return;
+          if (e.shiftKey) return;
+          e.preventDefault();
+          submitMemo();
+        });
+      }
+
+      renderMemos();
+
     }
+
+    // ============ 主题公园 ============
+    const tpSectionMeta = {
+      knowledge: { emoji: '📚', name: '知识记录', placeholder: '记下今天学到的…' },
+      questions: { emoji: '❓', name: '疑问点', placeholder: '还有什么没搞懂…' },
+      summary:   { emoji: '🗒️', name: '总结梳理', placeholder: '用自己的话总结…' }
+    };
+    function tpSectionOrderKey(themeId, section) { return 'tt_tp_order_' + themeId + '_' + section; }
+    // 每个子板块独立排序，默认倒序（新记录在最上面）
+    function tpGetSectionOrder(themeId, section) {
+      const v = localStorage.getItem(tpSectionOrderKey(themeId, section));
+      return (v === 'asc' || v === 'manual') ? v : 'desc';
+    }
+    function tpSortedItems(themeId, section, items) {
+      const order = tpGetSectionOrder(themeId, section);
+      if (order === 'manual') return items.slice(); // 手动拖拽排序：保持数组顺序
+      const isDesc = order === 'desc';
+      return items.slice().sort((a, b) =>
+        isDesc ? ((b.createdAt || 0) - (a.createdAt || 0)) : ((a.createdAt || 0) - (b.createdAt || 0))
+      );
+    }
+    // 是否因点击卡片内的操作按钮（复制/删除/板块头）而失焦
+    let tpActionPointer = false;
+    function tpReadEditableText(el) {
+      let t = (typeof el.innerText === 'string') ? el.innerText : '';
+      if (!t.trim()) {
+        // innerText 偶发读空时用 textContent 兜底，避免误判为“已清空”而删除
+        const clone = el.cloneNode(true);
+        clone.querySelectorAll('br').forEach(br => br.replaceWith('\n'));
+        t = clone.textContent || '';
+      }
+      return t.replace(/\s+$/, '');
+    }
+    function tpCollapsedKey(themeId, section) { return 'tt_tp_section_collapsed_' + themeId + '_' + section; }
+    function tpThemeCollapsedKey(themeId) { return 'tt_tp_theme_collapsed_' + themeId; }
+
+    function renderThemePark() {
+      const listEl = document.getElementById('tpThemes');
+      if (!listEl) return;
+
+      const themes = DB.themePark.themes;
+      if (!themes.length) {
+        listEl.innerHTML = '<div class="tp-empty">还没有主题～新建一个主题开始记录吧 🎡</div>';
+        return;
+      }
+
+      // 主题按数组顺序展示（支持手动拖拽排序，新主题默认插到最前）
+      listEl.innerHTML = themes.map(t => renderThemeCardHtml(t)).join('');
+      listEl.querySelectorAll('.tp-theme-card').forEach(card => bindThemeCard(card));
+    }
+
+    function renderThemeCardHtml(theme) {
+      const themeCollapsed = localStorage.getItem(tpThemeCollapsedKey(theme.id)) === '1';
+      const totalCount = ['knowledge', 'questions', 'summary']
+        .reduce((sum, s) => sum + (theme.sections[s] || []).length, 0);
+      const sectionsHtml = Object.keys(tpSectionMeta).map(section => {
+        const items = tpSortedItems(theme.id, section, theme.sections[section] || []);
+        const collapsed = localStorage.getItem(tpCollapsedKey(theme.id, section)) === '1';
+        return renderSectionHtml(theme.id, section, items, collapsed);
+      }).join('');
+
+      return `
+        <div class="tp-theme-card" data-id="${theme.id}">
+          <div class="tp-theme-header" draggable="true">
+            <button class="tp-theme-toggle${themeCollapsed ? ' collapsed' : ''}" data-action="toggle-theme">▾</button>
+            <div class="tp-theme-name" contenteditable="false">${escapeHtml(theme.name)}</div>
+            <div class="tp-theme-count">共 ${totalCount} 条</div>
+            <div class="tp-theme-actions">
+              <button class="tp-theme-copy" data-action="copy-theme" title="复制整个主题">📋</button>
+              <button class="tp-theme-del" data-action="delete-theme" title="删除主题">✕</button>
+            </div>
+          </div>
+          <div class="tp-theme-body${themeCollapsed ? ' collapsed' : ''}">
+            ${sectionsHtml}
+          </div>
+        </div>`;
+    }
+
+    function renderSectionHtml(themeId, section, items, collapsed) {
+      const meta = tpSectionMeta[section];
+      const order = tpGetSectionOrder(themeId, section);
+      const sortLabel = order === 'desc' ? '↓ 新→旧' : (order === 'asc' ? '↑ 旧→新' : '↕ 手动');
+      const headAction = `data-action="toggle-section" data-section="${section}"`;
+      const itemHtml = items.length ? items.map(it => renderItemHtml(themeId, section, it)).join('')
+        : `<div class="tp-section-empty">暂无${meta.name}</div>`;
+      return `
+        <div class="tp-section" data-section="${section}">
+          <div class="tp-section-head">
+            <button class="tp-section-toggle${collapsed ? ' collapsed' : ''}" ${headAction}>▾</button>
+            <div class="tp-section-title"><span class="tp-section-emoji">${meta.emoji}</span>${meta.name}</div>
+            <div class="tp-section-count">${items.length}</div>
+            <button class="tp-section-sort" data-action="sort-section" data-section="${section}" title="切换排序（新→旧 / 旧→新）">${sortLabel}</button>
+            <button class="tp-section-copy" data-action="copy-section" data-section="${section}" title="复制本板块">📋</button>
+          </div>
+          <div class="tp-section-body${collapsed ? ' collapsed' : ''}">
+            <div class="tp-add-row">
+              <textarea class="tp-add-input" rows="1" data-tp-add-input="${section}" placeholder="${meta.placeholder}"></textarea>
+              <button class="tp-add-btn" data-action="tp-add-item" data-section="${section}">＋ 添加</button>
+            </div>
+            ${itemHtml}
+          </div>
+        </div>`;
+    }
+
+    function renderItemHtml(themeId, section, item) {
+      const timeStr = formatTime(item.updatedAt || item.createdAt);
+      return `
+        <div class="tp-item" data-item-id="${item.id}" draggable="true">
+          <div class="tp-item-text">${escapeHtml(item.text)}</div>
+          <div class="tp-item-time">${timeStr}</div>
+          <div class="tp-item-actions">
+            <button class="tp-item-copy" data-action="copy-item" data-section="${section}" data-item-id="${item.id}" title="复制">📋</button>
+            <button class="tp-item-del" data-action="delete-item" data-section="${section}" data-item-id="${item.id}" title="删除">✕</button>
+          </div>
+        </div>`;
+    }
+
+    function bindThemeCard(card) {
+      const themeId = card.dataset.id;
+
+      // 点击卡片内的操作按钮时，先标记，避免正在编辑的内容失焦时被保存/删除
+      card.addEventListener('mousedown', (e) => {
+        tpActionPointer = !!e.target.closest('.tp-item-actions, .tp-theme-actions, .tp-section-head');
+      }, true);
+      card.addEventListener('mouseup', () => {
+        setTimeout(() => { tpActionPointer = false; }, 0);
+      }, true);
+
+      // 主题整体折叠
+      card.querySelector('[data-action="toggle-theme"]').addEventListener('click', () => {
+        const toggle = card.querySelector('.tp-theme-toggle');
+        const body = card.querySelector('.tp-theme-body');
+        const willCollapse = !body.classList.contains('collapsed');
+        toggle.classList.toggle('collapsed', willCollapse);
+        body.classList.toggle('collapsed', willCollapse);
+        localStorage.setItem(tpThemeCollapsedKey(themeId), willCollapse ? '1' : '0');
+      });
+
+      // 主题重命名
+      const nameEl = card.querySelector('.tp-theme-name');
+      nameEl.addEventListener('click', (e) => {
+        if (nameEl.classList.contains('editing')) return;
+        e.stopPropagation();
+        startTpThemeNameEdit(nameEl, themeId);
+      });
+
+      // 复制主题
+      card.querySelector('[data-action="copy-theme"]').addEventListener('click', (e) => {
+        e.stopPropagation();
+        copyTheme(themeId, e.currentTarget);
+      });
+
+      // 删除主题
+      card.querySelector('[data-action="delete-theme"]').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!confirm('确定删除主题？其下所有知识/疑问/总结都会一起删除。')) return;
+        DB.deleteTheme(themeId);
+        renderThemePark();
+      });
+
+      // 子板块折叠、复制、添加、条目操作（事件委托到 card 级）
+      card.addEventListener('click', (e) => {
+        // 子板块排序切换（独立于折叠）
+        const sortSectionBtn = e.target.closest('[data-action="sort-section"]');
+        if (sortSectionBtn) {
+          const section = sortSectionBtn.dataset.section;
+          const cur = tpGetSectionOrder(themeId, section);
+          const next = cur === 'desc' ? 'asc' : 'desc'; // desc↔asc；手动态点击回到倒序
+          localStorage.setItem(tpSectionOrderKey(themeId, section), next);
+          renderThemePark();
+          return;
+        }
+
+        // 复制本板块（必须在折叠判断之前处理，否则会被 sectionHead 分支提前 return 掉）
+        const copySectionBtn = e.target.closest('[data-action="copy-section"]');
+        if (copySectionBtn) {
+          const section = copySectionBtn.dataset.section;
+          copySection(themeId, section, copySectionBtn);
+          return;
+        }
+
+        const sectionHead = e.target.closest('.tp-section-head');
+        if (sectionHead) {
+          const section = sectionHead.querySelector('[data-section]')?.dataset.section;
+          const toggle = sectionHead.querySelector('.tp-section-toggle');
+          const body = sectionHead.nextElementSibling;
+          if (!section || !toggle || !body) return;
+          const willCollapse = !body.classList.contains('collapsed');
+          toggle.classList.toggle('collapsed', willCollapse);
+          body.classList.toggle('collapsed', willCollapse);
+          localStorage.setItem(tpCollapsedKey(themeId, section), willCollapse ? '1' : '0');
+          return;
+        }
+
+        const addBtn = e.target.closest('[data-action="tp-add-item"]');
+        if (addBtn) {
+          const section = addBtn.dataset.section;
+          const input = card.querySelector(`textarea[data-tp-add-input="${section}"]`);
+          if (!input) return;
+          const text = input.value.replace(/\s+$/, '');
+          if (!text.trim()) return;
+          DB.addThemeItem(themeId, section, text);
+          input.value = '';
+          input.style.height = 'auto';
+          renderThemePark();
+          return;
+        }
+
+        const itemCopyBtn = e.target.closest('[data-action="copy-item"]');
+        if (itemCopyBtn) {
+          const section = itemCopyBtn.dataset.section;
+          const itemId = itemCopyBtn.dataset.itemId;
+          const t = DB.themePark.themes.find(x => x.id === themeId);
+          if (!t) return;
+          const it = t.sections[section].find(x => x.id === itemId);
+          if (it) copyToClipboard(it.text, itemCopyBtn);
+          return;
+        }
+
+        const itemDelBtn = e.target.closest('[data-action="delete-item"]');
+        if (itemDelBtn) {
+          const section = itemDelBtn.dataset.section;
+          const itemId = itemDelBtn.dataset.itemId;
+          if (!confirm('确认删除这条记录？')) return;
+          DB.deleteThemeItem(themeId, section, itemId);
+          renderThemePark();
+          return;
+        }
+
+        // 条目点击 → 原地编辑
+        const item = e.target.closest('.tp-item');
+        if (item && !e.target.closest('.tp-item-actions')) {
+          const section = e.target.closest('.tp-section')?.dataset.section;
+          const itemId = item.dataset.itemId;
+          if (section && itemId) startTpItemEdit(item.querySelector('.tp-item-text'), themeId, section, itemId);
+          return;
+        }
+      });
+
+      // 添加框 autoGrow + 回车提交
+      card.querySelectorAll('textarea[data-tp-add-input]').forEach(input => {
+        input.addEventListener('input', () => {
+          input.style.height = 'auto';
+          input.style.height = Math.min(input.scrollHeight, 90) + 'px';
+        });
+        input.addEventListener('keydown', (e) => {
+          if (e.key !== 'Enter') return;
+          if (e.isComposing || e.keyCode === 229) return;
+          if (e.shiftKey) return;
+          e.preventDefault();
+          const section = input.dataset.tpAddInput;
+          const text = input.value.replace(/\s+$/, '');
+          if (!text.trim()) return;
+          DB.addThemeItem(themeId, section, text);
+          input.value = '';
+          input.style.height = 'auto';
+          renderThemePark();
+        });
+      });
+    }
+
+    function startTpItemEdit(textEl, themeId, section, itemId) {
+      const card = textEl.closest('.tp-theme-card');
+      const item = textEl.closest('.tp-item');
+      const oldText = textEl.textContent;
+      item.classList.add('editing');
+      item.draggable = false;
+      textEl.contentEditable = 'true';
+      textEl.focus();
+      const range = document.createRange();
+      range.selectNodeContents(textEl);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+
+      const finish = (save) => {
+        item.classList.remove('editing');
+        textEl.contentEditable = 'false';
+        const val = tpReadEditableText(textEl);
+        if (save) {
+          if (!val.trim()) { DB.deleteThemeItem(themeId, section, itemId); renderThemePark(); return; }
+          DB.updateThemeItem(themeId, section, itemId, val);
+        } else {
+          textEl.textContent = oldText;
+        }
+        renderThemePark();
+      };
+      let done = false;
+      const handleKey = (e) => {
+        if (done) return;
+        if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
+          e.preventDefault(); done = true; finish(true);
+        } else if (e.key === 'Escape') {
+          e.preventDefault(); done = true; finish(false);
+        }
+      };
+      const handleBlur = () => {
+        if (done) return;
+        done = true;
+        if (tpActionPointer) {
+          // 因点按复制/删除等按钮而失焦：只静默保存，不重渲染、不删除
+          item.classList.remove('editing');
+          textEl.contentEditable = 'false';
+          const v = tpReadEditableText(textEl);
+          if (v.trim() && v !== oldText) DB.updateThemeItem(themeId, section, itemId, v);
+          return;
+        }
+        finish(true);
+      };
+      textEl.addEventListener('keydown', handleKey);
+      textEl.addEventListener('blur', handleBlur, { once: true });
+    }
+
+    function startTpThemeNameEdit(el, themeId) {
+      const oldText = el.textContent;
+      el.classList.add('editing');
+      const header = el.closest('.tp-theme-header');
+      if (header) header.draggable = false;
+      el.contentEditable = 'true';
+      el.focus();
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+
+      const finish = (save) => {
+        el.classList.remove('editing');
+        el.contentEditable = 'false';
+        const val = tpReadEditableText(el).trim();
+        if (save) {
+          if (!val) { el.textContent = oldText; return; }
+          if (val !== oldText) DB.renameTheme(themeId, val);
+        } else {
+          el.textContent = oldText;
+        }
+        renderThemePark();
+      };
+      let done = false;
+      const handleKey = (e) => {
+        if (done) return;
+        if (e.key === 'Enter') { e.preventDefault(); done = true; finish(true); }
+        else if (e.key === 'Escape') { e.preventDefault(); done = true; finish(false); }
+      };
+      const handleBlur = () => {
+        if (done) return;
+        done = true;
+        if (tpActionPointer) {
+          // 因点按主题操作按钮而失焦：静默保存名称，不重渲染
+          el.classList.remove('editing');
+          el.contentEditable = 'false';
+          const v = tpReadEditableText(el).trim();
+          if (v && v !== oldText) DB.renameTheme(themeId, v);
+          return;
+        }
+        finish(true);
+      };
+      el.addEventListener('keydown', handleKey);
+      el.addEventListener('blur', handleBlur, { once: true });
+    }
+
+    function copySection(themeId, section, btn) {
+      const t = DB.themePark.themes.find(x => x.id === themeId);
+      if (!t) return;
+      const meta = tpSectionMeta[section];
+      const items = tpSortedItems(themeId, section, t.sections[section] || []);
+      const body = items.length
+        ? items.map(it => `• ${it.text}`).join('\n')
+        : '（暂无）';
+      copyToClipboard(`— ${t.name}｜${meta.emoji}${meta.name} —\n\n${body}`, btn);
+    }
+    function copyTheme(themeId, btn) {
+      const t = DB.themePark.themes.find(x => x.id === themeId);
+      if (!t) return;
+      const sectionsText = Object.keys(tpSectionMeta).map(section => {
+        const meta = tpSectionMeta[section];
+        const items = tpSortedItems(themeId, section, t.sections[section] || []);
+        const body = items.length
+          ? items.map(it => `  • ${it.text}`).join('\n')
+          : '  （暂无）';
+        return `${meta.emoji} ${meta.name}：\n${body}`;
+      }).join('\n\n');
+      copyToClipboard(`🎡 ${t.name}\n${'─'.repeat(12)}\n\n${sectionsText}`, btn);
+    }
+
+    // ===== 主题公园拖拽排序（主题卡片 / 板块条目）=====
+    let tpDrag = null;     // { kind:'theme'|'item', id, themeId?, section? }
+    let tpDropped = false;
+
+    function initTpDragAndDrop() {
+      const listEl = document.getElementById('tpThemes');
+      if (!listEl) return;
+
+      listEl.addEventListener('dragstart', (e) => {
+        // 从按钮/输入框/正在编辑的元素上开始 → 取消拖拽
+        if (e.target.closest('button, textarea, input, select, [contenteditable="true"]')) {
+          e.preventDefault(); return;
+        }
+        const item = e.target.closest('.tp-item');
+        const card = e.target.closest('.tp-theme-card');
+        if (item && !item.classList.contains('editing')) {
+          const sectionEl = item.closest('.tp-section');
+          tpDrag = {
+            kind: 'item',
+            id: item.dataset.itemId,
+            themeId: card ? card.dataset.id : null,
+            section: sectionEl ? sectionEl.dataset.section : null
+          };
+          item.classList.add('dragging-source');
+          e.dataTransfer.effectAllowed = 'move';
+          try { e.dataTransfer.setData('text/plain', item.dataset.itemId); } catch (_) {}
+        } else if (card && !item) {
+          tpDrag = { kind: 'theme', id: card.dataset.id };
+          card.classList.add('dragging-source');
+          e.dataTransfer.effectAllowed = 'move';
+          try { e.dataTransfer.setData('text/plain', card.dataset.id); } catch (_) {}
+        } else {
+          e.preventDefault();
+        }
+      });
+
+      listEl.addEventListener('dragover', (e) => {
+        if (!tpDrag) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (tpDrag.kind === 'theme') {
+          const dragged = listEl.querySelector(`.tp-theme-card[data-id="${tpDrag.id}"]`);
+          const target = e.target.closest('.tp-theme-card');
+          if (dragged && target && target !== dragged) {
+            const rect = target.getBoundingClientRect();
+            const before = e.clientY < rect.top + rect.height / 2;
+            if (before) listEl.insertBefore(dragged, target);
+            else listEl.insertBefore(dragged, target.nextSibling);
+          }
+        } else if (tpDrag.kind === 'item') {
+          const dragged = listEl.querySelector(`.tp-item[data-item-id="${tpDrag.id}"]`);
+          const target = e.target.closest('.tp-item');
+          if (dragged && target && target !== dragged) {
+            const targetCard = target.closest('.tp-theme-card');
+            if (targetCard && targetCard.dataset.id !== tpDrag.themeId) return; // 不跨主题
+            const targetSection = target.closest('.tp-section') && target.closest('.tp-section').dataset.section;
+            if (targetSection !== tpDrag.section) return; // 仅允许同一板块内重排
+            const body = target.closest('.tp-section-body');
+            if (!body) return;
+            const rect = target.getBoundingClientRect();
+            const before = e.clientY < rect.top + rect.height / 2;
+            if (before) body.insertBefore(dragged, target);
+            else body.insertBefore(dragged, target.nextSibling);
+          }
+        }
+      });
+
+      listEl.addEventListener('drop', (e) => {
+        if (!tpDrag) return;
+        e.preventDefault();
+        tpDropped = true;
+        if (tpDrag.kind === 'theme') {
+          const orderedIds = Array.from(listEl.querySelectorAll('.tp-theme-card')).map(c => c.dataset.id);
+          DB.reorderThemes(orderedIds);
+        } else if (tpDrag.kind === 'item') {
+          const card = listEl.querySelector(`.tp-theme-card[data-id="${tpDrag.themeId}"]`);
+          const body = card && card.querySelector(`.tp-section[data-section="${tpDrag.section}"] .tp-section-body`);
+          if (body) {
+            const orderedIds = Array.from(body.querySelectorAll('.tp-item')).map(i => i.dataset.itemId);
+            DB.reorderThemeItems(tpDrag.themeId, tpDrag.section, orderedIds);
+            localStorage.setItem(tpSectionOrderKey(tpDrag.themeId, tpDrag.section), 'manual');
+          }
+        }
+        tpDrag = null;
+        renderThemePark();
+      });
+
+      listEl.addEventListener('dragend', () => {
+        listEl.querySelectorAll('.dragging-source').forEach(el => el.classList.remove('dragging-source'));
+        tpDrag = null;
+        if (!tpDropped) renderThemePark(); // 未成功放置 → 恢复原顺序
+        tpDropped = false;
+      });
+    }
+
+    // 全局事件：新建主题
+    const tpNewThemeInput = document.getElementById('tpNewThemeInput');
+    const tpNewThemeBtn = document.getElementById('tpNewThemeBtn');
+    const submitNewTheme = () => {
+      const val = (tpNewThemeInput.value || '').trim();
+      if (!val) return;
+      DB.addTheme(val);
+      tpNewThemeInput.value = '';
+      renderThemePark();
+    };
+    if (tpNewThemeBtn) tpNewThemeBtn.addEventListener('click', submitNewTheme);
+    if (tpNewThemeInput) {
+      tpNewThemeInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229 && !e.shiftKey) {
+          e.preventDefault(); submitNewTheme();
+        }
+      });
+    }
+    initTpDragAndDrop();
+    renderThemePark();
 
     initWarehouseEvents();
 
@@ -7195,6 +8353,8 @@
     Sync.pull().then(changed => {
       if (!changed) return;
       renderAll();
+      renderMemos();
+      renderThemePark();
       if (warehousePanelOpen) {
         loadWarehouseEditors();
         renderTodoSection();
