@@ -1630,6 +1630,8 @@
     /* 手机端：16px 避免 iOS 聚焦时页面自动放大 */
     @media (pointer: coarse) {
       .ktag-note-input, .ktag-add-input { font-size: 16px; }
+      .knowledge-tag-group-toggle { width: 26px; height: 26px; font-size: 12px; }
+      .knowledge-group-toggle { font-size: 12px; padding: 5px; }
     }
 
     /* 所有宝贝 - 知识记录 */
@@ -1671,6 +1673,59 @@
       border-bottom: 1px solid rgba(205,150,70,0.25);
     }
     .knowledge-tag-group-title:first-child { margin-top: 0; }
+    .knowledge-tag-group-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+    .knowledge-tag-group-name { overflow-wrap: anywhere; }
+    .knowledge-tag-group-toggle {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(205,150,70,0.35);
+      border-radius: 6px;
+      background: rgba(255,255,255,0.55);
+      color: #8a5a20;
+      font-size: 11px;
+      line-height: 1;
+      padding: 0;
+      cursor: pointer;
+      font-family: inherit;
+      opacity: 0.8;
+    }
+    .knowledge-tag-group-toggle:hover { opacity: 1; background: rgba(205,150,70,0.18); }
+    .knowledge-tag-group-toggle:active { transform: scale(0.9); }
+    .knowledge-tag-group-title.collapsed { border-bottom-color: rgba(205,150,70,0.12); }
+    .knowledge-tag-group-title.collapsed .knowledge-tag-group-name { opacity: 0.72; }
+    .knowledge-tag-group-items[hidden] { display: none; }
+    .knowledge-all-group-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+    }
+    /* 日期分组：低调的小折叠箭头 */
+    .knowledge-group-toggle {
+      flex-shrink: 0;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-size: 10px;
+      line-height: 1;
+      padding: 2px;
+      cursor: pointer;
+      opacity: 0.4;
+      font-family: inherit;
+    }
+    .knowledge-group-toggle:hover { opacity: 0.85; }
+    .knowledge-group-toggle:active { transform: scale(0.9); }
+    .knowledge-all-group-title.collapsed { border-bottom-color: rgba(205,150,70,0.12); }
+    .knowledge-all-group-title.collapsed .knowledge-all-group-label { opacity: 0.72; }
+    .knowledge-date-group-items[hidden] { display: none; }
     .knowledge-tag-copy-btn {
       flex-shrink: 0;
       border: 1px solid rgba(205,150,70,0.35);
@@ -6324,6 +6379,14 @@
       thought: localStorage.getItem('tt_knowledgeViewMode_thought') || 'date',
       todo: localStorage.getItem('tt_knowledgeViewMode_todo') || 'date'
     };
+    // 按标签视图：每个标签分组的收起状态（type::tag -> 1）
+    let knowledgeTagCollapsed = {};
+    try { knowledgeTagCollapsed = JSON.parse(localStorage.getItem('tt_ktagGroupCollapsed') || '{}') || {}; } catch (err) { knowledgeTagCollapsed = {}; }
+    function ktagGroupKey(type, tag) { return `${type}::${tag}`; }
+    // 按日期视图：每个日期分组的收起状态（type::date -> 1）
+    let knowledgeDateCollapsed = {};
+    try { knowledgeDateCollapsed = JSON.parse(localStorage.getItem('tt_kdateGroupCollapsed') || '{}') || {}; } catch (err) { knowledgeDateCollapsed = {}; }
+    function kdateGroupKey(type, date) { return `${type}::${date}`; }
 
     function knowledgeTagChipsHtml(tags) {
       if (!tags || tags.length === 0) return '';
@@ -6572,12 +6635,18 @@
 
         orderedTags.forEach(tag => {
           const list = groups.get(tag).sort((a, b) => b.date.localeCompare(a.date) || (b.createdAt || b.updatedAt || 0) - (a.createdAt || a.updatedAt || 0));
+          const collapsed = !!knowledgeTagCollapsed[ktagGroupKey(type, tag)];
           html += `
-            <div class="knowledge-tag-group-title">
-              <span>🏷️ ${escapeHtml(tag)}（${list.length}条）</span>
+            <div class="knowledge-tag-group-title${collapsed ? ' collapsed' : ''}">
+              <span class="knowledge-tag-group-label">
+                <button class="knowledge-tag-group-toggle" data-action="k-tag-toggle" data-tag="${escapeHtml(tag)}" data-type="${type}" title="${collapsed ? '展开该标签' : '收起该标签'}">${collapsed ? '▸' : '▾'}</button>
+                <span class="knowledge-tag-group-name">🏷️ ${escapeHtml(tag)}（${list.length}条）</span>
+              </span>
               <button class="knowledge-tag-copy-btn" data-action="k-copy-tag" data-tag="${escapeHtml(tag)}" data-type="${type}" title="复制该标签下全部内容">📋</button>
-            </div>`;
+            </div>
+            <div class="knowledge-tag-group-items"${collapsed ? ' hidden' : ''}>`;
           list.forEach(k => { html += knowledgeAllItemHtml(k, true, true); });
+          html += `</div>`;
         });
       } else {
         // 按日期分组，最新日期在前
@@ -6589,8 +6658,14 @@
         const dates = Array.from(groups.keys()).sort((a, b) => b.localeCompare(a));
         dates.forEach(date => {
           const list = groups.get(date).sort((a, b) => (b.createdAt || b.updatedAt || 0) - (a.createdAt || a.updatedAt || 0));
-          html += `<div class="knowledge-all-group-title"><span>📅 ${fmtWarehouseDate(date)}（${list.length}条）</span><button class="knowledge-tag-copy-btn" data-action="k-copy-date" data-date="${date}" data-type="${type}" title="复制当天全部内容">📋</button></div>`;
+          const collapsed = !!knowledgeDateCollapsed[kdateGroupKey(type, date)];
+          html += `<div class="knowledge-all-group-title${collapsed ? ' collapsed' : ''}">
+            <span class="knowledge-all-group-label">📅 ${fmtWarehouseDate(date)}（${list.length}条）<button class="knowledge-group-toggle" data-action="k-date-toggle" data-date="${date}" data-type="${type}" title="${collapsed ? '展开该日期' : '收起该日期'}">${collapsed ? '▸' : '▾'}</button></span>
+            <button class="knowledge-tag-copy-btn" data-action="k-copy-date" data-date="${date}" data-type="${type}" title="复制当天全部内容">📋</button>
+          </div>
+          <div class="knowledge-date-group-items"${collapsed ? ' hidden' : ''}>`;
           list.forEach(k => { html += knowledgeAllInlineItemHtml(k); });
+          html += `</div>`;
         });
       }
       return html;
@@ -6831,6 +6906,44 @@
           knowledgeViewModes[type] = knowledgeViewModes[type] === 'tag' ? 'date' : 'tag';
           localStorage.setItem(type === 'knowledge' ? 'tt_knowledgeViewMode' : `tt_knowledgeViewMode_${type}`, knowledgeViewModes[type]);
           refreshKnowledgeViews();
+          return;
+        }
+        const tagGroupToggle = e.target.closest('.knowledge-tag-group-toggle');
+        if (tagGroupToggle) {
+          e.stopPropagation();
+          e.preventDefault();
+          const type = tagGroupToggle.dataset.type || 'knowledge';
+          const tag = tagGroupToggle.dataset.tag || '';
+          const key = ktagGroupKey(type, tag);
+          const collapsed = !knowledgeTagCollapsed[key];
+          if (collapsed) knowledgeTagCollapsed[key] = 1;
+          else delete knowledgeTagCollapsed[key];
+          try { localStorage.setItem('tt_ktagGroupCollapsed', JSON.stringify(knowledgeTagCollapsed)); } catch (err) {}
+          const titleEl = tagGroupToggle.closest('.knowledge-tag-group-title');
+          const itemsEl = titleEl ? titleEl.nextElementSibling : null;
+          if (titleEl) titleEl.classList.toggle('collapsed', collapsed);
+          if (itemsEl) itemsEl.hidden = collapsed;
+          tagGroupToggle.textContent = collapsed ? '▸' : '▾';
+          tagGroupToggle.title = collapsed ? '展开该标签' : '收起该标签';
+          return;
+        }
+        const dateGroupToggle = e.target.closest('.knowledge-group-toggle');
+        if (dateGroupToggle) {
+          e.stopPropagation();
+          e.preventDefault();
+          const type = dateGroupToggle.dataset.type || 'knowledge';
+          const date = dateGroupToggle.dataset.date || '';
+          const key = kdateGroupKey(type, date);
+          const collapsed = !knowledgeDateCollapsed[key];
+          if (collapsed) knowledgeDateCollapsed[key] = 1;
+          else delete knowledgeDateCollapsed[key];
+          try { localStorage.setItem('tt_kdateGroupCollapsed', JSON.stringify(knowledgeDateCollapsed)); } catch (err) {}
+          const titleEl = dateGroupToggle.closest('.knowledge-all-group-title');
+          const itemsEl = titleEl ? titleEl.nextElementSibling : null;
+          if (titleEl) titleEl.classList.toggle('collapsed', collapsed);
+          if (itemsEl) itemsEl.hidden = collapsed;
+          dateGroupToggle.textContent = collapsed ? '▸' : '▾';
+          dateGroupToggle.title = collapsed ? '展开该日期' : '收起该日期';
           return;
         }
         const copyAllBtn = e.target.closest('.warehouse-all-copy-all-btn');
