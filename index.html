@@ -1175,6 +1175,7 @@
       line-height: 1;
     }
     .panel-collapse-btn:hover { background: var(--accent-light); color: var(--accent); }
+    .panel-section-header-actions { display: flex; align-items: center; gap: 4px; }
     .panel-section.collapsed .panel-collapse-btn { transform: rotate(-90deg); }
     .panel-section.collapsed .panel-section-content {
       display: none;
@@ -2274,6 +2275,8 @@
       transition: background 0.15s;
     }
     .memo-item:hover { background: rgba(255,255,255,0.55); }
+    .memo-item.dragging-source { opacity: 0.45; }
+    .memo-item[draggable="true"]:active { cursor: grabbing; }
     .memo-item-text {
       font-size: 14px;
       line-height: 1.55;
@@ -2986,7 +2989,10 @@
       <div class="panel-section">
         <div class="panel-section-header">
           <div class="panel-section-title"><span class="panel-section-title-icon">📋</span>我的备忘</div>
-          <button class="panel-collapse-btn" data-collapse="memo" title="折叠">▾</button>
+          <div class="panel-section-header-actions">
+            <button class="warehouse-copy-btn" id="memoCopyAllBtn" title="复制全部备忘">📋</button>
+            <button class="panel-collapse-btn" data-collapse="memo" title="折叠">▾</button>
+          </div>
         </div>
         <div class="panel-section-content memo-section-content">
           <div class="memo-list" id="memoList"></div>
@@ -3491,6 +3497,14 @@
       },
       deleteMemo(id) {
         this.memos = this.memos.filter(x => x.id !== id);
+        this.saveMemos();
+      },
+      reorderMemos(orderedIds) {
+        if (!Array.isArray(orderedIds) || !orderedIds.length) return;
+        const map = new Map(this.memos.map(m => [m.id, m]));
+        const next = orderedIds.map(id => map.get(id)).filter(Boolean);
+        this.memos.forEach(m => { if (!orderedIds.includes(m.id)) next.push(m); });
+        this.memos = next;
         this.saveMemos();
       },
       // Theme Park (主题公园)
@@ -7842,6 +7856,17 @@
         });
       }
 
+      // 一键复制全部备忘
+      const memoCopyAllBtn = document.getElementById('memoCopyAllBtn');
+      if (memoCopyAllBtn) {
+        memoCopyAllBtn.addEventListener('click', () => {
+          const memos = DB.memos;
+          if (!memos.length) { toast('暂无备忘可复制'); return; }
+          const text = `📋 我的备忘（共${memos.length}条）\n${'─'.repeat(12)}\n\n` + memos.map(m => `• ${m.text}`).join('\n');
+          copyToClipboard(text, memoCopyAllBtn);
+        });
+      }
+
       // ===== Memo events =====
       function renderMemos() {
         const listEl = document.getElementById('memoList');
@@ -7854,7 +7879,7 @@
         listEl.innerHTML = memos.map(m => {
           const timeStr = formatTime(m.updatedAt || m.createdAt);
           return `
-            <div class="memo-item" data-id="${m.id}">
+            <div class="memo-item" data-id="${m.id}" draggable="true">
               <div class="memo-item-text">${escapeHtml(m.text)}</div>
               <div class="memo-item-time">${timeStr}</div>
               <div class="memo-item-actions">
@@ -7863,6 +7888,49 @@
               </div>
             </div>`;
         }).join('');
+
+        // 拖拽排序（整行可拖，编辑中/按钮上不触发）
+        if (!listEl._memoDndBound) {
+          listEl._memoDndBound = true;
+          listEl.addEventListener('dragstart', e => {
+            const item = e.target.closest('.memo-item');
+            if (!item) return;
+            if (item.classList.contains('editing') || e.target.closest('button') || e.target.isContentEditable) {
+              e.preventDefault();
+              return;
+            }
+            item.classList.add('dragging-source');
+            if (e.dataTransfer) {
+              e.dataTransfer.effectAllowed = 'move';
+              try { e.dataTransfer.setData('text/plain', item.dataset.id); } catch (err) {}
+            }
+          });
+          listEl.addEventListener('dragover', e => {
+            const dragged = listEl.querySelector('.memo-item.dragging-source');
+            if (!dragged) return;
+            e.preventDefault();
+            if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+            const target = e.target.closest('.memo-item');
+            if (!target || target === dragged) return;
+            const rect = target.getBoundingClientRect();
+            const before = e.clientY < rect.top + rect.height / 2;
+            if (before) listEl.insertBefore(dragged, target);
+            else listEl.insertBefore(dragged, target.nextSibling);
+          });
+          listEl.addEventListener('drop', e => {
+            const dragged = listEl.querySelector('.memo-item.dragging-source');
+            if (!dragged) return;
+            e.preventDefault();
+            listEl._memoDropDone = true;
+            const orderedIds = Array.from(listEl.querySelectorAll('.memo-item')).map(el => el.dataset.id);
+            DB.reorderMemos(orderedIds);
+          });
+          listEl.addEventListener('dragend', () => {
+            listEl.querySelectorAll('.memo-item.dragging-source').forEach(el => el.classList.remove('dragging-source'));
+            if (!listEl._memoDropDone) renderMemos(); // 未成功放置 → 恢复原顺序
+            listEl._memoDropDone = false;
+          });
+        }
 
         listEl.querySelectorAll('.memo-item').forEach(item => {
           const id = item.dataset.id;
